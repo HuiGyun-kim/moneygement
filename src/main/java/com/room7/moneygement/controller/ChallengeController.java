@@ -3,6 +3,8 @@ package com.room7.moneygement.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.room7.moneygement.service.ChallengeService;
+
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -10,5 +12,5 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/challenges")
 public class ChallengeController {
 
-	private ChallengeService challengeService;
+	private final ChallengeService challengeService;
 }

@@ -1,0 +1,38 @@
+/* 공통 부분 시작 */
+body {
+    margin: 0;
+    background-color: #ffffff;
+}
+/* 공통 부분 끝 */
+
+/* 헤더 시작 */
+.main-logo-img{
+    width: 55%;
+}
+header {
+    display: flex;
+    align-items: center;
+    padding: 10px 51px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    gap: 2%;
+    justify-content: space-between;
+}
+.profile-picture {
+    margin: 0 10px 0 20px;
+}
+.profile-picture img{
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+}
+.user-interaction {
+    display: flex;
+    align-items: center;
+}
+.notification-icons img{
+    width: 50px;
+    height: 40px;
+    cursor: pointer;
+}
+/* 헤더 끝 */

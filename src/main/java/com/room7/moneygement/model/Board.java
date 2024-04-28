@@ -25,8 +25,6 @@ public class Board {
 	@Column(name = "user_id")
 	private Long userId;
 
-	@Lob
-	@Column(name = "content")
 	private String content;
 
 	@Column(name = "created_at")
@@ -35,8 +33,7 @@ public class Board {
 	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
 
-	@Column(name = "type")
 	@Enumerated(EnumType.STRING)
-	private String type;
+	private BoardType type;
 }
 

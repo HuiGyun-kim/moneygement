@@ -22,7 +22,7 @@ public class Challenge {
 
 	private String title;
 
-	@Lob
+
 	private String description;
 
 	@Column(name = "start_date")

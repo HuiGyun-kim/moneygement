@@ -28,6 +28,6 @@ public class UserChallenge {
 	@Column(name = "join_date")
 	private LocalDateTime joinDate;
 
-	@Column(name = "is_completed", columnDefinition = "VARCHAR(1)")
-	private String isCompleted;
+	@Column(name = "is_completed", columnDefinition = "TINYINT(1)")
+	private Boolean isCompleted;
 }

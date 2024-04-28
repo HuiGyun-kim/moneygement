@@ -23,8 +23,6 @@ public class Analytics {
 	@Column(name = "user_id")
 	private Long userId;
 
-	@Column(name = "type")
-	@Enumerated(EnumType.STRING)
 	private String type;
 
 	@Column(name = "content")

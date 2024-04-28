@@ -1,10 +1,14 @@
 package com.room7.moneygement.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/")
 public class MainController {
-	
+	// 기본 홈 페이지를 반환하는 메서드
+	@GetMapping("/")
+	public String home() {
+		return "main/index";
+	}
 }

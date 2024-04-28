@@ -26,7 +26,7 @@ public class LedgerEntry {
 	@Column(name = "receipt_id")
 	private Long receiptId;
 
-	private Integer amount;
+	private Long amount;
 
 	private String description;
 
@@ -37,6 +37,6 @@ public class LedgerEntry {
 	@Column(name = "create_at")
 	private LocalDateTime createAt;
 
-	private Integer income;
+	private Long income;
 }
 

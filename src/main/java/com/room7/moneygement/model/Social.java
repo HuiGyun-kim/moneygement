@@ -28,7 +28,10 @@ public class Social {
 	private String socialKakao;
 
 	@Column(name = "social_google")
-	private Integer socialGoogle;
+	private String socialGoogle;
+
+	@Column(name = "social_naver")
+	private String socialNaver;
 
 	@Column(name = "created_at")
 	private LocalDateTime createdAt;
@@ -39,6 +42,6 @@ public class Social {
 	private String content;
 
 	@Enumerated(EnumType.STRING)
-	private String type;
+	private SocialType type;
 }
 

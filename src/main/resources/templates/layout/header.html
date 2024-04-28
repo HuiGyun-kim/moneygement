@@ -1,0 +1,28 @@
+<header th:fragment="main-header" class="main-header">
+    <a th:href="@{/}">
+        <img th:src="@{/img/main/Cilogo.png}" alt="Log" class="main-logo-img">
+    </a>
+
+    <!-- 사용자 정보와 상호작용 부분 -->
+    <div class="user-interaction">
+        <!-- 메시지 및 알림 아이콘 -->
+        <!-- 로그인 여부에 상관없이 항상 표시됨 -->
+        <div class="notification-icons">
+            <img class="mail_icon" th:src="@{/img/main/mail_icon.png}" alt="메시지" onclick="openMessages()">
+            <img class="alert_icon" th:src="@{/img/main/alert_icon.png}" alt="알림" onclick="openAlerts()">
+        </div>
+
+        <!-- 프로필 사진 -->
+        <figure class="profile-picture" aria-label="프로필">
+            <img th:src="@{/img/main/profile.png}" alt="프로필 사진">
+        </figure>
+        <a>치킨5분컷&nbsp;&nbsp;</a>
+        <a>로그아웃</a>
+        <!-- 사용자 이름과 로그아웃 버튼 -->
+        <!-- 사용자가 로그인했다면 이 부분이 표시됨 -->
+        <!--        <div class="user-info-logged-in" th:if="${currentLoginUser}">-->
+        <!--            <a class="username" th:href="'/myPage/main/' + ${currentLoginUser.idx}" th:text="${currentLoginUser.nickname}">dhktjr0204</a>-->
+        <!--            <button class="header-logout-button" onclick="clickLogoutButton()">로그아웃</button>-->
+        <!--        </div>-->
+    </div>
+</header>
