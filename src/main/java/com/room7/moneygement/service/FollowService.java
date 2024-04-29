@@ -1,6 +1,5 @@
 package com.room7.moneygement.service;
 
-public interface SocialService {
+public interface FollowService {
 
 }
-

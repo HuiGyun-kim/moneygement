@@ -8,7 +8,6 @@ import lombok.Data;
 public class BoardDTO {
 	private Long boardId;
 	private Long userId;
-	private String content;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 	private String type;

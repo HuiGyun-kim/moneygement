@@ -25,8 +25,6 @@ public class Board {
 	@Column(name = "user_id")
 	private Long userId;
 
-	private String content;
-
 	@Column(name = "created_at")
 	private LocalDateTime createdAt;
 

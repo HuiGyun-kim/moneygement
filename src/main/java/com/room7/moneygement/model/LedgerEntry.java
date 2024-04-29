@@ -37,6 +37,7 @@ public class LedgerEntry {
 	@Column(name = "create_at")
 	private LocalDateTime createAt;
 
-	private Long income;
+	@Column(name = "ledger_type", columnDefinition = "TINYINT(1)")
+	private Boolean ledgerType;
 }
 
