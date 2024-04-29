@@ -17,7 +17,6 @@ public class Comment {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long commentId;
 
-	private Long boardId;
 	private Long userId;
 
 	private String content;

@@ -1,5 +1,14 @@
 package com.room7.moneygement.dto;
 
+<<<<<<< HEAD
+import lombok.Data;
+
+@Data
+public class CategoryDTO {
+
+	private String categoryId;
+	private String categoryName;
+=======
 public class CategoryDTO {
 	private String categoryId;
 	private String food;
@@ -10,4 +19,5 @@ public class CategoryDTO {
 	private String always;
 
 	// Getters and Setters
+>>>>>>> develop
 }

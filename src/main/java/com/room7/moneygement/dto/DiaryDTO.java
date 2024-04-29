@@ -5,8 +5,8 @@ import java.time.LocalDateTime;
 import lombok.Data;
 
 @Data
-public class BoardDTO {
-	private Long boardId;
+public class DiaryDTO {
+	private Long diaryId;
 	private Long userId;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;

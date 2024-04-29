@@ -23,6 +23,9 @@ public class LedgerEntry {
 	@Column(name = "ledger_id")
 	private Long ledgerId;
 
+	@Column(name = "category_id")
+	private Long category;
+
 	@Column(name = "receipt_id")
 	private Long receiptId;
 
@@ -32,12 +35,14 @@ public class LedgerEntry {
 
 	private LocalDate date;
 
-	private String category;
-
-	@Column(name = "create_at")
+	@Column(name = "created_at")
 	private LocalDateTime createAt;
 
 	@Column(name = "ledger_type", columnDefinition = "TINYINT(1)")
+<<<<<<< HEAD
+	private Boolean LedgerType;
+=======
 	private Boolean ledgerType;
+>>>>>>> develop
 }
 

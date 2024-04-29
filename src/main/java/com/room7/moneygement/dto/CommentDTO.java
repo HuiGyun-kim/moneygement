@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 public class CommentDTO {
 	private Long commentId;
-	private Long boardId;
 	private Long userId;
 	private String content;
 	private LocalDateTime createdAt;

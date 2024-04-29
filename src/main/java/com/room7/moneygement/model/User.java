@@ -41,5 +41,11 @@ public class User {
 
 	@Column(name = "profile_img")
 	private String profileImg;
+<<<<<<< HEAD
+
+	private String provider;
+	private int exp;
+=======
+>>>>>>> develop
 }
 
