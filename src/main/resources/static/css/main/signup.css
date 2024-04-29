@@ -1,0 +1,52 @@
+body{
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.member-wrapper{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    flex-direction: column;
+}
+
+.logo{
+    display: block;
+    margin: 138px auto 65px;
+    width: 285px;
+    height: 85px;
+}
+
+.welcome, .select{
+    text-align: center;
+    font-weight: 400;
+}
+
+.welcome{
+    font-size: 40px;
+
+}
+
+.select{
+    font-size: 30px;
+}
+
+.select-sign-up{
+    width: 701px;
+    height: 70px;
+    background-color: white;
+    border-radius: 10px;
+    border: 1px black solid;
+    gap : 39px;
+    margin-top: 39px;
+    justify-content: center;
+}
+
+.select-sign-up img{
+    height: 50px;
+    width: 50px;
+    vertical-align: middle;
+}
