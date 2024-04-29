@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class DiaryServiceImpl implements DiaryService {
-	private final DiaryRepository DiaryRepository;
+	private final DiaryRepository diaryRepository;
 
 }
 

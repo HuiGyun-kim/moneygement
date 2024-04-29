@@ -11,8 +11,11 @@ public class UserDTO {
 	private String email;
 	private String password;
 	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
 	private String rememberToken;
 	private Integer isDeleted;
 	private String role;
 	private String profileImg;
+	private String provider;
+	private int exp;
 }

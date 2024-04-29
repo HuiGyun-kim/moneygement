@@ -9,9 +9,4 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
-<<<<<<< HEAD
-
 }
-=======
-}
->>>>>>> develop
