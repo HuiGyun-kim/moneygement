@@ -11,4 +11,9 @@ public class MainController {
 	public String home() {
 		return "main/index";
 	}
+	// 로그인 클릭시 로그인 페이지를 반환하는 메서드
+	@GetMapping("/login")
+	public String login() {
+		return "main/login.html";
+	}
 }

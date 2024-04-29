@@ -1,6 +1,8 @@
 package com.room7.moneygement.service;
 
-public interface UserService {
+import com.room7.moneygement.model.User;
 
+public interface UserService {
+	User findByUsername(String username);
 }
 

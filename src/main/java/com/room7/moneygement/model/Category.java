@@ -1,7 +1,6 @@
 package com.room7.moneygement.model;
 
-import java.time.LocalDateTime;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,17 +10,14 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "comment")
-public class Comment {
+@Table(name = "category")
+public class Category {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long commentId;
+	@Column(name = "category_id")
+	private Long categoryId;
 
-	private Long userId;
-
-	private String content;
-
-	private LocalDateTime createdAt;
-	private LocalDateTime updatedAt;
+	@Column(name = "category_name")
+	private String categoryName;
 }
-

@@ -3,14 +3,14 @@ package com.room7.moneygement.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.room7.moneygement.service.SocialService;
+import com.room7.moneygement.service.DiaryService;
 
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/socials")
-public class SocialController {
+@RequestMapping("/diary")
+public class DiaryController {
 
-	private final SocialService socialService;
+	private final DiaryService diaryService;
 }

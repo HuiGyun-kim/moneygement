@@ -42,7 +42,7 @@ public class User {
 	@Column(name = "profile_img")
 	private String profileImg;
 
-	@Column(name = "report_count")
-	private Long reportCount;
+	private String provider;
+	private int exp;
 }
 

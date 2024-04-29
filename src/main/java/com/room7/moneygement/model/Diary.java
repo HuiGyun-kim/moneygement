@@ -15,12 +15,12 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "board")
-public class Board {
+@Table(name = "diary")
+public class Diary {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "board_id")
-	private Long boardId;
+	@Column(name = "diary_id")
+	private Long diaryId;
 
 	@Column(name = "user_id")
 	private Long userId;
@@ -33,7 +33,5 @@ public class Board {
 	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
 
-	@Enumerated(EnumType.STRING)
-	private BoardType type;
 }
 
