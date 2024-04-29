@@ -18,9 +18,6 @@ import lombok.Data;
 public class Social {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "social_id")
-	private Long socialId;
-
 	@Column(name = "user_id")
 	private Long userId;
 
