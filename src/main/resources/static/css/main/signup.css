@@ -1,9 +1,21 @@
+@font-face {
+    font-family: 'Interop';
+    src: url('https://raw.githubusercontent.com/payw-org/Interop/main/web/fonts/Interop-Regular.woff2')
+    format('woff2'),
+    url('https://raw.githubusercontent.com/payw-org/Interop/main/web/fonts/Interop-Regular.woff')
+    format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
 body{
     height: 100%;
     margin: 0;
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: 'Interop';
 }
 
 .member-wrapper{
@@ -27,26 +39,44 @@ body{
 
 .welcome{
     font-size: 40px;
+}
 
+.divider{
+    background-color: #D9D9D9;
+    height: 1px;
+    width: 701px;
 }
 
 .select{
     font-size: 30px;
 }
 
+.box{
+    text-decoration: none;
+    color: inherit;
+}
 .select-sign-up{
+    font-size: 30px;
     width: 701px;
     height: 70px;
     background-color: white;
     border-radius: 10px;
     border: 1px black solid;
-    gap : 39px;
     margin-top: 39px;
-    justify-content: center;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .select-sign-up img{
     height: 50px;
     width: 50px;
     vertical-align: middle;
+    padding-left: 26px;
+    padding-right: 0px;
+}
+
+.select-sign-up img.email{
+    height: 33px;
+    width: 40px;
 }
