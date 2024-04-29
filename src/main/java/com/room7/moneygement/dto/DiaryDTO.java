@@ -8,7 +8,6 @@ import lombok.Data;
 public class DiaryDTO {
 	private Long diaryId;
 	private Long userId;
-	private String content;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 	private String type;

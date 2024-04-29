@@ -39,6 +39,10 @@ public class LedgerEntry {
 	private LocalDateTime createAt;
 
 	@Column(name = "ledger_type", columnDefinition = "TINYINT(1)")
+<<<<<<< HEAD
 	private Boolean LedgerType;
+=======
+	private Boolean ledgerType;
+>>>>>>> develop
 }
 
