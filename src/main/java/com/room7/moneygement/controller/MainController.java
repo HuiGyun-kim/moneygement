@@ -9,6 +9,6 @@ public class MainController {
 	// 기본 홈 페이지를 반환하는 메서드
 	@GetMapping("/")
 	public String home() {
-		return "main/index";
+		return "main/login";
 	}
 }

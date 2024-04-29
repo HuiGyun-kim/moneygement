@@ -15,5 +15,4 @@ public class UserDTO {
 	private Integer isDeleted;
 	private String role;
 	private String profileImg;
-	private Integer reportCount;
 }

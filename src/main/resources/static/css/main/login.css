@@ -1,0 +1,153 @@
+@font-face {
+    font-family: "BlackItalic";
+    src: url("../font/roboto.medium-italic.ttf") format("truetype");
+}
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.login-section {
+    width: 400px;
+    display: grid;
+    justify-items: center;
+    margin: auto;
+    margin-top: 8%;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 1em;
+}
+
+.main-logo-img {
+    width: 85%;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5%;
+    width: 130%;
+}
+
+.form-group {
+    margin-bottom: 1em;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 1.35em 0.75em;
+    border: 1px solid #ced4da;
+    border-radius: 0.25em;
+}
+
+.form-action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1em;
+}
+
+.links-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.links-group a {
+    text-decoration: none;
+    color: #6c757d;
+    font-size: 0.8em;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+}
+
+.btn-login {
+    padding: 0.75em;
+    border: none;
+    border-radius: 0.25em;
+    background-color: #1A4F32;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.social-login {
+    margin-top: 1em;
+}
+
+.btn-social {
+    display: flex;
+    width: 100%;
+    padding: 0.75em;
+    margin-bottom: 0.5em;
+    border-radius: 0.25em;
+    cursor: pointer;
+    color: #5C5C5C;
+    border: solid 1px #757575;
+    background-color: white;
+}
+
+.btn-social::before {
+    content: ''; /* 가상 요소에 내용이 필요하므로 비어있는 문자열을 추가 */
+    display: block;
+    width: 20px; /* 이미지 크기를 설정 */
+    height: 20px; /* 이미지 크기를 설정 */
+    background-size: contain; /* 이미지가 요소 안에 꽉 차게 */
+    margin-right: 10px; /* 텍스트와의 간격 설정 */
+}
+
+.btn-google::before {
+    background-image: url("../../img/main/login/google.svg");
+}
+
+.btn-kakao::before {
+    background-image: url("../../img/main/login/kakao.svg");
+}
+
+.btn-naver::before {
+    background-image: url("../../img/main/login/naver.svg");
+}
+
+.login-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 16px;
+    font-size: small;
+    color:#757575;
+    font-family: "BlackItalic";
+    font-weight: 700;
+}
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+}
+.login-links {
+    display: flex;
+    gap: 30px;
+}
+a {
+    text-decoration: none;
+    color: #757575;
+    font-size: 0.8rem;
+}
+input[type="checkbox"] {
+    margin-right: 5px;
+}

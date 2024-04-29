@@ -15,6 +15,6 @@ public class LedgerEntryDTO {
 	private LocalDate date;
 	private String category;
 	private LocalDateTime createAt;
-	private Integer income;
+	private boolean ledgerType;
 }
 
