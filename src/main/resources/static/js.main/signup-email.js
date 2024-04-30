@@ -36,9 +36,9 @@ document.addEventListener('DOMContentLoaded', function (){
 
 document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('usernameOverlay').addEventListener('click', function () {
-        var userId = document.getElementById('userId').value;
-        if(userId) {
-            fetch('/checkUsername?userId=' + userId)
+        var username = document.getElementById('username').value;
+        if(username) {
+            fetch('/checkUsername?username=' + username)
                 .then(response => response.json())
                 .then(data => {
                     if(data.isAvailable) {

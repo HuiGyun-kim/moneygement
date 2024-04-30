@@ -1,14 +1,17 @@
 package com.room7.moneygement.controller;
 
+import com.room7.moneygement.model.UserRole;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import com.room7.moneygement.model.User;
 import com.room7.moneygement.service.UserService;
 
 import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,4 +30,28 @@ public class UserController {
 		return "redirect:/login?error=true"; // 로그인 실패 시 로그인 페이지로 리다이렉트
 	}
 
+	@PostMapping("/signup")
+	public String signup(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("email") String email) {
+		User user = new User();
+		user.setUsername(username);
+		user.setPassword(password);
+		user.setEmail(email);
+		user.setCreatedAt(LocalDateTime.now());
+		user.setIsDeleted(false);
+		user.setRole(UserRole.LV1);
+		user.setUpdatedAt(LocalDateTime.now());
+
+		userService.save(user);
+
+		return "redirect:/login";
+	}
+
+	@GetMapping("/checkUsername")
+	@ResponseBody
+	public Map<String, Boolean> checkUsername(@RequestParam("username") String username) {
+		boolean isAvailable = !userService.existsByUsername(username);
+		Map<String, Boolean> response = new HashMap<>();
+		response.put("isAvailable", isAvailable);
+		return response;
+	}
 }
