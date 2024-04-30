@@ -16,7 +16,7 @@ import java.util.Date;
 public class EmailServiceImpl implements EmailService {
 
     private final String secretKey = "moneymoney";
-//    private final long expirationTime = 1000*60*10; //10분
+    private final long expirationTime = 1000*60*10; //10분
 
     @Autowired
     private JavaMailSender mailSender;
@@ -24,7 +24,7 @@ public class EmailServiceImpl implements EmailService {
     public String createEmailToken(String userEmail){
         return JWT.create()
                 .withSubject(userEmail)
-//                .withExpiresAt(new Date(System.currentTimeMillis() + expirationTime))
+                .withExpiresAt(new Date(System.currentTimeMillis() + expirationTime))
                 .sign(Algorithm.HMAC512(secretKey.getBytes())); // JWT 토큰 서명을 SHA-512 알고리즘을 사용하여 서명함
     }
 

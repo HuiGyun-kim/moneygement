@@ -92,8 +92,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 })
                 .then(data => {
                     alert(data);
-                    isEmail = true;
-                    checkSubmit();
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -104,7 +102,6 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 });
-
 
 
 

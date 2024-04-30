@@ -86,8 +86,6 @@ public class UserController {
 			return ResponseEntity.ok("인증 이메일을 보냈습니다.");
 		}
 		catch(Exception e) {
-
-			e.getMessage();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("인증 이메일 전송 실패");
 		}
 	}
