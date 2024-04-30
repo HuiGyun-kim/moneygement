@@ -1,10 +1,10 @@
 function checkSubmit() {
     var submitButton = document.querySelector('.btn-submit button');
-    submitButton.disabled = !isUser;
+    submitButton.disabled = !(isUser && isEmail);
 }
 
 var isUser = false;
-var isNickname = false;
+var isEmail = false;
 
 document.addEventListener('DOMContentLoaded', function (){
     document.getElementById('password_check').addEventListener('keyup', function (event){
@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function (){
         var password_check = document.getElementById('password_check').value;
 
         if (password !== password_check){
+            alert("비밀번호가 일치하지 않습니다. 다시 작성해주세요.")
             event.preventDefault();
         }
     });
@@ -54,11 +55,56 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+
     document.getElementById('form').addEventListener('submit', function (event) {
         if(!isUser) {
             alert('아이디가 이미 사용중입니다.');
             event.preventDefault();
         }
+        if(!isEmail) {
+            alert('이메일 인증이 되지 않았습니다.')
+            event.preventDefault();
+        }
     });
 
+
 });
+
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("emailOverlay").addEventListener("click", function() {
+        var email = document.getElementById("email").value;
+
+        if(email){
+            fetch('/users/sendEmail', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'email=' + encodeURIComponent(email)
+            })
+                .then(response => {
+                    if(response.ok) {
+                        return response.text();
+                    }
+                    else {
+                        throw new Error('서버로부터 응답을 받는데 실패했습니다.');
+                    }
+                })
+                .then(data => {
+                    alert(data);
+                    isEmail = true;
+                    checkSubmit();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+        else {
+            alert("이메일을 입력해주세요.");
+        }
+    });
+});
+
+
+
+
