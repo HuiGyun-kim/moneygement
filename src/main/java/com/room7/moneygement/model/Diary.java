@@ -33,5 +33,7 @@ public class Diary {
 	@Column(name = "updated_at")
 	private LocalDateTime updatedAt;
 
+	@Column(name = "expense_at")
+	private LocalDateTime expenseAt;
 }
 
