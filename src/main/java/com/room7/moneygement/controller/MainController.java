@@ -1,8 +1,10 @@
 package com.room7.moneygement.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class MainController {
@@ -17,4 +19,26 @@ public class MainController {
 	public String login() {
 		return "main/login";
 	}
+
+	//회원가입 선택 페이지를 반환하는 메서드
+	@GetMapping("/signup")
+	public String signup() {
+        return "main/signup";
+    }
+
+	//회원가입 선택시 이메일을 사용해서 반환할 때 사용하는 메서드
+	@GetMapping("signup-email")
+	public String signupEmail(){
+		return "main/signup-email";
+	}
+
+	@GetMapping("/emailVerified")
+	public String emailVerified(@RequestParam(value = "status", required = false) String status,
+								@RequestParam(value = "message", required = false) String message, Model model) {
+		model.addAttribute("status", status);
+		model.addAttribute("message", message);
+
+		return "main/emailVerified";
+	}
+
 }

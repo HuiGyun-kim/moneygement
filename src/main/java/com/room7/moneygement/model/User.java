@@ -46,6 +46,8 @@ public class User {
 	private String profileImg;
 
 	private String provider;
+
 	private int exp;
+
 }
 
