@@ -18,7 +18,7 @@ public class UserServiceImpl implements UserService {
 	// private final PasswordEncoder passwordEncoder;
 	@Override
 	public User findByUsername(String username) {
-		return userRepository.findByUsername(username);
+		return userRepository.findByUsername(username).orElse(null);
 	}
 
 	@Override

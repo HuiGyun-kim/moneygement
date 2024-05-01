@@ -13,7 +13,9 @@ import com.room7.moneygement.model.User;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.room7.moneygement.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.servlet.view.RedirectView;
 
+import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,17 +56,19 @@ public class UserController {
 
 	@GetMapping("/verifyEmail")
 	@ResponseBody
-	public ResponseEntity<String> verifyEmail(@RequestParam String token){
+	public RedirectView verifyEmail(@RequestParam String token){
 		try{
 			String userEmail = JWT.require(Algorithm.HMAC512("moneymoney".getBytes()))
 					.build()
 					.verify(token)
 					.getSubject();
 
-			return ResponseEntity.ok("이메일 인증이 완료되었습니다.");
+			String successMessage = URLEncoder.encode("이메일 인증이 완료되었습니다. 창을 닫아주세요.", "UTF-8");
+			return new RedirectView("/emailVerified?status=success&message=" + successMessage);
+
 		}
 		catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("유효시간이 지났습니다. 다시 시도해주세요.");
+			return new RedirectView("/emailVerified?message=유효시간이 지났습니다. 다시 시도해주세요.");
 		}
 	}
 

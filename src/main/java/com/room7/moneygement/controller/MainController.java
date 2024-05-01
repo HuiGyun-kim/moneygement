@@ -1,8 +1,10 @@
 package com.room7.moneygement.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class MainController {
@@ -29,4 +31,14 @@ public class MainController {
 	public String signupEmail(){
 		return "main/signup-email";
 	}
+
+	@GetMapping("/emailVerified")
+	public String emailVerified(@RequestParam(value = "status", required = false) String status,
+								@RequestParam(value = "message", required = false) String message, Model model) {
+		model.addAttribute("status", status);
+		model.addAttribute("message", message);
+
+		return "main/emailVerified";
+	}
+
 }
