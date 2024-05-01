@@ -113,15 +113,15 @@ body {
 }
 
 .btn-google::before {
-    background-image: url("../../img/main/login/google.svg");
+    background-image: url("../../img/login/google.svg");
 }
 
 .btn-kakao::before {
-    background-image: url("../../img/main/login/kakao.svg");
+    background-image: url("../../img/login/kakao.svg");
 }
 
 .btn-naver::before {
-    background-image: url("../../img/main/login/naver.svg");
+    background-image: url("../../img/login/naver.svg");
 }
 
 .login-container {

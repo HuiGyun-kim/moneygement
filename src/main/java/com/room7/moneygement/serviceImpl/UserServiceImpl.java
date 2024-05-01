@@ -1,5 +1,8 @@
 package com.room7.moneygement.serviceImpl;
 
+import java.util.Optional;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.room7.moneygement.model.User;
@@ -12,9 +15,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 	private final UserRepository userRepository;
+	// private final PasswordEncoder passwordEncoder;
 	@Override
 	public User findByUsername(String username) {
-		return userRepository.findByUsername(username).orElse(null);
+		return userRepository.findByUsername(username);
 	}
 
 	@Override
@@ -33,5 +37,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 
+	// public boolean checkPassword(String rawPassword, String encodedPassword) {
+	// 	return passwordEncoder.matches(rawPassword, encodedPassword);
+	// }
 }
 

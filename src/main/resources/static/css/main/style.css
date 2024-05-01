@@ -35,4 +35,10 @@ header {
     height: 40px;
     cursor: pointer;
 }
+.logout-button {
+    background: white;
+    border: none;
+    font-size: medium;
+    cursor: pointer;
+}
 /* 헤더 끝 */

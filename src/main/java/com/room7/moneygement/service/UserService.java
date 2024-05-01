@@ -10,5 +10,7 @@ public interface UserService {
 
 
 
+
+	// boolean checkPassword(String rawpassword, String encodedPassword);
 }
 
