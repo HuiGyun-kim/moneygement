@@ -51,21 +51,6 @@
 		 };
 	 }
 
-/*
-   @Bean
-    public UserDetailsService userDetailsService() {
-        return username -> {
-            User user = userService.findByUsername(username);
-            if (user == null) {
-                throw new UsernameNotFoundException("User not found");
-            }
-            return new org.springframework.security.core.userdetails.User(
-                    user.getUsername(),
-                    user.getPassword(),
-                    new ArrayList<>());
-        };
-    }
-*/
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
