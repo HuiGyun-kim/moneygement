@@ -24,7 +24,6 @@ public class MainController {
 	// 기본 홈 페이지를 반환하는 메서드
 	@GetMapping("/")
 	public String home(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
-		System.out.println("model,  = " + model + ", userDTO = " + userDetails);
 		if (userDetails != null) {
 			model.addAttribute("user", userDetails.getUserDTO());
 		}
