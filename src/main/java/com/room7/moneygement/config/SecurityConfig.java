@@ -90,18 +90,38 @@
 	 @Bean
 	 public AuthenticationSuccessHandler customSuccessHandler() {
 		 return (request, response, authentication) -> {
-			 // 'rememberMe' 파라미터 확인
-			 if ("on".equals(request.getParameter("rememberMe"))) {
+			 String rememberMe = request.getParameter("rememberMe");
+			 if ("on".equals(rememberMe)) {
 				 String username = authentication.getName();
 				 String encodedUsername = URLEncoder.encode(username, StandardCharsets.UTF_8.name());
 				 Cookie rememberMeCookie = new Cookie("rememberUser", encodedUsername);
-				 rememberMeCookie.setMaxAge(60 * 60 * 24 * 30); // 30일
-				 rememberMeCookie.setPath("/"); // 모든 경로에서 접근 가능하도록 설정
+				 rememberMeCookie.setMaxAge(60 * 60 * 24 * 30); // 30일 동안 유효
+				 rememberMeCookie.setPath("/");
+				 response.addCookie(rememberMeCookie);
+			 } else {
+				 Cookie rememberMeCookie = new Cookie("rememberUser", "");
+				 rememberMeCookie.setMaxAge(0); // 즉시 만료
+				 rememberMeCookie.setPath("/");
 				 response.addCookie(rememberMeCookie);
 			 }
 			 response.sendRedirect("/");
 		 };
 	 }
+	 // @Bean
+	 // public AuthenticationSuccessHandler customSuccessHandler() {
+		//  return (request, response, authentication) -> {
+		// 	 // 'rememberMe' 파라미터 확인
+		// 	 if ("on".equals(request.getParameter("rememberMe"))) {
+		// 		 String username = authentication.getName();
+		// 		 String encodedUsername = URLEncoder.encode(username, StandardCharsets.UTF_8.name());
+		// 		 Cookie rememberMeCookie = new Cookie("rememberUser", encodedUsername);
+		// 		 rememberMeCookie.setMaxAge(60 * 60 * 24 * 30); // 30일
+		// 		 rememberMeCookie.setPath("/"); // 모든 경로에서 접근 가능하도록 설정
+		// 		 response.addCookie(rememberMeCookie);
+		// 	 }
+		// 	 response.sendRedirect("/");
+		//  };
+	 // }
 	 @Bean
 	 public PasswordEncoder passwordEncoder() {
 		 return NoOpPasswordEncoder.getInstance();
