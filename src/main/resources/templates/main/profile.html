@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>profile</title>
+    <link rel="stylesheet" href="../../static/css/main/profile.css">
+</head>
+<header>
+    <div th:replace="~{layout/header.html::main-header}"></div>
+</header>
+<body>
+    <div class="background">
+        <img class="background" src="../../static/img/main/img.png" alt=""/>
+    </div>
+    <div class="my-profile">
+        <div class="profile-img">
+        <img src="../../static/img/main/img_1.png" alt="" width="250"/>
+        </div>
+        <div class="more-container">
+            <img class="more" src="../../static/img/main/more-vertical-svgrepo-com (1).png" alt=""/>
+            <div class="dropdown-menu" id="myDropdown">
+                <a href="#">프로필사진 변경</a>
+                <a href="#">소개 작성</a>
+                <a href="#">항목 3</a>
+            </div>
+        </div>
+        <div class="profile-name">
+            <p>거지들</p>
+            <div class="follow-list">
+                <div class="follow">
+                    <button class="follow-button" type="button">팔로워</button>
+                    <span>팔로워 수</span>
+                </div>
+            <div class="following">
+                <button class="following-button" type="button">팔로잉</button>
+                <span>팔로잉 수</span>
+            </div>
+        </div>
+        </div>
+        <div class="side-view">
+                <div class="level-bar">
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="progress-bar"></div>
+                    </div>
+                    <div class="level-info">
+                        <span id="current-level"></span> 레벨
+                        <span id="filled-exp"></span> / <span id="required-exp"></span>
+                    </div>
+                </div>
+            <div class="introduce">
+                <span class="text">소개</span>
+                <label>
+                    <textarea class="introduce-text">나는 거지다아아아아아ㅏ아아.</textarea>
+                </label>
+            </div>
+            <div class="stats">
+                <p class="text">통계</p>
+                <div>
+                    <label>
+                        <textarea class="introduce-text">더미더미더미</textarea>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="guest-book">
+            <div class="guestbook-button">
+                <p class="text2">방명록</p>
+            </div>
+            <div class="guestbook-container" id="guestbook-container"></div>
+
+            <div class="pagination" id="pagination-container"></div>
+        </div>
+    </div>
+
+<script src="../../static/js/profile.js"></script>
+<script src="../../static/js/guestbook.js"></script>
+<script src="../../static/js/dropdown.js"></script>
+<script src="../../static/js/profileImgeModal.js"></script>
+</body>
+</html>
