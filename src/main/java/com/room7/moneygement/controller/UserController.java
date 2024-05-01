@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.room7.moneygement.model.User;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import com.room7.moneygement.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.servlet.view.RedirectView;
@@ -84,5 +85,4 @@ public class UserController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("인증 이메일 전송 실패");
 		}
 	}
-
 }
