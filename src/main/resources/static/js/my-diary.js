@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const dateButtonsContainer = document.getElementById('dateButtons');
-    const expenditureDetails = document.getElementById('expenditureDetails');
+    const dateButton = document.getElementById('date');
+    const expendsList = document.getElementById('expends');
 
     function generateDateButtons() {
         const today = new Date();
@@ -28,12 +28,12 @@ document.addEventListener('DOMContentLoaded', function() {
             button.onclick = function() {
                 showExpenditureDetails(date);
             };
-            dateButtonsContainer.appendChild(button);
+            dateButton.appendChild(button);
         }
     }
 
     function showExpenditureDetails(date) {
-        expenditureDetails.textContent = `${date.getMonth() + 1}월 ${date.getDate()}일의 지출 내역`;
+        expendsList.textContent = `${date.getMonth() + 1}월 ${date.getDate()}일의 지출 내역`;
     }
 
     generateDateButtons();
