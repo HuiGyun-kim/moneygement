@@ -1,42 +1,58 @@
+ package com.room7.moneygement.config;
 
-package com.room7.moneygement.config;
+ import java.net.URLEncoder;
+ import java.nio.charset.StandardCharsets;
+ import java.util.ArrayList;
 
+ import jakarta.servlet.http.Cookie;
+ import lombok.RequiredArgsConstructor;
+ import org.springframework.context.annotation.Bean;
+ import org.springframework.context.annotation.ComponentScan;
+ import org.springframework.context.annotation.Configuration;
+ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+ import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+ import org.springframework.security.core.userdetails.UserDetailsService;
+ import org.springframework.security.core.userdetails.UsernameNotFoundException;
+ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+ import org.springframework.security.crypto.password.PasswordEncoder;
+ import org.springframework.security.web.SecurityFilterChain;
+ import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+ import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+ import com.room7.moneygement.dto.UserDTO;
+ import com.room7.moneygement.model.User;
+ import com.room7.moneygement.service.CustomUserDetails;
+ import com.room7.moneygement.service.UserService;
 
+ @Configuration
+ @EnableWebSecurity
+ @RequiredArgsConstructor
+ @ComponentScan(basePackages = {"com.room7.moneygement.service"})
+ public class SecurityConfig {
 
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
+	 private final UserService userService;
 
-import jakarta.servlet.http.Cookie;
-import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+	 @Bean
+	 public UserDetailsService userDetailsService() {
+		 return username -> {
+			 User user = userService.findByUsername(username);
+			 if (user == null) {
+				 throw new UsernameNotFoundException("User not found");
+			 }
 
-import com.room7.moneygement.model.User;
-import com.room7.moneygement.service.UserService;
+			 UserDTO userDTO = UserDTO.builder()
+				 .userId(user.getUserId())
+				 .username(user.getUsername())
+				 .password(user.getPassword())
+				 .profileImg(user.getProfileImg())
+				 .build(); // 프로필 이미지 등 추가 데이터 설정
 
-@Configuration
-@EnableWebSecurity
-@RequiredArgsConstructor
-@ComponentScan(basePackages = {"com.room7.moneygement.service"})
-public class SecurityConfig {
+			 return new CustomUserDetails(userDTO); // CustomUserDetails 객체 반환
+		 };
+	 }
 
-    private final UserService userService;
-
-    @Bean
+/*
+   @Bean
     public UserDetailsService userDetailsService() {
         return username -> {
             User user = userService.findByUsername(username);
@@ -49,7 +65,7 @@ public class SecurityConfig {
                     new ArrayList<>());
         };
     }
-
+*/
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -116,35 +132,6 @@ public class SecurityConfig {
         return NoOpPasswordEncoder.getInstance();
     }
 }
-/*
-	 // 로그인 성공 핸들러
-	 @Bean
-	 public AuthenticationSuccessHandler customSuccessHandler() {
-		 return (request, response, authentication) -> {
-			 String rememberMe = request.getParameter("rememberMe");
-			 if ("on".equals(rememberMe)) {
-				 String username = authentication.getName();
-				 String encodedUsername = URLEncoder.encode(username, StandardCharsets.UTF_8.name());
-				 Cookie rememberMeCookie = new Cookie("rememberUser", encodedUsername);
-				 rememberMeCookie.setMaxAge(60 * 60 * 24 * 30); // 30일 동안 유효
-				 rememberMeCookie.setPath("/");
-				 response.addCookie(rememberMeCookie);
-			 } else {
-				 Cookie rememberMeCookie = new Cookie("rememberUser", "");
-				 rememberMeCookie.setMaxAge(0); // 즉시 만료
-				 rememberMeCookie.setPath("/");
-				 response.addCookie(rememberMeCookie);
-			 }
-			 response.sendRedirect("/");
-		 };
-	 }
-
-	 @Bean
-	 public PasswordEncoder passwordEncoder() {
-		 return NoOpPasswordEncoder.getInstance();
-	 }
- }
-*/
 
 //  // 패스워드 인코더로 사용할 빈 등록
 // 	@Bean
