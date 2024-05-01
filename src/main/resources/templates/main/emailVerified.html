@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>이메일 인증</title>
+</head>
+<body>
+<h2>이메일 인증 결과</h2>
+<div>Status: <span id="status" th:text="${status}"></span></div>
+<div>Message: <span th:text="${message}"></span></div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const status = document.getElementById('status').innerText;
+
+        if(status === 'success') {
+            localStorage.setItem('isEmail', 'true');
+        }
+    });
+</script>
+</body>
+</html>

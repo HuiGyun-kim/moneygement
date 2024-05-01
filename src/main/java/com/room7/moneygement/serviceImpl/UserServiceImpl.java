@@ -18,8 +18,25 @@ public class UserServiceImpl implements UserService {
 	// private final PasswordEncoder passwordEncoder;
 	@Override
 	public User findByUsername(String username) {
-		return userRepository.findByUsername(username);
+		return userRepository.findByUsername(username).orElse(null);
 	}
+
+	@Override
+	public User save(User user) {
+		return userRepository.save(user);
+	}
+
+	@Override
+	public boolean existsByUsername(String username) {
+		return userRepository.existsByUsername(username);
+	}
+
+	@Override
+	public User findByEmail(String email) {
+		return userRepository.findByEmail(email).orElse(null);
+	}
+
+
 	// public boolean checkPassword(String rawPassword, String encodedPassword) {
 	// 	return passwordEncoder.matches(rawPassword, encodedPassword);
 	// }

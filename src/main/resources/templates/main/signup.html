@@ -4,41 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>회원가입 선택</title>
-    <link rel="stylesheet" href="../../static/css/main/signup.css">
+    <link rel="stylesheet" th:href="@{/css/main/signup.css}">
 
 </head>
 <body>
 <div>
-    <main class = member-wrapper">
+    <main class = "member-wrapper">
         <header>
-            <img class="logo" src = "../../static/img/main/Cilogo.png">
+            <img th:src="@{/img/main/Cilogo.png}" alt="대표 로고" class="main-logo-img">
             <h1 class="welcome">환영합니다!</h1>
         </header>
+
         <div class="divider"></div>
         <section>
             <h2 class="select">머니지먼트 회원가입 방식을 선택해주세요</h2>
             <div class="signup-method">
-                <a href="signup-email.html" class="box">
+                <a th:href="@{/signup-email}" class="box">
                 <div class="select-sign-up">
-                    <img src="../../static/img/main/message.png" class="email">이메일 회원가입
+                    <img th:src="@{/img/main/message.png}" alt="메시지 모양 아이콘" class="email">이메일 회원가입
                 </div>
                 </a>
 
                 <a href="" class="box">
                 <div class="select-sign-up">
-                    <img src="../../static/img/main/naver.png">네이버 회원가입
+                    <img th:src="@{/img/main/naver.png}">네이버 회원가입
                 </div>
                 </a>
 
                 <a href="" class="box">
                 <div class="select-sign-up">
-                    <img src="../../static/img/main/kakao.png">카카오 회원가입
+                    <img th:src="@{/img/main/kakao.png}">카카오 회원가입
                 </div>
                 </a>
 
                 <a href="" class="box">
                 <div class="select-sign-up">
-                    <img src="../../static/img/main/google.png">구글 회원가입
+                    <img th:src="@{/img/main/google.png}">구글 회원가입
                 </div>
                 </a>
             </div>
