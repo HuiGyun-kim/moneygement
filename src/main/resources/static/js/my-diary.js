@@ -21,8 +21,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 button.style.color = 'red';
             }
 
-            if (i===0){ //여기서부터 작업하면 될 것 같음!!
-                button.style.border
+            if (i===0){
+                button.style.borderColor = '#1A4F32';
+                button.style.borderWidth = '2px';
+                button.style.borderStyle ='dotted';
             }
 
             button.onclick = function() {
