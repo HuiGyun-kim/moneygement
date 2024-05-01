@@ -12,7 +12,10 @@ window.onload = function() {
     if (rememberUser) {
         rememberUser = decodeURIComponent(rememberUser.replace(/\+/g, ' ')); // 쿠키에서 가져온 값을 디코딩
         document.getElementById('user-id').value = rememberUser;
-        document.getElementById('remember-id').checked = true;
+        var checkbox = document.getElementById('remember-id');
+        if (checkbox) {
+            checkbox.checked = true;
+        }
     }
 };
 
