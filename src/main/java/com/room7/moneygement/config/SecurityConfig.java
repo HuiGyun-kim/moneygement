@@ -14,18 +14,17 @@
  import org.springframework.context.annotation.Configuration;
  import org.springframework.security.config.annotation.web.builders.HttpSecurity;
  import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
- import org.springframework.security.core.authority.AuthorityUtils;
  import org.springframework.security.core.userdetails.UserDetailsService;
  import org.springframework.security.core.userdetails.UsernameNotFoundException;
- import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  import org.springframework.security.crypto.password.NoOpPasswordEncoder;
  import org.springframework.security.crypto.password.PasswordEncoder;
  import org.springframework.security.web.SecurityFilterChain;
  import org.springframework.security.web.authentication.AuthenticationFailureHandler;
  import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
- import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 
+ import com.room7.moneygement.dto.UserDTO;
  import com.room7.moneygement.model.User;
+ import com.room7.moneygement.service.CustomUserDetails;
  import com.room7.moneygement.service.UserService;
 
  @Configuration
@@ -43,10 +42,15 @@
 			 if (user == null) {
 				 throw new UsernameNotFoundException("User not found");
 			 }
-			 return new org.springframework.security.core.userdetails.User(
-				 user.getUsername(),
-				 user.getPassword(),
-				 new ArrayList<>());
+
+			 UserDTO userDTO = UserDTO.builder()
+				 .userId(user.getUserId())
+				 .username(user.getUsername())
+				 .password(user.getPassword())
+				 .profileImg(user.getProfileImg())
+				 .build(); // 프로필 이미지 등 추가 데이터 설정
+
+			 return new CustomUserDetails(userDTO); // CustomUserDetails 객체 반환
 		 };
 	 }
 
@@ -107,21 +111,7 @@
 			 response.sendRedirect("/");
 		 };
 	 }
-	 // @Bean
-	 // public AuthenticationSuccessHandler customSuccessHandler() {
-		//  return (request, response, authentication) -> {
-		// 	 // 'rememberMe' 파라미터 확인
-		// 	 if ("on".equals(request.getParameter("rememberMe"))) {
-		// 		 String username = authentication.getName();
-		// 		 String encodedUsername = URLEncoder.encode(username, StandardCharsets.UTF_8.name());
-		// 		 Cookie rememberMeCookie = new Cookie("rememberUser", encodedUsername);
-		// 		 rememberMeCookie.setMaxAge(60 * 60 * 24 * 30); // 30일
-		// 		 rememberMeCookie.setPath("/"); // 모든 경로에서 접근 가능하도록 설정
-		// 		 response.addCookie(rememberMeCookie);
-		// 	 }
-		// 	 response.sendRedirect("/");
-		//  };
-	 // }
+
 	 @Bean
 	 public PasswordEncoder passwordEncoder() {
 		 return NoOpPasswordEncoder.getInstance();
