@@ -47,6 +47,7 @@ public class UserController {
 		user.setCreatedAt(LocalDateTime.now());
 		user.setIsDeleted(false);
 		user.setRole(UserRole.LV1);
+		user.setProfileImg("profile.png");
 		user.setUpdatedAt(LocalDateTime.now());
 
 		userService.save(user);
