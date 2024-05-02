@@ -88,24 +88,57 @@ section h1, section span{
     margin-top: 20px;
 }
 
-#expends {
-    text-align: center;
-    margin-top: 20px;
+article h3{
+    padding-top: 30px;
+    margin-left: 50px;
 }
 
 .timeline{
     display: block;
     background-color: #EFEFEF;
-    text-align: center;
+    text-align: left;
     width: 70%;
-    height: 100vh;
     margin: 0 auto;
+    height: 100vh;
+}
+
+.timelineBox{
+    display: flex;
+    flex-direction: row;
+}
+
+.deco{
+    margin-left: 70px;
+}
+
+.deco-flex img{
+    width: 20px;
+    height: 20px;
+}
+
+.deco-flex .divider{
+    margin-left: 8.5px;
+    width: 1px;
+    background-color: lightgray;
+}
+
+.time{
+    margin-left: 5px;
+    margin-bottom: 10px;
+    color: #5C5C5C;
+}
+
+#expends{
+    margin-left: 15px;
 }
 
 .expendBox {
     background-color: white;
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 10px;
-    width: 60%;
+    padding: 1px 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+#expends h4{
+    margin-top: 0;
 }
