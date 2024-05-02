@@ -55,7 +55,7 @@
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/signup", "/signup-email", "/users/**","/users/verifyEmail", "/sendEmail", "/users/sendEmail", "/emailVerified", "/css/**", "/js/**", "/img/**").permitAll()
+                        .requestMatchers("/", "/login", "/signup", "/signup-email","/users/**", "/users/send-id-verification-code","/users/verify-id-code","/users/verifyEmail", "/sendEmail", "/users/sendEmail", "/emailVerified","/find-id","/users/find-id","/find-password", "/css/**", "/js/**", "/img/**").permitAll()
                         .requestMatchers("/manager/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated())
                 .formLogin(form -> form

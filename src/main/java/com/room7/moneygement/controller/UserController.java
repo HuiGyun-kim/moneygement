@@ -3,6 +3,7 @@ package com.room7.moneygement.controller;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.room7.moneygement.model.UserRole;
+import com.room7.moneygement.repository.UserRepository;
 import com.room7.moneygement.serviceImpl.EmailServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +19,13 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -28,6 +34,8 @@ public class UserController {
 
 	private final UserService userService;
 	private final EmailServiceImpl emailService;
+	private final UserRepository userRepository;
+	private final Map<String, String> verificationCodes = new HashMap<>();
 
 
 	@PostMapping("/signup")
@@ -84,5 +92,48 @@ public class UserController {
 		catch(Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("인증 이메일 전송 실패");
 		}
+	}
+
+	// 이메일 인증번호 생성 및 전송
+	@PostMapping("/send-id-verification-code")
+	public ResponseEntity<String> sendIdVerificationCode(@RequestParam String email) {
+		User user = userService.findByEmail(email);
+		if (user == null) {
+			return ResponseEntity.badRequest().body("해당 이메일로 등록된 사용자가 없습니다.");
+		}
+
+		String code = generateVerificationCode();
+		verificationCodes.put(email, code);
+
+		// 이메일을 통해 인증번호 전송
+		emailService.sendIdVerificationEmail(email, code);
+
+		return ResponseEntity.ok("인증 이메일을 전송했습니다.");
+	}
+
+	// 인증번호 확인
+	@PostMapping("/verify-id-code")
+	public ResponseEntity<String> verifyIdCode(@RequestParam String email, @RequestParam String code) {
+		String storedCode = verificationCodes.get(email);
+		if (storedCode != null && storedCode.equals(code)) {
+			return ResponseEntity.ok("인증되었습니다.");
+		}
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("인증번호가 올바르지 않습니다.");
+	}
+
+	private String generateVerificationCode() {
+		return String.format("%06d", new Random().nextInt(999999));
+	}
+	@PostMapping("/find-id")
+	@ResponseBody
+	public Map<String, String> findEmail(@RequestParam String email) {
+		return userRepository.findByEmail(email)
+			.map(user -> {
+				Map<String, String> result = new HashMap<>();
+				result.put("username", user.getUsername());
+				result.put("signupDate", user.getCreatedAt().toLocalDate().toString());
+				return result;
+			})
+			.orElse(Collections.emptyMap());
 	}
 }
