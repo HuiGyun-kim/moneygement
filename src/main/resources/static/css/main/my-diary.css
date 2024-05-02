@@ -8,7 +8,11 @@
     font-style: normal;
     font-display: block;
 }
-
+html, body{
+    height: 100px;
+    margin: 0;
+    padding: 0;
+}
 body{
     font-family: 'Interop';
 }
@@ -25,7 +29,83 @@ body{
     background-color: white;
     border: 0;
     font-weight: 500;
+    width: 50px;
+    height: 60px;
 }
+
+section{
+    text-align: center;
+}
+
+section h1, section span{
+    margin: 0 auto;
+    display: block;
+}
+
+.theme{
+    margin-top: 20px;
+    flex-wrap: wrap;
+    gap: 20px;
+    text-align: center;
+}
+
+.themeSelect{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.circleBox{
+    text-align: center;
+}
+
+.circle {
+    width: 50px;
+    height: 50px;
+    background-color: #ECF2EF;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle img {
+    width: 60%;
+    height: auto;
+}
+
+.circleText{
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.write{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
 #expends {
     text-align: center;
+    margin-top: 20px;
+}
+
+.timeline{
+    display: block;
+    background-color: #EFEFEF;
+    text-align: center;
+    width: 70%;
+    height: 100vh;
+    margin: 0 auto;
+}
+
+.expendBox {
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    width: 60%;
 }
