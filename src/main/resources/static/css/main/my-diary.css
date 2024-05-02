@@ -26,6 +26,8 @@ nav{
 #before, #after{
     border: 0;
     background-color: white;
+    font-size: 15px;
+    font-weight: 600;
 }
 
 #date {
@@ -37,9 +39,27 @@ nav{
 #date button{
     background-color: white;
     border: 0;
-    font-weight: 500;
-    width: 50px;
-    height: 60px;
+    font-size: 15px;
+    font-weight: 600;
+    width: 70px;
+    height: 90px;
+}
+
+.buttonBox{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#today{
+    background-color: #1A4F32;
+    color: white;
+    font-size: 12px;
+    border: none;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    margin-left: 30%;
 }
 
 section{

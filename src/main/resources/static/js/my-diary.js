@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const dateButton = document.getElementById('date');
     const expendsList = document.getElementById('expends');
     let current = new Date();
+    let today = new Date();
 
     document.getElementById('before').addEventListener('click', function() {
         current.setDate(current.getDate() - 7);
@@ -14,6 +15,13 @@ document.addEventListener('DOMContentLoaded', function() {
         generateDateButtons();
         showExpend(current);
     });
+
+    document.getElementById('today').addEventListener('click', function() {
+        current = new Date(today);
+        generateDateButtons();
+        showExpend(current);
+    });
+
 
     function generateDateButtons() {
         dateButton.innerHTML = '';
@@ -34,10 +42,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 button.style.color = 'red';
             }
 
-            if (i===0){
+            if (date.getFullYear() === today.getFullYear() &&
+                date.getMonth() === today.getMonth() &&
+                date.getDate() === today.getDate()){
                 button.style.borderColor = '#1A4F32';
                 button.style.borderWidth = '2px';
-                button.style.borderStyle ='dotted';
+                button.style.borderStyle = 'dashed';
+                button.style.borderRadius = '10px';
             }
 
             button.onclick = function() {
@@ -112,6 +123,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     generateDateButtons();
-    const today = new Date();
     showExpend(new Date(today.getFullYear(), today.getMonth(), today.getDate()));
 });
