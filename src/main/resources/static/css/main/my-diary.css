@@ -8,18 +8,27 @@
     font-style: normal;
     font-display: block;
 }
+
 html, body{
     height: 100px;
     margin: 0;
     padding: 0;
 }
+
 body{
     font-family: 'Interop';
 }
 
-#date {
+nav{
     display: flex;
     justify-content: center;
+}
+#before, #after{
+    border: 0;
+    background-color: white;
+}
+
+#date {
     gap: 10px;
     margin-bottom: 20px;
     border: 0;

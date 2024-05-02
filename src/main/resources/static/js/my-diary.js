@@ -1,14 +1,27 @@
 document.addEventListener('DOMContentLoaded', function() {
     const dateButton = document.getElementById('date');
     const expendsList = document.getElementById('expends');
+    let current = new Date();
+
+    document.getElementById('before').addEventListener('click', function() {
+        current.setDate(current.getDate() - 7);
+        generateDateButtons();
+        showExpend(current);
+    });
+
+    document.getElementById('after').addEventListener('click', function() {
+        current.setDate(current.getDate() + 7);
+        generateDateButtons();
+        showExpend(current);
+    });
 
     function generateDateButtons() {
-        const today = new Date();
-        const day = today.getDate();
+        dateButton.innerHTML = '';
+        const day = current.getDate();
         const weeks = ['일', '월', '화', '수', '목', '금', '토'];
 
         for (let i = -3; i <= 3; i++) {
-            const date = new Date(today);
+            const date = new Date(current);
             date.setDate(day + i);
             const week = date.getDay()
             const button = document.createElement('button');
@@ -28,7 +41,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             button.onclick = function() {
-                showExpend(date);
+                current = new Date(date);
+                showExpend(current);
             };
             dateButton.appendChild(button);
         }
@@ -41,7 +55,8 @@ document.addEventListener('DOMContentLoaded', function() {
             {date: new Date(today.getFullYear(), today.getMonth(), today.getDate()), time:'18:30', category: '쇼핑', amount: '59000원', description: '옷 구매'},
             {date: new Date(2024, 4, 4), time:'13:00', category: '교통', amount: '3500원', description: '점심먹기'},
             // monthidx는 0부터 시작해서 4.4해야 5월4일임
-            {date: new Date(2024, 4, 4), time:'18:30', category: '쇼핑', amount: '59000원', description: '노래방가기'}
+            {date: new Date(2024, 4, 4), time:'18:30', category: '쇼핑', amount: '59000원', description: '노래방가기'},
+            {date: new Date(2024, 4, 7), time:'18:30', category: '쇼핑', amount: '59000원', description: '노래방가기'}
         ];
 
         const filterData = expendData.filter(item =>
