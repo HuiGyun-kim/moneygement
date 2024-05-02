@@ -1,14 +1,14 @@
 // CSRF 토큰 추출
 const csrfToken = document.getElementById('csrf-token').value;
 // 페이지 로드 시 매치 리스트 숨기기
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const matchList = document.getElementById('match-list');
     if (matchList) {
         matchList.style.display = 'none';
     }
 });
 // 인증번호 받기
-document.querySelector('.btn-code-send').addEventListener('click', function() {
+document.querySelector('.btn-code-send').addEventListener('click', function () {
     const email = document.getElementById('email').value;
 
     fetch('/users/send-id-verification-code', {
@@ -20,12 +20,16 @@ document.querySelector('.btn-code-send').addEventListener('click', function() {
         body: `email=${encodeURIComponent(email)}`
     })
         .then(response => response.text())
-        .then(message => alert(message))
+        .then(message => {
+            alert(message);
+            // 이메일 입력 필드를 수정할 수 없도록 비활성화합니다.
+            document.getElementById('email').disabled = true;
+        })
         .catch(error => console.error('인증번호 요청 오류:', error));
 });
 
 // 인증번호 확인 및 다음 버튼 활성화
-document.querySelector('.btn-code-verify').addEventListener('click', function() {
+document.querySelector('.btn-code-verify').addEventListener('click', function () {
     const email = document.getElementById('email').value;
     const code = document.querySelector('.code-input input').value;
 
@@ -46,6 +50,7 @@ document.querySelector('.btn-code-verify').addEventListener('click', function() 
         })
         .catch(error => console.error('인증번호 확인 오류:', error));
 });
+
 // 아이디 찾기 서밋 처리
 function handleSubmit(event) {
     event.preventDefault();
@@ -73,7 +78,7 @@ function handleSubmit(event) {
 
             if (userLabel && signupDate && data.username) { // null 검사 추가
                 userLabel.textContent = data.username;
-                signupDate.textContent = `가입 ${data.signupDate}`;
+                signupDate.textContent = `가입일 ${data.signupDate}`;
                 matchList.style.removeProperty('display'); // match-list의 display 속성 제거
                 document.querySelector('.btn-next').style.display = 'none'; // 다음 버튼을 숨깁니다.
             } else {
