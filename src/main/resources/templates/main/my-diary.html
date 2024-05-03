@@ -1,10 +1,11 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>다이어리</title>
-    <link rel="stylesheet" href="../../static/css/main/my-diary.css">
-    <script src="../../static/js/my-diary.js"></script>
+    <link rel="stylesheet" th:href="@{/css/main/my-diary.css}">
+    <script th:src="@{/js/my-diary.js}"></script>
 
 </head>
 <body>
@@ -24,35 +25,35 @@
         <div class="themeSelect">
             <div class="circleBox">
                 <div class="circle">
-                    <img src="../../static/img/main/diary.png"/>
+                    <img th:src="@{/img/main/diary.png}"/>
                 </div>
                 <div class="circleText">일기</div>
             </div>
 
             <div class="circleBox">
                 <div class="circle">
-                    <img src="../../static/img/main/clap.png"/>
+                    <img th:src="@{/img/main/clap.png}"/>
                 </div>
                 <div class="circleText">칭찬</div>
             </div>
 
             <div class="circleBox">
                 <div class="circle">
-                    <img src="../../static/img/main/double_heart.png"/>
+                    <img th:src="@{/img/main/double_heart.png}"/>
                 </div>
                 <div class="circleText">위로</div>
             </div>
 
             <div class="circleBox">
                 <div class="circle">
-                    <img src="../../static/img/main/megaphone.png"/>
+                    <img th:src="@{/img/main/megaphone.png}"/>
                 </div>
                 <div class="circleText">잔소리</div>
             </div>
 
             <div class="circleBox">
                 <div class="circle">
-                    <img src="../../static/img/main/note-pen.png"/>
+                    <img th:src="@{/img/main/note-pen.png}"/>
                 </div>
                 <div class="circleText">감성적</div>
             </div>
@@ -67,7 +68,7 @@
     <div class="timelineBox">
         <div class = "deco">
             <div class="deco-flex">
-                <img src="../../static/img/main/dot.png"/>
+                <img th:src="@{/img/main/dot.png}"/>
                 <div class="divider"></div>
             </div>
         </div>
