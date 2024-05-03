@@ -32,6 +32,10 @@ document.addEventListener('DOMContentLoaded', function (){
             alert("비밀번호가 일치하지 않습니다. 다시 작성해주세요.")
             event.preventDefault();
         }
+
+        else {
+            localStorage.removeItem('isEmail');
+        }
     });
 });
 
@@ -104,18 +108,18 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 document.addEventListener("DOMContentLoaded", function() {
-    // 인증확인 버튼에 이벤트 리스너 추가
     document.getElementById("emailcheck").addEventListener("click", function() {
         var mailCheck = localStorage.getItem("isEmail");
 
         if(mailCheck === "true") {
             alert("이메일 인증이 확인되었습니다.");
-            console.log(isEmail);
             isEmail = true;
-            console.log(isEmail);
-        } else {
-            alert("이메일 인증이 완료되지 않았습니다. 인증을 진행해 주세요.");
         }
+        else {
+            alert("이메일 인증이 완료되지 않았습니다. 인증을 진행해 주세요.");
+            isEmail = false;
+        }
+        checkSubmit();
     });
 });
 

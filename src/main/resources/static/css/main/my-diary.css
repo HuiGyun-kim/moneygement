@@ -1,0 +1,31 @@
+@font-face {
+    font-family: 'Interop';
+    src: url('https://raw.githubusercontent.com/payw-org/Interop/main/web/fonts/Interop-Regular.woff2')
+    format('woff2'),
+    url('https://raw.githubusercontent.com/payw-org/Interop/main/web/fonts/Interop-Regular.woff')
+    format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+body{
+    font-family: 'Interop';
+}
+
+#date {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    border: 0;
+}
+
+#date button{
+    background-color: white;
+    border: 0;
+    font-weight: 500;
+}
+#expends {
+    text-align: center;
+}
