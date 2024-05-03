@@ -11,15 +11,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class EmailServiceImpl implements EmailService {
 
     private final String secretKey = "moneymoney";
     private final long expirationTime = 1000*60*10; //10분
 
-    @Autowired
-    private JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
 
     public String createEmailToken(String userEmail){
         return JWT.create()
@@ -36,6 +37,15 @@ public class EmailServiceImpl implements EmailService {
         message.setTo(user.getEmail());
         message.setSubject("회원가입 인증메일");
         message.setText("인증 링크: " + verifyUrl);
+        mailSender.send(message);
+    }
+    // ID 찾기용 인증번호 이메일 전송
+    public void sendIdVerificationEmail(String email, String code) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("ID 찾기 인증번호");
+        message.setText("인증번호는 " + code + "입니다. 인증번호 입력란에 입력해주세요.");
+
         mailSender.send(message);
     }
 }

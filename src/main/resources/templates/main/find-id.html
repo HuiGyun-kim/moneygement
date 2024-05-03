@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>아이디 찾기</title>
+    <link rel="stylesheet" th:href="@{/css/main/find-id.css}"/>
+</head>
+<body>
+<section class="find-id-section">
+    <header>
+        <h1>아이디찾기</h1>
+        <h2>본인확인 이메일로 인증</h2>
+    </header>
+    <form th:action="@{/users/find-id}" method="post" class="find-id-form" onsubmit="return handleSubmit(event)">
+        <input type="hidden" id="csrf-token" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+        <div class="find-id-form-container">
+            <p>본인확인 이메일 주소와 입력한 이메일 주소가 같아야, 인증번호를 받을 수 있습니다.</p>
+            <div class="form-group">
+                <label for="email">이메일 주소</label>
+                <input type="email" id="email" name="email">
+                <button type="button" class="btn-code-send">인증번호 받기</button>
+            </div>
+            <div class="form-group code-input">
+                <input type="text" placeholder="인증번호 6자리 입력">
+                <button type="button" class="btn-code-verify">인증 확인</button>
+            </div>
+        </div>
+        <button type="submit" class="btn-next" disabled>다음</button>
+    </form>
+    <div id="match-list" style="display: none;">
+        <p>고객님의 정보와 일치하는 아이디 목록입니다.</p>
+        <div class="user-info">
+            <input type="radio" name="user-select" id="user1">
+            <label class="user-select" for="user1"></label>
+            <span id="signup-date"></span>
+        </div>
+        <div class="login-pass-find">
+            <a href="/login"><button type="button" class="btn-login">로그인하기</button></a>
+            <a href="/find-password"><button type="button" class="btn-find-password">비밀번호 찾기</button></a>
+        </div>
+    </div>
+</section>
+<script th:src="@{/js/find-id.js}"></script>
+</body>
+</html>
