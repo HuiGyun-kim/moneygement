@@ -19,7 +19,7 @@ header {
     justify-content: space-between;
 }
 .profile-picture {
-    margin: 0 10px 0 20px;
+    margin: 0 13px 0 20px;
 }
 .profile-picture img{
     width: 70px;
@@ -40,5 +40,18 @@ header {
     border: none;
     font-size: medium;
     cursor: pointer;
+    margin-left: 15px;
+}
+
+.login-button{
+    background: white;
+    border: none;
+    font-size: medium;
+    cursor: pointer;
+    margin-left: 15px;
+}
+
+.user-info {
+    display:contents;
 }
 /* 헤더 끝 */
