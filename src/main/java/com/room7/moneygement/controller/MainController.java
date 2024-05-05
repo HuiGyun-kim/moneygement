@@ -68,7 +68,8 @@ public class MainController {
 	}
 
 	@GetMapping("my-diary")
-	public String myDiary(){
+	public String myDiary(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
+		model.addAttribute("user", userDetails.getUserDTO());
 		return "main/my-diary";
 	}
 }
