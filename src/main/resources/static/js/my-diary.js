@@ -4,6 +4,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let current = new Date();
     let today = new Date();
 
+    let select = null;
+
     document.getElementById('before').addEventListener('click', function() {
         current.setDate(current.getDate() - 7);
         generateDateButtons();
@@ -22,6 +24,24 @@ document.addEventListener('DOMContentLoaded', function() {
         showExpend(current);
     });
 
+    document.querySelectorAll('.circleBox').forEach(circle => {
+        circle.addEventListener('click', function (){
+            if (select){
+                select.classList.remove('selected');
+            }
+            select = this;
+            this.classList.add('selected');
+        });
+    });
+
+    document.querySelector('.write').addEventListener('click', function (){
+        if (select){
+            console.log(select.querySelector('.circleText').textContent);
+        }
+        else{
+            alert('theme를 선택해주세요!')
+        }
+    });
 
     function generateDateButtons() {
         dateButton.innerHTML = '';
@@ -120,8 +140,6 @@ document.addEventListener('DOMContentLoaded', function() {
             divider.style.height = `${dividerHeight}px`;
         }
     }
-
-
     generateDateButtons();
     showExpend(new Date(today.getFullYear(), today.getMonth(), today.getDate()));
 });
