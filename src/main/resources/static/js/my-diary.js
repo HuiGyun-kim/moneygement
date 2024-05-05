@@ -26,11 +26,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.querySelectorAll('.circleBox').forEach(circle => {
         circle.addEventListener('click', function (){
-            if (select){
-                select.classList.remove('selected');
+            if (select === this){
+                this.classList.remove('selected');
+                select = null;
             }
-            select = this;
-            this.classList.add('selected');
+            else {
+                if (select) {
+                    select.classList.remove('selected')
+                }
+                select = this;
+                this.classList.add('selected');
+            }
         });
     });
 
@@ -39,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log(select.querySelector('.circleText').textContent);
         }
         else{
-            alert('theme를 선택해주세요!')
+            alert('테마를 선택해주세요!')
         }
     });
 
