@@ -66,4 +66,9 @@ public class MainController {
 	public String findPassword() {
 		return "main/find-password";
 	}
+
+	@GetMapping("my-diary")
+	public String myDiary(){
+		return "main/my-diary";
+	}
 }
