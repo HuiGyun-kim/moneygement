@@ -56,7 +56,6 @@
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/login", "/signup", "/signup-email","/users/**","/ledgerEntry/**", "/users/send-id-verification-code","/users/verify-id-code","/users/verifyEmail", "/sendEmail", "/users/sendEmail", "/emailVerified","/find-id","/users/find-id","/find-password", "/css/**", "/js/**", "/img/**").permitAll()
-                        .requestMatchers("/my-diary").permitAll() //테스트 후 삭제해야함.
                         .requestMatchers("/manager/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated())
                 .formLogin(form -> form
