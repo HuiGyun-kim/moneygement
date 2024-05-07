@@ -23,10 +23,7 @@ public class MainController {
 
 	// 기본 홈 페이지를 반환하는 메서드
 	@GetMapping("/")
-	public String home(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
-		if (userDetails != null) {
-			model.addAttribute("user", userDetails.getUserDTO());
-		}
+	public String home() {
 		return "main/index";
 	}
 
@@ -71,5 +68,11 @@ public class MainController {
 	public String myDiary(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
 		model.addAttribute("user", userDetails.getUserDTO());
 		return "main/my-diary";
+  }
+
+	@GetMapping("/history")
+	public String history() {
+		return "layout/history";
 	}
 }
+

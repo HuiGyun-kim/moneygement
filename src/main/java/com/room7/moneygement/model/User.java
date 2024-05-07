@@ -49,5 +49,6 @@ public class User {
 
 	private int exp;
 
+	private String introduction;
 }
 

@@ -10,5 +10,11 @@ public class LedgerDTO {
 	private Long userId;
 	private String title;
 	private LocalDateTime createdAt;
+
+	public LedgerDTO(Long ledgerId, String title, LocalDateTime createdAt) {
+		this.ledgerId = ledgerId;
+		this.title = title;
+		this.createdAt = createdAt;
+	}
 }
 

@@ -1,0 +1,279 @@
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+}
+.history-container{
+    display: flex;
+}
+hr{
+    width: 18%;
+    margin-bottom: 30px;
+}
+.section-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    margin: 15px 25px;
+}
+
+.calendar-day, .calendar-date {
+    text-align: center;
+    padding: 5px;
+    border-radius: 50%;
+}
+.calendar-day {
+    font-weight: bold;
+}
+.calendar-grid {
+    display: contents;
+}
+
+.calendar-date {
+    background-color: #d4e0db; /* 배경색을 더 진하게 조정 */
+    color: #3F6262;
+    width: 32px; /* 크기 조정 */
+    height: 32px;
+    margin: 0 auto;
+    border-radius: 50%; /* 둥근 모양 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    cursor: pointer;
+    padding: 45px;
+    transition: background-color 0.3s ease;
+    position: relative;
+}
+
+.calendar-date:hover {
+    color: transparent;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+.tooltip {
+    position: absolute;
+    top: 42%;
+    left: 50%;
+    height: 50px;
+    transform: translate(-49%, -50%);
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 100;
+    width: 87px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.calendar-date:hover .tooltip {
+    visibility: visible; /* 마우스 오버 시에만 보이게 */
+    opacity: 1;
+}
+.no-background {
+    background-color: transparent; /* 배경색 투명 */
+    color: #808080; /* 글자색 회색 */
+    border-radius: 50%;
+}
+
+.empty {
+    background-color: transparent;
+}
+.income, .expense {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.income {
+    color: green;
+}
+
+.expense {
+    color: red;
+    margin-top: -20px;
+}
+
+.month-income {
+    font-size: 13px;
+    font-weight: bold;
+    color: green;
+}
+.month-expense {
+    font-size: 13px;
+    font-weight: bold;
+    color: red;
+}
+.weather-widget {
+    /* 날씨 위젯에 대한 스타일 추가 */
+}
+
+.asset-info {
+    /* 자산 정보에 대한 스타일 추가 */
+    font-size: 0.9rem;
+}
+.year{
+    font-size: 20px;
+    margin-left: 78px;
+}
+.month {
+    font-size: 27px;
+    font-weight: bold;
+    margin-left: 8px;
+}
+.month-selector{
+    display: flex;
+    gap: 57%;
+    align-items: center;
+    justify-content: space-around;
+}
+.btn-prev, .btn-next{
+    border: none;
+    font-size: 40px;
+    color: #1A4F32;
+    background-color: white;
+}
+.d-flex {
+    display: flex !important;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: flex-end;
+}
+.month-history{
+    display: flex;
+    width: 380px;
+    justify-content: space-around;
+    margin-right: 60px;
+    margin-top: 20px;
+}
+
+.btn-addhistory-info-expense, .btn-addhistory-info-income, .btn-addhistory{
+    margin-left: 185px;
+    color: white;
+    margin-top: 35px;
+    background-color: rgba(26, 79, 50, 0.86);
+    border: none;
+    padding: 6px 20px;
+    border-radius: 7px;
+}
+.blurred {
+    filter: blur(5px);
+    pointer-events: none;
+}
+.login-warning {
+    color: red;
+    font-weight: bold;
+    text-align: center;
+    margin: 20px;
+}
+.history-user-info{
+    margin-top: 20px;
+    width: 55%;
+    display: flex;
+}
+.history-profile-img{
+    max-width: 100px;
+    max-height: 130px;
+    border-radius: 50%;
+}
+.user-info-namerole{
+    display: flex;
+    margin-bottom: 18px;
+    align-items: baseline;
+    gap: 25px;
+    margin-left: 9px;
+    margin-top: 25px;
+}
+.user-info-namerole span:first-child {
+    font-size: 35px;
+}
+
+.user-info-namerole span:nth-child(2) {
+    font-size: 25px;
+    font-weight: 600;
+    margin-right: 65px;
+}
+.history-user-info p{
+    max-width: fit-content;
+    margin-left: 12px;
+}
+.weather-widget {
+    display: flex;
+    padding: 8px;
+    width: 355px;
+    height: 210px;
+    background-color: #eff1f3;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    /* 배경 이미지 설정 */
+    background: round;
+}
+.weather-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+.weather-status {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.weather-status span {
+    display: block;
+}
+
+.weather-info {
+    margin-left: -9px;
+}
+
+#weatherIcon{
+    width: 45px;
+    height: 45px;
+}
+#weatherDescription{
+    margin-left: -7px;
+    font-size: 15px;
+}
+#temperature {
+    font-size: 25px;
+}
+
+#location {
+    font-size: 1.2rem;
+}
+#weatherTime {
+    font-size: 25px;
+    font-weight: 500;
+}
+.asset-info {
+    font-size: 17px;
+    border: solid 1px;
+    width: 80%;
+    background: #D9D9D9;
+}
+/* .dark-text 클래스 추가 */
+.dark-text, .weather-info, /* 필요한 모든 텍스트 요소 지정 */
+.dark-text p, .dark-text span {
+    color: #c12bff; /* 원하는 색상으로 변경 */
+    font-weight: bold;
+}
+
+/* .dark-text를 적용하지 않은 기본 스타일 */
+.weather-widget .weather-info,
+.weather-widget p {
+    color: black; /* 기본 색상 */
+}
+@media (min-width: 768px) {
+    .col-md-6 {
+        flex: 0 0 auto;
+        width: 58%;
+    }
+}
