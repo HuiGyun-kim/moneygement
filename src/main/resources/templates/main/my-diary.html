@@ -1,23 +1,80 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>다이어리</title>
-    <link rel="stylesheet" href="../../static/css/main/my-diary.css">
-    <script src="../../static/js/my-diary.js"></script>
+    <link rel="stylesheet" th:href="@{/css/main/my-diary.css}">
+    <script th:src="@{/js/my-diary.js}"></script>
 
 </head>
 <body>
+<nav class="calender">
+    <button id="before"><</button>
+    <div id="date"></div>
+    <button id="after">></button>
+</nav>
+<div class="buttonBox">
+    <button id="today">오늘</button>
+</div>
 
-<div id="date"></div>
 <section>
     <h1>AI로 자동일기를 써보세요!</h1>
-    테마를 선택하면 AI가 일기작성을!?
+    <span>테마를 선택하면 AI가 일기작성을!?</span>
     <div class="theme">
+        <div class="themeSelect">
+            <div class="circleBox">
+                <div class="circle">
+                    <img th:src="@{/img/main/diary.png}"/>
+                </div>
+                <div class="circleText">일기</div>
+            </div>
 
+            <div class="circleBox">
+                <div class="circle">
+                    <img th:src="@{/img/main/clap.png}"/>
+                </div>
+                <div class="circleText">칭찬</div>
+            </div>
+
+            <div class="circleBox">
+                <div class="circle">
+                    <img th:src="@{/img/main/double_heart.png}"/>
+                </div>
+                <div class="circleText">위로</div>
+            </div>
+
+            <div class="circleBox">
+                <div class="circle">
+                    <img th:src="@{/img/main/megaphone.png}"/>
+                </div>
+                <div class="circleText">잔소리</div>
+            </div>
+
+            <div class="circleBox">
+                <div class="circle">
+                    <img th:src="@{/img/main/note-pen.png}"/>
+                </div>
+                <div class="circleText">감성적</div>
+            </div>
+        </div>
+        <a href="" class="write">일기작성해줘</a>
     </div>
+
 </section>
-<div id="expends"></div>
+
+<article class="timeline">
+    <h3>타임라인</h3>
+    <div class="timelineBox">
+        <div class = "deco">
+            <div class="deco-flex">
+                <img th:src="@{/img/main/dot.png}"/>
+                <div class="divider"></div>
+            </div>
+        </div>
+        <div id="expends"></div>
+    </div>
+</article>
 
 </body>
 </html>
