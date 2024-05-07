@@ -56,4 +56,8 @@ public class CustomUserDetails implements UserDetails {
 		return this.user;
 	}
 
+	public User getUserDTO() {
+		return user;
+	}
+
 }
