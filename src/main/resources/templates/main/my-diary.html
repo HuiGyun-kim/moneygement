@@ -5,10 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>다이어리</title>
     <link rel="stylesheet" th:href="@{/css/main/my-diary.css}">
+    <link rel="stylesheet" th:href="@{/css/main/style.css}"/>
+    <link rel="icon" type="image/png" href="/img/main/favicon.png">
     <script th:src="@{/js/my-diary.js}"></script>
 
 </head>
 <body>
+<div th:replace="~{layout/header.html::main-header}"></div>
 <nav class="calender">
     <button id="before"><</button>
     <div id="date"></div>
@@ -58,7 +61,9 @@
                 <div class="circleText">감성적</div>
             </div>
         </div>
-        <a href="" class="write">일기작성해줘</a>
+        <div class="write">일기작성해줘</div>
+
+        <div id="diaryBox"></div>
     </div>
 
 </section>

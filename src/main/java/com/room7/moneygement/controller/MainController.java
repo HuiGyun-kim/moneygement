@@ -64,6 +64,12 @@ public class MainController {
 		return "main/find-password";
 	}
 
+	@GetMapping("my-diary")
+	public String myDiary(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
+		model.addAttribute("user", userDetails.getUserDTO());
+		return "main/my-diary";
+  }
+
 	@GetMapping("/history")
 	public String history() {
 		return "layout/history";
