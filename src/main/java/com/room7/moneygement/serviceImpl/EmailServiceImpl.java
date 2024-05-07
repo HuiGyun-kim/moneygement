@@ -1,15 +1,15 @@
 package com.room7.moneygement.serviceImpl;
 
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.room7.moneygement.model.User;
-import com.room7.moneygement.service.EmailService;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Date;
+
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.room7.moneygement.model.User;
+import com.room7.moneygement.service.EmailService;
 
 import lombok.RequiredArgsConstructor;
 
