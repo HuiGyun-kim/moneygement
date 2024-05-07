@@ -6,20 +6,33 @@
     <!-- 사용자 정보와 상호작용 부분 -->
     <div class="user-interaction">
         <!-- 메시지 및 알림 아이콘 -->
-        <!-- 로그인 여부에 상관없이 항상 표시됨 -->
         <div class="notification-icons">
-            <img class="mail_icon" th:src="@{/img/main/mail_icon.png}" alt="메시지" onclick="openMessages()">
-            <img class="alert_icon" th:src="@{/img/main/alert_icon.png}" alt="알림" onclick="openAlerts()">
+            <!-- 로그인 상태일 때 메시지 및 알림 아이콘 활성화 -->
+            <div sec:authorize="isAuthenticated()">
+                <img class="mail_icon" th:src="@{/img/main/mail_icon.png}" alt="메시지" onclick="openMessages()">
+                <img class="alert_icon" th:src="@{/img/main/alert_icon.png}" alt="알림" onclick="openAlerts()">
+            </div>
+            <!-- 로그인하지 않은 상태일 때 로그인 페이지로 이동 -->
+            <div sec:authorize="isAnonymous()">
+                <img class="mail_icon" th:src="@{/img/main/mail_icon.png}" alt="메시지" onclick="location.href='@{/login}'">
+                <img class="alert_icon" th:src="@{/img/main/alert_icon.png}" alt="알림" onclick="location.href='@{/login}'">
+            </div>
         </div>
         <!-- 프로필 사진 -->
-        <div sec:authorize="isAuthenticated()">
+        <div sec:authorize="isAuthenticated()" class="user-info">
             <figure class="profile-picture" aria-label="프로필">
                 <!-- 프로필 이미지 이름이 있으면 해당 이미지를, 없으면 기본 이미지를 표시 -->
-                <img th:src="@{'/img/main/' + (${user.profileImg != null ? user.profileImg : 'default-profile.png'})}" alt="프로필 사진">
+                <img th:src="@{'/img/main/' + ${currentUser.profileImg}}" alt="프로필 사진">
             </figure>
-            <a th:if="${user != null}" th:text="${user.username} + ' '"></a>
+            <a th:text="${currentUser.username} + ' '"></a>
             <form th:action="@{/logout}" method="post">
                 <button type="submit" class="logout-button">로그아웃</button>
+            </form>
+        </div>
+        <div sec:authorize="isAnonymous()">
+            <!-- 로그인하지 않은 경우 -->
+            <form th:action="@{/login}" method="get">
+                <button type="submit" class="login-button">로그인</button>
             </form>
         </div>
     </div>

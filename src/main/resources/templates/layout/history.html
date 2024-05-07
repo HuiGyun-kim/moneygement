@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>소비 분석 - 수입 / 지출 내역</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/main/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/main/history.css}"/>
+    <link rel="stylesheet" th:href="@{/css/main/history-modal.css}"/>
+    <link rel="icon" type="image/png" href="/img/main/favicon.png">
+</head>
+<body>
+<div th:replace="~{layout/header.html::main-header}"></div>
+<div class="history-container">
+    <div th:replace="~{layout/sidebar.html::main-sidebar}"></div>
+    <div class="col-md-6 p-3">
+        <h2 class="section-title">수입 / 지출 내역</h2>
+        <hr class="section-divider">
+        <span id="currentYear" class="year"></span>
+        <div class="month-selector">
+            <span id="currentMonth" class="month"></span>
+            <div class="btn-month-group">
+                <button id="prevMonth" class="btn-prev"><</button>
+                <button id="nextMonth" class="btn-next">></button>
+            </div>
+        </div>
+        <div class="calendar mb-3">
+            <div class="calendar-day sun">일</div>
+            <div class="calendar-day">월</div>
+            <div class="calendar-day">화</div>
+            <div class="calendar-day">수</div>
+            <div class="calendar-day">목</div>
+            <div class="calendar-day">금</div>
+            <div class="calendar-day sat">토</div>
+            <div id="calendarDates" class="calendar-grid"></div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mt-3">
+            <div class="month-history">
+                <span class="month-income"></span>
+                <span class="month-expense"></span>
+            </div>
+            <button class="btn-addhistory" onclick="openModal('defaultOpen')">내역 추가</button>
+        </div>
+    </div>
+    <div class="col-md-3 p-3">
+        <!-- 로그인 상태일 때 -->
+        <div sec:authorize="isAuthenticated()">
+            <div class="history-user-info text-center mb-4">
+                <img th:src="@{'/img/main/' + ${currentUser.profileImg}}" alt="유저 이미지" class="history-profile-img"
+                     style="width:100px;">
+                <div>
+                    <div class="user-info-namerole">
+                        <span th:text="${currentUser.username}"></span>
+                        <span th:text="${currentUser.role}"></span>
+                    </div>
+                    <p th:text="${currentUser.introduction}"></p>
+                </div>
+            </div>
+            <div class="weather-widget">
+                <div class="weather-icon">
+                    <div class="weather-info">
+                        <img id="weatherIcon" alt="Weather Icon">
+                        <span id="weatherDescription"></span>
+                    </div>
+                    <span id="temperature"></span>
+                </div>
+                <div class="weather-status">
+                    <span id="weatherTime"></span>
+                    <span id="currentDate"></span>
+                    <span id="location"></span>
+                </div>
+            </div>
+            <div class="asset-info">
+                <p>이번 달 총 자산은 1,000,000원 입니다</p>
+                <p>이번 달 총 부채는 20,000원 입니다</p>
+                <p>이번 달 순자산은 350,000원 입니다</p>
+                <p>이번 달 수입은 1,000,000원 입니다</p>
+                <p>이번 달 지출은 40,000원 입니다</p>
+            </div>
+        </div>
+    </div>
+    <!-- 로그인하지 않은 경우 -->
+    <div sec:authorize="isAnonymous()">
+        <div class="blurred">
+            <!-- 블러처리된 유저 정보 섹션 -->
+        </div>
+        <div class="login-warning">
+            로그인이 필요합니다
+        </div>
+    </div>
+</div>
+<!-- 모달 -->
+<div id="modalWindow" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h3 id="modalTitle">수입/지출 내역</h3>
+
+        <div class="tab">
+            <!-- 수입/지출 탭을 전환할 수 있도록 openTab 함수와 연결 -->
+            <button class="tablinks" onclick="openTab(event, 'incomeTab')">수입 내역</button>
+            <button class="tablinks" onclick="openTab(event, 'expenseTab')">지출 내역</button>
+        </div>
+
+        <div id="incomeTab" class="tabcontent">
+            <h3>수입 내역</h3>
+            <div class="income-month">
+                <span id="currentIncomeYearMonth"></span>
+                <!-- 수입 내역 추가 모달 열기 -->
+                <button class="btn-addhistory-info-income" onclick="openAddIncomeModal()">수입 내역 추가</button>
+            </div>
+            <table class="table-center">
+                <thead>
+                <tr>
+                    <th><input type="checkbox" class="selectAllIncome" name="selectAll"></th>
+                    <th>날짜</th>
+                    <th>메모</th>
+                    <th>금액</th>
+                    <th>수정/삭제</th>
+                </tr>
+                </thead>
+                <tbody id="incomeData">
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <button>수정</button>
+                        <button>삭제</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="expenseTab" class="tabcontent">
+            <h3>지출 내역</h3>
+            <div class="expense-month">
+                <span id="currentExpenseYearMonth"></span>
+                <!-- 지출 내역 추가 모달 열기 -->
+                <button class="btn-addhistory-info-expense">지출 내역 추가</button>
+            </div>
+            <table class="table-center">
+                <thead>
+                <tr>
+                    <th><input type="checkbox" class="selectAllExpense" name="selectAll"></th>
+                    <th>날짜</th>
+                    <th>메모</th>
+                    <th>용도</th>
+                    <th>금액</th>
+                    <th>수정/삭제</th>
+                </tr>
+                </thead>
+                <tbody id="expenseData">
+                <td><input type="checkbox"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                    <button>수정</button>
+                    <button>삭제</button>
+                </td>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- 수입 내역 추가 모달 -->
+<div id="modalAddIncome" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>수입 내역 추가</h3>
+        <form id="formAddIncome">
+            <label for="ledgerId">가계부 ID:</label>
+            <input type="text" id="ledgerId" name="ledgerId" required><br>
+
+            <label for="amount">금액:</label>
+            <input type="number" id="amount" name="amount" required><br>
+
+            <label for="date">날짜:</label>
+            <input type="date" id="date" name="date" required><br>
+
+            <label for="description">설명:</label>
+            <input type="text" id="description" name="description" maxlength="50" placeholder="설명 (최대 50자)"><br>
+
+            <button type="submit">저장</button>
+        </form>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/history-modal.js}"></script>
+<script th:src="@{/js/calendar.js}"></script>
+<script th:src="@{/js/weather-widget.js}"></script>
+</body>
+</html>

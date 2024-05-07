@@ -38,3 +38,6 @@ src/main/resources/application.properties
 
 ### VS Code ###
 .vscode/
+.gitignore
+application.properties
+impotant.env

@@ -1,0 +1,183 @@
+@font-face {
+    font-family: 'Interop';
+    src: url('https://raw.githubusercontent.com/payw-org/Interop/main/web/fonts/Interop-Regular.woff2')
+    format('woff2'),
+    url('https://raw.githubusercontent.com/payw-org/Interop/main/web/fonts/Interop-Regular.woff')
+    format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+html, body{
+    height: 100px;
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    font-family: 'Interop';
+}
+
+nav{
+    display: flex;
+    justify-content: center;
+}
+#before, #after{
+    border: 0;
+    background-color: white;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+#date {
+    gap: 10px;
+    margin-bottom: 20px;
+    border: 0;
+}
+
+#date button{
+    background-color: white;
+    border: 0;
+    font-size: 15px;
+    font-weight: 600;
+    width: 70px;
+    height: 90px;
+}
+
+.buttonBox{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#today{
+    background-color: #1A4F32;
+    color: white;
+    font-size: 12px;
+    border: none;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    margin-left: 30%;
+}
+
+section{
+    text-align: center;
+}
+
+section h1, section span{
+    margin: 0 auto;
+    display: block;
+}
+
+.theme{
+    margin-top: 20px;
+    flex-wrap: wrap;
+    gap: 20px;
+    text-align: center;
+}
+
+.themeSelect{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.circleBox{
+    text-align: center;
+}
+
+.circleBox.selected .circle{
+    background-color: #1A4F32;
+}
+
+.circle {
+    width: 50px;
+    height: 50px;
+    background-color: #ECF2EF;
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.circle img {
+    width: 60%;
+    height: auto;
+}
+
+.circleText{
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.write{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+#diaryBox{
+    background-color: #EFEFEF;
+    width: 70%;
+    margin: 20px auto;
+}
+
+article h3{
+    padding-top: 30px;
+    margin-left: 50px;
+}
+
+.timeline{
+    display: block;
+    background-color: #EFEFEF;
+    text-align: left;
+    width: 70%;
+    margin: 0 auto;
+    height: 100vh;
+}
+
+.timelineBox{
+    display: flex;
+    flex-direction: row;
+}
+
+.deco{
+    margin-left: 70px;
+}
+
+.deco-flex img{
+    width: 20px;
+    height: 20px;
+}
+
+.deco-flex .divider{
+    margin-left: 8.5px;
+    width: 1px;
+    background-color: lightgray;
+}
+
+.time{
+    margin-left: 5px;
+    margin-bottom: 10px;
+    color: #5C5C5C;
+}
+
+#expends{
+    margin-left: 15px;
+}
+
+.expendBox {
+    background-color: white;
+    padding: 1px 20px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+#expends h4{
+    margin-top: 0;
+}

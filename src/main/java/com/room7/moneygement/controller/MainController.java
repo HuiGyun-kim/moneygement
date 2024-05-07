@@ -23,11 +23,7 @@ public class MainController {
 
 	// 기본 홈 페이지를 반환하는 메서드
 	@GetMapping("/")
-	public String home(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
-		System.out.println("model,  = " + model + ", userDTO = " + userDetails);
-		if (userDetails != null) {
-			model.addAttribute("user", userDetails.getUserDTO());
-		}
+	public String home() {
 		return "main/index";
 	}
 
@@ -40,12 +36,12 @@ public class MainController {
 	//회원가입 선택 페이지를 반환하는 메서드
 	@GetMapping("/signup")
 	public String signup() {
-        return "main/signup";
-    }
+		return "main/signup";
+	}
 
 	//회원가입 선택시 이메일을 사용해서 반환할 때 사용하는 메서드
-	@GetMapping("signup-email")
-	public String signupEmail(){
+	@GetMapping("/signup-email")
+	public String signupEmail() {
 		return "main/signup-email";
 	}
 
@@ -58,4 +54,25 @@ public class MainController {
 		return "main/emailVerified";
 	}
 
+	@GetMapping("/find-id")
+	public String findId() {
+		return "main/find-id";
+	}
+
+	@GetMapping("/find-password")
+	public String findPassword() {
+		return "main/find-password";
+	}
+
+	@GetMapping("my-diary")
+	public String myDiary(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
+		model.addAttribute("user", userDetails.getUserDTO());
+		return "main/my-diary";
+  }
+
+	@GetMapping("/history")
+	public String history() {
+		return "layout/history";
+	}
 }
+
