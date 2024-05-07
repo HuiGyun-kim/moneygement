@@ -7,9 +7,7 @@ public interface UserService {
 	User save(User user);
 	boolean existsByUsername(String userId);
 	User findByEmail(String email);
-
-
-
+	User findById(Long id);
 
 	// boolean checkPassword(String rawpassword, String encodedPassword);
 }
