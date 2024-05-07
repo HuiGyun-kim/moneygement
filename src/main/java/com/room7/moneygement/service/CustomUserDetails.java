@@ -55,5 +55,8 @@ public class CustomUserDetails implements UserDetails {
 	public User getUser() {
 		return this.user;
 	}
-
+	// UserDTO를 반환하는 추가적인 메소드
+	public User getUserDTO() {
+		return user;
+	}
 }
