@@ -3,7 +3,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const expendsList = document.getElementById('expends');
     let current = new Date();
     let today = new Date();
-
     let select = null;
 
     document.getElementById('before').addEventListener('click', function() {
@@ -41,8 +40,48 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.querySelector('.write').addEventListener('click', function (){
-        if (select){
+        if (select) {
             console.log(select.querySelector('.circleText').textContent);
+            const theme = select.querySelector('.circleText').textContent;
+            const expenseList = [];
+
+            document.querySelectorAll('.expendBox').forEach(box => {
+                const amount = box.querySelector('p').textContent.split('원')[0];
+                const description = box.querySelector('p').textContent.trim().split(' ').slice(1).join(' ');
+                expenseList.push({amount, description});
+            })
+
+            const combined = expenseList.map(item => `${item.amount}원 ${item.description}`).join(', ');
+
+            console.log(combined);
+            const urlData = {
+                detail: [{
+                    loc: [theme, 0],
+                    msg: `${theme} 적인 버전으로 '${combined}'만큼 소비했는데, 이것에 대한 일기를 써주세요.`,
+                    type: "string"
+                }]
+            };
+            console.log("urlData : ")
+            console.log(urlData);
+
+            const urlContent = new URLSearchParams({
+                content: JSON.stringify(urlData),
+                client_id: "65cef0e5-ce7a-4655-a5a8-5f6414f55d03"
+            }).toString();
+
+            console.log("urlContent : ")
+            console.log(urlContent);
+
+            fetch(`/diary/diaryRequest?${urlContent}`, {
+                method: 'GET',
+            })
+                .then(response => response.json())
+                .then(data=>{
+                    console.log("데이터가 성공적으로 전송되었습니다.");
+                    const diaryBox = document.getElementById('diaryBox');
+                    diaryBox.textContent = data.content;
+            })
+                .catch(error => console.error('에러:', error));
         }
         else{
             alert('테마를 선택해주세요!')
@@ -98,14 +137,15 @@ document.addEventListener('DOMContentLoaded', function() {
     function displayExpenses(expensesData, date){
         expendsList.innerHTML = '';
 
-        if (expensesData.length === 0){
-        expendsList.innerHTML = '해당 날짜에 대한 지출 내역이 없습니다.';
-        return;
-        }
-
         const dateInfo = document.createElement('h4');
         dateInfo.textContent = `${date.getMonth() + 1}월 ${date.getDate()}일의 지출 내역`;
         expendsList.appendChild(dateInfo);
+
+        if (expensesData.length === 0){
+        expendsList.innerHTML += '해당 날짜에 대한 지출 내역이 없습니다.';
+        return;
+        }
+
 
         expensesData.forEach(item => {
             const time = document.createElement('div');
