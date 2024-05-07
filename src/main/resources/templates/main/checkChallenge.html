@@ -11,7 +11,12 @@
         /*#1 폰트*/
         @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
 
-
+        /*챌린지 css 폰트 바꾸자*/
+        .challenge{
+            width: 420px;
+            height: 120px;
+            color: black;
+        }
         /* 출석체크 CSS */
         .checkChallenge {
             width: 262px;
@@ -144,7 +149,7 @@
         }
 
         .days li.completed::before{
-            background: #1A4F32;
+            background: #CCE1D5;
         }
     </style>
 <!--    <script>-->
@@ -162,21 +167,19 @@
 <body>
 <div>
     <header>
+        <h1 class="challenge">챌린지</h1>
         <h1 class="checkChallenge">출석 체크</h1>
     </header>
 
     <!--캘린더 표시 div-->
     <div id="calendar">
         <div class="wrapper">
-            <ul class="year">
-                <li>2024</li>
-            </ul>
 
             <header>
                 <div class="nav">
-                    <button class="material-icons"> < </button>
+                    <button class="prev"> < </button>
                     <p class="current-date"></p>
-                    <button class="material-icons"> > </button>
+                    <button class="next"> > </button>
                 </div>
             </header>
             <div class="calendar">
@@ -196,8 +199,11 @@
         </div>
     </div>
 
+
     <!--출석체크 버튼-->
-    <button id="attendanceButton">출석체크</button>
+    <button id="attendanceButton" class="attendanceButton">
+        <img src="../../static/img/main/attendace_btn.png">
+    </button>
 
     <!--js 파일-->
     <script src="../../static/js/attendance.js"></script>
