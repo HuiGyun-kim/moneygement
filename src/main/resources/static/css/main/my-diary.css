@@ -121,6 +121,12 @@ section h1, section span{
     margin-top: 20px;
 }
 
+#diaryBox{
+    background-color: #EFEFEF;
+    width: 70%;
+    margin: 20px auto;
+}
+
 article h3{
     padding-top: 30px;
     margin-left: 50px;
