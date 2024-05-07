@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class FollowDTO {
-	private Long followId;
-	private Long followMemberId;
-	private Long userId;
+    private Long followId;
+    private Long followMemberId;
+    private Long userId;
 }

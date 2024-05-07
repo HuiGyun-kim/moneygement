@@ -1,15 +1,9 @@
 package com.room7.moneygement.model;
 
 import java.time.LocalDateTime;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -49,6 +43,15 @@ public class User {
 
 	private int exp;
 
-	private String introduction;
+  private String introduction;
+  
+	@OneToMany(mappedBy = "followMemberId", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Follow> followers = new ArrayList<>();
+
+	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Follow> followings = new ArrayList<>();
+
+	
+
 }
 
