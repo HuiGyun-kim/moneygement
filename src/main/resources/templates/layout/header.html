@@ -22,9 +22,9 @@
         <div sec:authorize="isAuthenticated()" class="user-info">
             <figure class="profile-picture" aria-label="프로필">
                 <!-- 프로필 이미지 이름이 있으면 해당 이미지를, 없으면 기본 이미지를 표시 -->
-                <img th:src="@{'/img/main/' + ${user.profileImg}}" alt="프로필 사진">
+                <img th:src="@{'/img/main/' + ${currentUser.profileImg}}" alt="프로필 사진">
             </figure>
-            <a th:text="${user.username} + ' '"></a>
+            <a th:text="${currentUser.username} + ' '"></a>
             <form th:action="@{/logout}" method="post">
                 <button type="submit" class="logout-button">로그아웃</button>
             </form>

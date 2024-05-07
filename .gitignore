@@ -40,3 +40,4 @@ src/main/resources/application.properties
 .vscode/
 .gitignore
 application.properties
+impotant.env

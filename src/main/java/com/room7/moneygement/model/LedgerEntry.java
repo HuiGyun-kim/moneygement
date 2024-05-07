@@ -8,6 +8,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 
@@ -20,8 +22,9 @@ public class LedgerEntry {
 	@Column(name = "entry_id")
 	private Long entryId;
 
-	@Column(name = "ledger_id")
-	private Long ledgerId;
+	@ManyToOne
+	@JoinColumn(name = "ledger_id")
+	private Ledger ledgerId;
 
 	@Column(name = "category_id")
 	private Long categoryId;
@@ -40,5 +43,17 @@ public class LedgerEntry {
 
 	@Column(name = "ledger_type", columnDefinition = "TINYINT(1)")
 	private Boolean LedgerType;
+
+	public LedgerEntry() {
+
+	}
+
+	public LedgerEntry(Ledger ledger, Long amount, LocalDate date, String description, boolean ledgerType) {
+		this.ledgerId = ledger;
+		this.amount = amount;
+		this.date = date;
+		this.description = description;
+		this.LedgerType = ledgerType;
+	}
 }
 
