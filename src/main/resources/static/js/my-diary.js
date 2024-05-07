@@ -51,13 +51,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 expenseList.push({amount, description});
             })
 
-            const combined = expenseList.map(item => `${item.amount}원 ${item.description}`).join(', ');
+            const combined = expenseList.map(item => `${item.amount}원을 ${item.description}에다가 사용`).join(', ');
 
             console.log(combined);
             const urlData = {
                 detail: [{
                     loc: [theme, 0],
-                    msg: `${theme} 적인 버전으로 '${combined}'만큼 소비했는데, 이것에 대한 일기를 써주세요.`,
+                    msg: `${theme}인 버전으로 돈을 ${combined}했는데, 이것에 대한 소비일기를 써주세요.`,
                     type: "string"
                 }]
             };
