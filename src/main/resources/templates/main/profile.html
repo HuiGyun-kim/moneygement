@@ -17,6 +17,9 @@
         <img th:src="@{/img/main/img_1.png}" alt="" width="250"/>
         </div>
         <div class="more-container">
+            <form th:action="@{/follow/{userId}(userId=${user.userId})}" method="post">
+                <button class="follow-button" id="followButton" type="submit"  th:data-userId="${user.userId}">Follow</button>
+            </form>
             <img class="more" th:src="@{/img/main/more.png}" alt=""/>
             <div class="dropdown-menu" id="myDropdown">
                 <a>프로필사진 변경</a>
@@ -24,17 +27,19 @@
                 <a>항목 3</a>
             </div>
         </div>
+
         <div class="profile-name">
             <p th:text="${user.username}"></p>
             <div class="follow-list">
                 <div class="follow">
-                    <button class="follow-button" type="button" >팔로워</button>
-                    <span id="followersCount">팔로워 수</span>
+                    <a class="followers-button" th:href="@{/followers/{userId}(userId=${user.userId})}">Followers</a>
+                    <span id="followersCount" th:text="${followersCount}">0</span>
                 </div>
                 <div class="following">
-                    <button class="following-button" type="button" >팔로잉</button>
-                    <span id="followingCount">팔로잉 수</span>
+                    <a class="following-button" th:href="@{/following/{userId}(userId=${user.userId})}">Following</a>
+                    <span id="followingCount" th:text="${followingCount}">0</span>
                 </div>
+
             </div>
         </div>
         <div class="side-view">
@@ -72,9 +77,9 @@
         </div>
     </div>
 
+<script th:src="@{/js/followbutton.js}"></script>
 <script th:src="@{/js/profile.js}"></script>
 <script th:src="@{/js/guestbook.js}"></script>
 <script th:src="@{/js/dropdown.js}"></script>
-<script th:src="@{/js/follow.js}"></script>
 </body>
 </html>

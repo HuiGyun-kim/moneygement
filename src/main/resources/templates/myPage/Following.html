@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Following</title>
+</head>
+<body>
+<h1>Following</h1>
+<ul>
+    <li th:each="following : ${following}">
+        <span th:text="${following.username}"></span>
+        <button class="unfollow-button"
+                data-authenticated-user-id="${#authentication.principal.id}"
+                data-user-id="${following.userId}">
+            Unfollow
+        </button>
+    </li>
+</ul>
+<button onclick="goBack()">Back to Profile</button>
+<script th:src="@{/js/follower.js}"></script>
+</body>
+</html>
