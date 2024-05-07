@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ko" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>가계부</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/main/style.css}"/>
+  <link rel="stylesheet" th:href="@{/css/main/ledger.css}">
+  <link rel="icon" type="image/png" href="/img/main/favicon.png">
+</head>
+<body>
+<div th:replace="~{layout/header.html::main-header}"></div>
+<div th:replace="~{layout/sidebar.html::main-sidebar}"></div>
+
+<!-- 로그인하지 않은 상태 -->
+<div sec:authorize="isAnonymous()">
+  <h2>로그인이 필요합니다</h2>
+</div>
+
+<!-- 로그인한 상태 -->
+<div sec:authorize="isAuthenticated()">
+  <header>
+    <h2>가계부</h2>
+  </header>
+  <section>
+    <a href="/ledgers/create">
+      <button id="create-ledger">가계부 생성</button>
+    </a>
+    <table>
+      <thead>
+      <tr>
+        <th>번호</th>
+        <th>가계부 이름</th>
+        <th>생성 날짜</th>
+        <th>수정/삭제</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- 실제 데이터는 서버에서 타임리프를 통해 주입 -->
+      <tr th:each="ledger, iterStat : ${ledgers}">
+        <td th:text="${iterStat.count}"></td>
+        <td th:text="${ledger.title}"></td>
+        <td th:text="${ledger.createdAt}"></td>
+        <td>
+          <a th:href="@{/ledgers/edit/{id}(id=${ledger.ledgerId})}">
+            <button class="ledger-button">수정</button>
+          </a>
+          <form th:action="@{/ledgers/delete/{id}(id=${ledger.ledgerId})}" method="post">
+            <button type="submit" class="ledger-button">삭제</button>
+          </form>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </section>
+</div>
+</body>
+</html>

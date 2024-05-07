@@ -55,3 +55,38 @@ header {
     display:contents;
 }
 /* 헤더 끝 */
+
+.list-group {
+    width: 250px;
+}
+
+.list-group-item {
+    border: none;
+}
+
+.list-group-item.main-group {
+    font-size: 1.2em;
+    font-weight: bold;
+    border-bottom: 3px solid #1A4F32;
+}
+
+.list-group-item.active {
+    background-color: #343a40;
+    color: white;
+}
+.list-group-item:hover {
+    color: blue;
+}
+.main-group:hover {
+    color: inherit; /* 대표 그룹에 호버 효과를 해제하고 부모의 텍스트 색상을 상속 */
+}
+.mt-4{
+    margin: 0;
+}
+.ps-4 a {
+    font-family: "BlackItalic";
+}
+.ps-4 span {
+    color: #1A4F32;
+    font-weight: bold;
+}
