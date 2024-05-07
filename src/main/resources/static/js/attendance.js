@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const currentDate = document.querySelector('.current-date');
     currentDate.innerHTML = `${currYear}년 ${months[currMonth]}`;
 
-
     // 캘린더를 렌더링하는 함수
     const renderCalendar = () => {
         // 현재 월의 첫 날의 요일을 구하기
