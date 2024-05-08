@@ -90,6 +90,32 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    document.getElementById('saveDiary').addEventListener('click', function() {
+        var diaryContent = document.getElementById('diaryBox').innerText.trim();
+
+        if (!diaryContent) {
+            alert('일기를 작성해주세요!');
+            return;
+        }
+
+        fetch('/diary/saveDiary', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                userId: userId,
+                content: diaryContent,
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                alert('저장되었습니다.');
+            })
+            .catch(error => console.error('에러:', error));
+    });
+
     function generateDateButtons() {
         dateButton.innerHTML = '';
         const day = current.getDate();
