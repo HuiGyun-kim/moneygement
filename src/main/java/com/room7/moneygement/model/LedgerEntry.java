@@ -3,7 +3,7 @@ package com.room7.moneygement.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -25,7 +25,7 @@ public class LedgerEntry {
 
 	@ManyToOne
 	@JoinColumn(name = "ledger_id")
-	@JsonIgnore
+	@JsonIgnoreProperties({"entries"})
 	private Ledger ledgerId;
 
 	@Column(name = "category_id")

@@ -4,23 +4,25 @@ document.addEventListener('DOMContentLoaded', function() {
     let current = new Date();
     let today = new Date();
     let select = null;
+    const userId = document.getElementById('userId').getAttribute('data-user-id');
+    console.log(userId);
 
     document.getElementById('before').addEventListener('click', function() {
         current.setDate(current.getDate() - 7);
         generateDateButtons();
-        showExpend(current);
+        showExpend(current, userId);
     });
 
     document.getElementById('after').addEventListener('click', function() {
         current.setDate(current.getDate() + 7);
         generateDateButtons();
-        showExpend(current);
+        showExpend(current, userId);
     });
 
     document.getElementById('today').addEventListener('click', function() {
         current = new Date(today);
         generateDateButtons();
-        showExpend(current);
+        showExpend(current, userId);
     });
 
     document.querySelectorAll('.circleBox').forEach(circle => {
@@ -118,18 +120,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
             button.onclick = function() {
                 current = new Date(date);
-                showExpend(current);
+                showExpend(current, userId);
             };
             dateButton.appendChild(button);
         }
     }
-    function showExpend(date) {
+    function showExpend(date, userId) {
         const dateString = date.toISOString().split('T')[0];
 
-        fetch(`/ledgerEntry/expenses?date=${dateString}`)
+        fetch(`/ledgerEntry/expenses?date=${dateString}&userId=${userId}`)
         .then(response => response.json())
         .then(data => {
-        displayExpenses(data, date);
+            displayExpenses(data, date);
     })
         .catch(error => console.error('에러:', error));
     }
@@ -178,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     generateDateButtons();
-    showExpend(new Date());
+    showExpend(new Date(), userId);
 });
 
 //     function showExpend(date) {
