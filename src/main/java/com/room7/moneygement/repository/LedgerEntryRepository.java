@@ -15,7 +15,7 @@ import java.util.List;
 
 @Repository
 public interface LedgerEntryRepository extends JpaRepository<LedgerEntry, Long> {
-    List<LedgerEntry> findByDate(LocalDate date);
+//    List<LedgerEntry> findByDate(LocalDate date);
     @Query("SELECT le FROM LedgerEntry le WHERE le.date = :date AND le.ledgerId.userId.userId = :userId")
     List<LedgerEntry> findByDateAndUserId(LocalDate date, Long userId);
 }
