@@ -9,7 +9,9 @@ import com.room7.moneygement.service.DiaryService;
 
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +24,13 @@ public class DiaryServiceImpl implements DiaryService {
 		diary.setContent(diaryDTO.getContent());
 		diary.setCreatedAt(LocalDateTime.now());
 		diary.setUpdatedAt(LocalDateTime.now());
-		diary.setExpenseAt(LocalDateTime.now());
+		diary.setExpenseAt(diaryDTO.getExpenseAt());
 		return diaryRepository.save(diary);
+	}
+
+	public List<Diary> checkDiary(LocalDate date, Long userId) {
+		LocalDateTime startOfDay = date.atStartOfDay();
+		LocalDateTime endOfDay = date.atTime(23, 59, 59);
+		return diaryRepository.findByExpenseAtAndUserId(startOfDay, endOfDay, userId);
 	}
 }

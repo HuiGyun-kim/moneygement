@@ -45,7 +45,6 @@ public class LedgerEntryController {
 
 	@GetMapping("/expenses")
 	public List<LedgerEntry> getExpense(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @RequestParam("userId") Long userId){
-		System.out.println("Received date: " + date + ", userId: " + userId);
 		return ledgerEntryRepository.findByDateAndUserId(date, userId);
 	}
 

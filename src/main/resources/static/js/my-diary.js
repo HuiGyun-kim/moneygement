@@ -11,18 +11,21 @@ document.addEventListener('DOMContentLoaded', function() {
         current.setDate(current.getDate() - 7);
         generateDateButtons();
         showExpend(current, userId);
+        checkDiary(current, userId);
     });
 
     document.getElementById('after').addEventListener('click', function() {
         current.setDate(current.getDate() + 7);
         generateDateButtons();
         showExpend(current, userId);
+        checkDiary(current, userId);
     });
 
     document.getElementById('today').addEventListener('click', function() {
         current = new Date(today);
         generateDateButtons();
         showExpend(current, userId);
+        checkDiary(current, userId);
     });
 
     document.querySelectorAll('.circleBox').forEach(circle => {
@@ -106,6 +109,7 @@ document.addEventListener('DOMContentLoaded', function() {
             body: JSON.stringify({
                 userId: userId,
                 content: diaryContent,
+                expenseAt: current.toISOString(),
             })
         })
             .then(response => response.json())
@@ -147,6 +151,7 @@ document.addEventListener('DOMContentLoaded', function() {
             button.onclick = function() {
                 current = new Date(date);
                 showExpend(current, userId);
+                checkDiary(current, userId);
             };
             dateButton.appendChild(button);
         }
@@ -205,6 +210,25 @@ document.addEventListener('DOMContentLoaded', function() {
             divider.style.height = `${dividerHeight}px`;
         }
     }
+
+    function checkDiary(date, userId) {
+        const dateString = date.toISOString().split('T')[0];
+        fetch(`/diary/checkDiary?date=${dateString}&userId=${userId}`)
+            .then(response => response.json())
+            .then(diary => {
+                document.getElementById('diaryBox').textContent = diary[0].content;
+                document.getElementById('saveDiary').disabled = true;
+                document.getElementById('saveDiary').style.display = 'none';
+                document.querySelector('.write').style.display = 'none';
+            })
+            .catch(error => {
+                document.getElementById('diaryBox').textContent = '저장된 일기가 없습니다.';
+                document.getElementById('saveDiary').disabled = false;
+                document.getElementById('saveDiary').style.display = '';
+                document.querySelector('.write').style.display = '';
+            });
+    }
+    checkDiary(new Date(), userId);
     generateDateButtons();
     showExpend(new Date(), userId);
 });

@@ -2,6 +2,7 @@ package com.room7.moneygement.dto;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,6 +19,7 @@ public class DiaryDTO {
 	private String content;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
+	@JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
 	private LocalDateTime expenseAt;
 
 	public DiaryDTO(String content) {
