@@ -97,7 +97,7 @@ time, mark, audio, video {
     border: 1px solid #D9D9D9;
     width: 300px;
     padding: 20px;
-    margin: 20px 0 20px;
+    margin: 20px 0 50px;
     gap: 10px;
 }
 .text,
@@ -128,35 +128,6 @@ time, mark, audio, video {
     height: 30px;
     margin-right: 20px;
 }
-.guestbook-container{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3개의 열로 구성 */
-    gap: 20px;
-}
-.guestbook-item {
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 5px;
-}
-.pagination {
-    margin-top: 20px;
-    text-align: center;
-}
-.pagination a {
-    display: inline-block;
-    padding: 5px 10px;
-    margin-right: 5px;
-    background-color: #f5f5f5;
-    color: #333;
-    text-decoration: none;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-.pagination a.active {
-    background-color: #1A4F32;
-    color: #fff;
-    border-color: #1A4F32;
-}
 .more-container {
     position: relative;
 }
@@ -180,4 +151,84 @@ time, mark, audio, video {
 
 .dropdown-menu a:hover {
     background-color: #f1f1f1;
+}
+/*////////////////////////////////////////*/
+.comments-list {
+    margin-top: 20px;
+    border-radius: 5px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+}
+
+.comment-item {
+    padding: 10px;
+    border: 1px solid #D9D9D9;
+}
+.time{
+    display: flex;
+    justify-content: space-between;
+}
+.item-content {
+    margin: 20px 0 20px;
+}
+
+.comment-actions {
+    display: flex;
+    justify-content: end;
+}
+.button-submit,
+.edit-button{
+    background-color: #1A4F32;
+}
+.edit-button{
+    padding: 8px;
+    margin-right: 10px;
+    color: #fff;
+    text-decoration: none;
+    font-size: small;
+}
+.delete-button {
+    background-color: #4B9D70;
+    BORDER: NONE;
+    PADDING: 8px;
+    COLOR: WHITE;
+    font-size: small;
+}
+
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination a {
+    display: inline-block;
+    padding: 5px 10px;
+    margin: 0 3px;
+    color: #1A4F32;
+    text-decoration: none;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.pagination a.disabled {
+    color: #ccc;
+    pointer-events: none;
+}
+
+.pagination a.active {
+    background-color: #1A4F32;
+    color: #fff;
+}
+textarea{
+    margin-top: 40px;
+    height: 50px;
+    width: 95%;
+}
+.button-submit {
+    color: white;
+    padding: 7px;
+    position: relative;
+    top: -10px;
+    border: none;
 }
