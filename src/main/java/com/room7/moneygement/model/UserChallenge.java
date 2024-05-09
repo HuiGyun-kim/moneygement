@@ -30,4 +30,8 @@ public class UserChallenge {
 
 	@Column(name = "is_completed", columnDefinition = "TINYINT(1)")
 	private Boolean isCompleted;
+
+	@Column(name = "target_amount")
+	private Long targetAmount;
+
 }
