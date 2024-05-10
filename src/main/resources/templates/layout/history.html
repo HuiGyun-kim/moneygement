@@ -106,7 +106,7 @@
             <div class="income-month">
                 <span id="currentIncomeYearMonth"></span>
                 <!-- 수입 내역 추가 모달 열기 -->
-                <input type="hidden" id="ledgerIdValue" th:value="${ledgerIds.get(0)}" />
+                <input type="hidden" id="ledgerIdValue" th:value="${#lists.isEmpty(ledgerIds) ? 'default' : ledgerIds.get(0)}" />
                 <button class="btn-addhistory-info-income" onclick="openAddIncomeModal()">수입 내역 추가</button>
             </div>
             <table class="table-center">

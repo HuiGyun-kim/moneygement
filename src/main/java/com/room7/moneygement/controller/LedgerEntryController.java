@@ -1,7 +1,6 @@
 package com.room7.moneygement.controller;
 
 import com.room7.moneygement.dto.CategoryDTO;
-import com.room7.moneygement.dto.FinancialInfoDTO;
 import com.room7.moneygement.model.Category;
 import com.room7.moneygement.model.LedgerEntry;
 import com.room7.moneygement.repository.CategoryRepository;
@@ -116,10 +115,5 @@ public class LedgerEntryController {
 	public ResponseEntity<List<LedgerEntryDTO>> getMonthlyExpenseSummary(@RequestParam Long ledgerId, @RequestParam int year, @RequestParam int month) {
 		List<LedgerEntryDTO> expenseSummary = ledgerEntryService.getMonthlyExpenseSummary(ledgerId, year, month);
 		return ResponseEntity.ok(expenseSummary);
-	}
-	@GetMapping("/financial-info")
-	public ResponseEntity<FinancialInfoDTO> getFinancialInfo(@RequestParam Long ledgerId, @RequestParam int year, @RequestParam int month) {
-		FinancialInfoDTO financialInfo = ledgerEntryService.calculateFinancialInfo(ledgerId, year, month);
-		return ResponseEntity.ok(financialInfo);
 	}
 }

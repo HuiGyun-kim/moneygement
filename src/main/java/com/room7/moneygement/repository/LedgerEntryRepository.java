@@ -27,6 +27,5 @@ public interface LedgerEntryRepository extends JpaRepository<LedgerEntry, Long> 
 
     @Query("SELECT le FROM LedgerEntry le WHERE le.date = :date AND le.ledger.userId.userId = :userId")
     List<LedgerEntry> findByDateAndUserId(LocalDate date, Long userId);
-
 }
 
