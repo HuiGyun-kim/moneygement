@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
         userId = userId.trim(); // userId 값의 앞뒤 공백 제거
     }
     followButton.addEventListener('click', (event) => {
-        event.preventDefault(); // 기본 폼 제출 동작 방지
+        event.preventDefault();
 
         if (userId) { // userId 값이 존재하는지 확인
             $.ajax({
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('User ID is missing.');
         }
     });
-    function updateFollowCounts() { //팔로우카운트
+    function updateFollowCounts() {
         const followersCountElement = document.getElementById('followersCount');
         const followingCountElement = document.getElementById('followingCount');
 

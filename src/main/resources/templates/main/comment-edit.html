@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Comment</title>
+</head>
+<body>
+<div class="container">
+    <h1>Edit Comment</h1>
+    <form th:action="@{/profile/{userId}/comments/{commentId}/update(userId=${userId}, commentId=${comment.commentId})}" th:object="${comment}" method="post">
+        <div class="form-group">
+            <label for="content">Comment</label>
+            <textarea class="form-control" id="content" th:field="*{content}" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
+</body>
+</html>
