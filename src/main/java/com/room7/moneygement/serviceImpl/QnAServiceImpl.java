@@ -1,49 +1,54 @@
 package com.room7.moneygement.serviceImpl;
 
+import com.room7.moneygement.dto.QnADTO;
 import com.room7.moneygement.model.QnA;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-
 import com.room7.moneygement.repository.QnARepository;
 import com.room7.moneygement.service.QnAService;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+
+import java.time.LocalDateTime;
 
 @Service
 public class QnAServiceImpl implements QnAService {
 
-	private final QnARepository qnARepository;
+	private final QnARepository qnaRepository;
 
-	@Value("${alan.api.url}")
-	private String alanApiUrl;
-
-	@Value("${alan.api.key}")
-	private String alanApiKey;
-
-	public QnAServiceImpl(QnARepository qnARepository) {
-		this.qnARepository = qnARepository;
+	@Autowired
+	public QnAServiceImpl(QnARepository qnaRepository) {
+		this.qnaRepository = qnaRepository;
 	}
 
 	@Override
-	public String askQuestion(String question) {
-		// Alan Beta API를 호출하여 질문에 대한 답변을 받음
-		String answer = callAlanBetaApi(question);
-
-		// 질문한 목록과 대답을 데이터베이스에 저장
+	public QnADTO saveQnA(QnADTO qnaDTO) {
 		QnA qna = new QnA();
-		qna.setQuestion(question);
-		qna.setAnswer(answer);
-		qnARepository.save(qna);
+		qna.setUserId(qnaDTO.getUserId());
+		qna.setQuestion(qnaDTO.getQuestion());
+		qna.setAnswer(qnaDTO.getAnswer());
+		qna.setCreatedAt(LocalDateTime.now());
 
-		return answer;
+		QnA savedQnA = qnaRepository.save(qna);
+
+		return convertToDTO(savedQnA);
 	}
 
-	private String callAlanBetaApi(String question) {
-		RestTemplate restTemplate = new RestTemplate();
-		String url = alanApiUrl + "/ask"; // Alan Beta API 엔드포인트
-		String body = "{\"question\": \"" + question + "\"}";
+	@Override
+	public QnADTO getQnAById(Long qnaId) {
+		QnA qna = qnaRepository.findById(qnaId)
+				.orElseThrow(() -> new IllegalArgumentException("QnA not found with id: " + qnaId));
 
-		// API 호출
-		String response = restTemplate.postForObject(url, body, String.class);
-		return response;
+		return convertToDTO(qna);
+	}
+
+	// 엔티티를 DTO로 변환하는 메서드
+	private QnADTO convertToDTO(QnA qna) {
+		QnADTO qnaDTO = new QnADTO();
+		qnaDTO.setQnaId(qna.getQnaId());
+		qnaDTO.setUserId(qna.getUserId());
+		qnaDTO.setQuestion(qna.getQuestion());
+		qnaDTO.setAnswer(qna.getAnswer());
+		qnaDTO.setCreatedAt(qna.getCreatedAt());
+		return qnaDTO;
 	}
 }

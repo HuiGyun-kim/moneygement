@@ -9,5 +9,3 @@ import com.room7.moneygement.model.QnA;
 public interface QnARepository extends JpaRepository<QnA, Long> {
 
 }
-
-

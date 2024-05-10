@@ -27,6 +27,8 @@ import com.room7.moneygement.dto.UserDTO;
 import com.room7.moneygement.model.User;
 import com.room7.moneygement.service.CustomUserDetails;
 import com.room7.moneygement.service.UserService;
+import com.room7.moneygement.config.RestTemplateConfig;
+
 
 @Configuration
 @EnableWebSecurity
@@ -43,50 +45,49 @@ public class SecurityConfig implements WebMvcConfigurer {
 			if (user == null) {
 				throw new UsernameNotFoundException("User not found");
 			}
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login", "/signup", "/signup-email","/users/**","/ledgerEntry/**","/diary/**",
-                                         "/users/send-id-verification-code","/users/verify-id-code","/users/verifyEmail", "/sendEmail",
-                                         "/users/sendEmail", "/emailVerified","/find-id","/users/find-id","/find-password", "/ledgers/**","/css/**", "/js/**", "/img/**").permitAll()
-                        .requestMatchers("/manager/**").hasAuthority("ADMIN")
-                        .anyRequest().authenticated())
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .loginProcessingUrl("/users/login")
-                        .failureHandler(customFailureHandler())
-                        .successHandler(customSuccessHandler())
-                        .permitAll())
-                .logout(logout -> logout
-                        .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login")
-                        .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID"))
-                .exceptionHandling(e -> e
-                        .accessDeniedPage("/access-denied"))
-                .csrf(csrf -> csrf
-				.ignoringRequestMatchers("/ledgerEntry/**", "/users/sendEmail","/diary/**")
-			);
-        return http.build();
-    }
-      
 			UserDTO userDTO = UserDTO.builder()
-				.userId(user.getUserId())
-				.username(user.getUsername())
-				.password(user.getPassword())
-				.profileImg(user.getProfileImg())
-				.role(user.getRole())
-				.introduction(user.getIntroduction())
-				.build(); // 프로필 이미지 등 추가 데이터 설정
-
+					.userId(user.getUserId())
+					.username(user.getUsername())
+					.password(user.getPassword())
+					.profileImg(user.getProfileImg())
+					.role(user.getRole())
+					.introduction(user.getIntroduction())
+					.build(); // 프로필 이미지 등 추가 데이터 설정
 
 			return new CustomUserDetails(user); // CustomUserDetails 객체 반환
 		};
 	}
 
-	
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		http
+				.authorizeHttpRequests(auth -> auth
+						.requestMatchers("/", "/login", "/signup", "/signup-email", "/users/**", "/ledgerEntry/**",
+								"/diary/**",
+								"/users/send-id-verification-code", "/users/verify-id-code", "/users/verifyEmail",
+								"/sendEmail",
+								"/users/sendEmail", "/emailVerified", "/find-id", "/users/find-id", "/find-password",
+								"/ledgers/**", "/css/**", "/js/**", "/img/**").permitAll()
+						.requestMatchers("/manager/**").hasAuthority("ADMIN")
+						.anyRequest().authenticated())
+				.formLogin(form -> form
+						.loginPage("/login")
+						.loginProcessingUrl("/users/login")
+						.failureHandler(customFailureHandler())
+						.successHandler(customSuccessHandler())
+						.permitAll())
+				.logout(logout -> logout
+						.logoutUrl("/logout")
+						.logoutSuccessUrl("/login")
+						.invalidateHttpSession(true)
+						.deleteCookies("JSESSIONID"))
+				.exceptionHandling(e -> e
+						.accessDeniedPage("/access-denied"))
+				.csrf(csrf -> csrf
+						.ignoringRequestMatchers("/ledgerEntry/**", "/users/sendEmail", "/diary/**")
+				);
+		return http.build();
+	}
 
 	// 로그인 실패 핸들러
 	@Bean
@@ -131,9 +132,9 @@ public class SecurityConfig implements WebMvcConfigurer {
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
-			.allowedOrigins("http://localhost:8080") // 허용할 도메인과 포트
-			.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메서드
-			.allowCredentials(true);
+				.allowedOrigins("http://localhost:8080") // 허용할 도메인과 포트
+				.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메서드
+				.allowCredentials(true);
 	}
 }
 
