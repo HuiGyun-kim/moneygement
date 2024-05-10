@@ -13,6 +13,30 @@ document.addEventListener('DOMContentLoaded', function () {
     const currentDate = document.querySelector('.current-date');
     currentDate.innerHTML = `${currYear}년 ${months[currMonth]}`;
 
+    /*이전 달, 다음 달 이동*/
+
+// 이전 달로 이동하는 버튼 클릭 이벤트 처리
+    document.querySelector('.prev').addEventListener('click', function () {
+        currMonth--;
+        if (currMonth < 0) {
+            currMonth = 11;
+            currYear--;
+        }
+        currentDate.innerHTML = `${currYear}년 ${months[currMonth]}`;
+        renderCalendar();
+    });
+
+    // 다음 달로 이동하는 버튼 클릭 이벤트 처리
+    document.querySelector('.next').addEventListener('click', function () {
+        currMonth++;
+        if (currMonth > 11) {
+            currMonth = 0;
+            currYear++;
+        }
+        currentDate.innerHTML = `${currYear}년 ${months[currMonth]}`;
+        renderCalendar();
+    });
+
     // 캘린더를 렌더링하는 함수
     const renderCalendar = () => {
         // 현재 월의 첫 날의 요일을 구하기
@@ -31,7 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // 1부터 마지막 날짜까지 반복하면서 일자를 추가
         for (let i = 1; i <= lastDateOfMonth; i++) {
-            liTag += `<li>${i}</li>`;
+            liTag += `<li class="day-${i}">${i}</li>`;
         }
 
         // 일자를 표시할 요소에 일자를 추가
@@ -62,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // 출석체크 버튼 클릭 이벤트 처리
         document.getElementById('attendanceButton').addEventListener('click', function () {
             const xhr = new XMLHttpRequest();
-            xhr.open('POST', '/users/attendances');
+            xhr.open('POST', '/attendance/check');
             xhr.setRequestHeader('Content-Type', 'application/json');
             xhr.onload = function () {
                 if (xhr.status === 200) {
@@ -85,29 +109,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 
-/*이전 달, 다음 달 이동*/
 
-// 이전 달로 이동하는 버튼 클릭 이벤트 처리
-    document.querySelector('.prev').addEventListener('click', function () {
-        currMonth--;
-        if (currMonth < 0) {
-            currMonth = 11;
-            currYear--;
-        }
-        currentDate.innerHTML = `${currYear}년 ${months[currMonth]}`;
-        renderCalendar();
-    });
-
-    // 다음 달로 이동하는 버튼 클릭 이벤트 처리
-    document.querySelector('.next').addEventListener('click', function () {
-        currMonth++;
-        if (currMonth > 11) {
-            currMonth = 0;
-            currYear++;
-        }
-        currentDate.innerHTML = `${currYear}년 ${months[currMonth]}`;
-        renderCalendar();
-    });
 
 
 
@@ -119,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const today = new Date();
         const todayDate = today.getDate();
         const daysTag = document.querySelector('.days');
-        const todayElement = daysTag.querySelector(`li:nth-child(${todayDate})`);
+        const todayElement = daysTag.querySelector(`li.day-${todayDate}`);
         todayElement.classList.add('active');
 
         // 출석체크 완료가 된 날짜의 요소에 'completed' 클래스를 추가하여 색을 변경
