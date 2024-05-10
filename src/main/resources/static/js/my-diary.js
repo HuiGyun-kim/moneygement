@@ -160,9 +160,11 @@ document.addEventListener('DOMContentLoaded', function () {
         fetch(`/ledgerEntry/expenses?date=${dateString}&userId=${userId}`)
             .then(response => response.json())
             .then(data => {
-                if (Array.isArray(data)) { // 데이터가 배열인지 확인
-                    displayExpenses(data, date);
-                } else {
+                if (Array.isArray(data)) {
+                    const filteredData = data.filter(entry => entry.ledgerType === true);
+                    displayExpenses(filteredData, date);
+                }
+                else {
                     console.error('Expected an array but got:', data);
                     expendsList.innerHTML = '올바른 데이터 형식이 아닙니다.';
                 }
