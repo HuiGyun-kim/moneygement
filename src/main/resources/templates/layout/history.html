@@ -75,11 +75,7 @@
                 </div>
             </div>
             <div class="asset-info">
-                <p>이번 달 총 자산은 1,000,000원 입니다</p>
-                <p>이번 달 총 부채는 20,000원 입니다</p>
-                <p>이번 달 순자산은 350,000원 입니다</p>
-                <p>이번 달 수입은 1,000,000원 입니다</p>
-                <p>이번 달 지출은 40,000원 입니다</p>
+            <!--데이터를 동적으로 생성-->
             </div>
         </div>
     </div>
@@ -110,29 +106,21 @@
             <div class="income-month">
                 <span id="currentIncomeYearMonth"></span>
                 <!-- 수입 내역 추가 모달 열기 -->
+                <input type="hidden" id="ledgerIdValue" th:value="${ledgerIds.get(0)}" />
                 <button class="btn-addhistory-info-income" onclick="openAddIncomeModal()">수입 내역 추가</button>
             </div>
             <table class="table-center">
                 <thead>
                 <tr>
-                    <th><input type="checkbox" class="selectAllIncome" name="selectAll"></th>
                     <th>날짜</th>
-                    <th>메모</th>
                     <th>금액</th>
+                    <th>메모</th>
+                    <th>카테고리</th>
                     <th>수정/삭제</th>
                 </tr>
                 </thead>
                 <tbody id="incomeData">
-                <tr>
-                    <td><input type="checkbox"></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <button>수정</button>
-                        <button>삭제</button>
-                    </td>
-                </tr>
+                <!-- 동적으로 수입 내역 추가 -->
                 </tbody>
             </table>
         </div>
@@ -140,30 +128,21 @@
             <h3>지출 내역</h3>
             <div class="expense-month">
                 <span id="currentExpenseYearMonth"></span>
-                <!-- 지출 내역 추가 모달 열기 -->
-                <button class="btn-addhistory-info-expense">지출 내역 추가</button>
+                <!-- 지출 내역 추가 버튼 -->
+                <button class="btn-addhistory-info-expense" onclick="openAddExpenseModal()">지출 내역 추가</button>
             </div>
             <table class="table-center">
                 <thead>
                 <tr>
-                    <th><input type="checkbox" class="selectAllExpense" name="selectAll"></th>
                     <th>날짜</th>
-                    <th>메모</th>
-                    <th>용도</th>
                     <th>금액</th>
+                    <th>메모</th>
+                    <th>카테고리</th>
                     <th>수정/삭제</th>
                 </tr>
                 </thead>
-                <tbody id="expenseData">
-                <td><input type="checkbox"></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
-                    <button>수정</button>
-                    <button>삭제</button>
-                </td>
+                <tbody id="expenseTableBody">
+                <!--동적으로 지출 내역-->
                 </tbody>
             </table>
         </div>
@@ -178,15 +157,45 @@
             <label for="ledgerId">가계부 ID:</label>
             <input type="text" id="ledgerId" name="ledgerId" required><br>
 
-            <label for="amount">금액:</label>
-            <input type="number" id="amount" name="amount" required><br>
-
             <label for="date">날짜:</label>
             <input type="date" id="date" name="date" required><br>
+
+            <label for="amount">금액:</label>
+            <input type="number" id="amount" name="amount" required><br>
 
             <label for="description">설명:</label>
             <input type="text" id="description" name="description" maxlength="50" placeholder="설명 (최대 50자)"><br>
 
+            <label for="edit-category">카테고리:</label>
+            <select id="edit-category" name="category">
+                <!-- 카테고리 옵션들은 JS에서 동적으로 채워짐 -->
+            </select><br>
+            <button type="submit">저장</button>
+        </form>
+    </div>
+</div>
+<!-- 지출 내역 추가 모달 -->
+<div id="modalAddExpense" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>지출 내역 추가</h3>
+        <form id="formAddExpense" onsubmit="submitExpenseData(); return false;">
+            <label for="ledgerId-expense">가계부 ID:</label>
+            <input type="text" id="ledgerId-expense" name="ledgerId" required><br>
+
+            <label for="date-expense">날짜:</label>
+            <input type="date" id="date-expense" name="date" required><br>
+
+            <label for="amount-expense">금액:</label>
+            <input type="number" id="amount-expense" name="amount" required><br>
+
+            <label for="description-expense">설명:</label>
+            <input type="text" id="description-expense" name="description" maxlength="50" placeholder="설명 (최대 50자)" required><br>
+
+            <label for="edit-category-expense">카테고리:</label>
+            <select id="edit-category-expense" name="category">
+                <!-- 카테고리 옵션들은 JS에서 동적으로 채워짐 -->
+            </select><br>
             <button type="submit">저장</button>
         </form>
     </div>

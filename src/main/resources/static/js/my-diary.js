@@ -4,23 +4,28 @@ document.addEventListener('DOMContentLoaded', function() {
     let current = new Date();
     let today = new Date();
     let select = null;
+    const userId = document.getElementById('userId').getAttribute('data-user-id');
+    console.log(userId);
 
     document.getElementById('before').addEventListener('click', function() {
         current.setDate(current.getDate() - 7);
         generateDateButtons();
-        showExpend(current);
+        showExpend(current, userId);
+        checkDiary(current, userId);
     });
 
     document.getElementById('after').addEventListener('click', function() {
         current.setDate(current.getDate() + 7);
         generateDateButtons();
-        showExpend(current);
+        showExpend(current, userId);
+        checkDiary(current, userId);
     });
 
     document.getElementById('today').addEventListener('click', function() {
         current = new Date(today);
         generateDateButtons();
-        showExpend(current);
+        showExpend(current, userId);
+        checkDiary(current, userId);
     });
 
     document.querySelectorAll('.circleBox').forEach(circle => {
@@ -88,6 +93,33 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    document.getElementById('saveDiary').addEventListener('click', function() {
+        var diaryContent = document.getElementById('diaryBox').innerText.trim();
+
+        if (!diaryContent) {
+            alert('일기를 작성해주세요!');
+            return;
+        }
+
+        fetch('/diary/saveDiary', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                userId: userId,
+                content: diaryContent,
+                expenseAt: current.toISOString(),
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                alert('저장되었습니다.');
+            })
+            .catch(error => console.error('에러:', error));
+    });
+
     function generateDateButtons() {
         dateButton.innerHTML = '';
         const day = current.getDate();
@@ -118,18 +150,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
             button.onclick = function() {
                 current = new Date(date);
-                showExpend(current);
+                showExpend(current, userId);
+                checkDiary(current, userId);
             };
             dateButton.appendChild(button);
         }
     }
-    function showExpend(date) {
+    function showExpend(date, userId) {
         const dateString = date.toISOString().split('T')[0];
 
-        fetch(`/ledgerEntry/expenses?date=${dateString}`)
+        fetch(`/ledgerEntry/expenses?date=${dateString}&userId=${userId}`)
         .then(response => response.json())
         .then(data => {
-        displayExpenses(data, date);
+            displayExpenses(data, date);
     })
         .catch(error => console.error('에러:', error));
     }
@@ -177,8 +210,27 @@ document.addEventListener('DOMContentLoaded', function() {
             divider.style.height = `${dividerHeight}px`;
         }
     }
+
+    function checkDiary(date, userId) {
+        const dateString = date.toISOString().split('T')[0];
+        fetch(`/diary/checkDiary?date=${dateString}&userId=${userId}`)
+            .then(response => response.json())
+            .then(diary => {
+                document.getElementById('diaryBox').textContent = diary[0].content;
+                document.getElementById('saveDiary').disabled = true;
+                document.getElementById('saveDiary').style.display = 'none';
+                document.querySelector('.write').style.display = 'none';
+            })
+            .catch(error => {
+                document.getElementById('diaryBox').textContent = '저장된 일기가 없습니다.';
+                document.getElementById('saveDiary').disabled = false;
+                document.getElementById('saveDiary').style.display = '';
+                document.querySelector('.write').style.display = '';
+            });
+    }
+    checkDiary(new Date(), userId);
     generateDateButtons();
-    showExpend(new Date());
+    showExpend(new Date(), userId);
 });
 
 //     function showExpend(date) {

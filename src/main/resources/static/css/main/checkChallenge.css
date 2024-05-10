@@ -1,0 +1,143 @@
+/*#1 폰트*/
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+
+/*챌린지 css 폰트 바꾸자*/
+.challenge{
+    width: 420px;
+    height: 120px;
+    color: black;
+}
+/* 출석체크 CSS */
+.checkChallenge {
+    width: 262px;
+    height: 87px;
+    color: #1A4F32;
+}
+
+
+
+/*#2 전체 태그 초기화&초기세팅*/
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/*#3 */
+button {
+    /* button 요소에 기본적으로 설정되는 스타일 속성 초기화 */
+    border: none;
+    outline: none;
+    background-color: transparent;
+    padding: 0;
+    cursor: pointer;
+}
+
+/*#4 달력 가운데정렬*/
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: #ffffff;
+}
+
+/*#5 달력 크기와 라운드, 배경*/
+.wrapper {
+    width: 450px;
+    background: #fff;
+    border-radius: 10px;
+    padding: 25px;
+}
+
+/* 연도 표시 위치 */
+.wrapper .year {
+    display: flex; /* 절대 위치 지정 */
+    font-size: 24px; /* 원하는 폰트 사이즈 지정 */
+    font-weight: 600; /* 원하는 폰트 웨이트 지정 */
+    list-style: none;
+    padding-left: 0;
+}
+
+
+/*#6 월 표시 및 이동 화살표 배치*/
+.wrapper .nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+.wrapper .nav .current-date {
+    font-size: 24px;
+    font-weight: 600;
+}
+.wrapper .nav button {
+    width: 38px;
+    height: 38px;
+    font-size: 30px;
+    color: #878787;
+}
+
+/*#7*/
+.calendar ul {
+    display: flex;
+    list-style: none;
+    flex-wrap: wrap;
+    text-align: center;
+}
+.calendar .weeks li {
+    font-weight: 500;
+}
+.calendar .days {
+    margin-bottom: 20px;
+}
+.calendar ul li {
+    /*#8*/
+    width: calc(100% / 7);
+    /*#9*/
+    position: relative;
+}
+.calendar .days li {
+    /*#10*/
+    z-index: 1;
+    margin-top: 30px;
+    cursor: pointer;
+}
+
+/*#11*/
+.days li.inactive {
+    color: #aaa;
+}
+
+/*#12 오늘 날짜 표시 가상 요소*/
+.days li.active {
+    color: #ffffff;
+}
+
+/*#13 .active 기준으로 배치*/
+.calendar .days li::before {
+    position: absolute;
+    content: '';
+    height: 40px;
+    width: 40px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    z-index: -1;
+}
+
+/*#14 날짜 hover했을 때 배경색 변경*/
+.days li:hover::before {
+    background: #3f6262;
+}
+
+/*#15 오늘 날짜 배경색을 포인트 색으로 변경, 출첵 완료된 날짜를 포인트색으로 보일수 있게 변경 필요*/
+.days li.active::before {
+    background: #3f6262;
+}
+
+.days li.completed::before{
+    background: #CCE1D5;
+}

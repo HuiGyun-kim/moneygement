@@ -11,5 +11,15 @@ public class UserChallengeDTO {
 	private Long userId;
 	private LocalDateTime joinDate;
 	private String isCompleted;
+	private AttendanceStatusDTO attendanceStatus; //Enum 타입으로 출석체크 완료 여부 표시
+	private int attendanceCount; //출석체크 횟수
+
+	public int getAttendanceCount() {
+		return attendanceCount;
+	}
+
+	public void setAttendanceCount(int attendanceCount) {
+		this.attendanceCount = attendanceCount;
+	}
 }
 

@@ -1,8 +1,6 @@
 package com.room7.moneygement.repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,5 +14,7 @@ import com.room7.moneygement.model.User;
 public interface LedgerRepository extends JpaRepository<Ledger, Long> {
 	List<Ledger> findByUserId(User userId);
 
+	@Query("SELECT l.ledgerId FROM Ledger l WHERE l.userId.userId = :userId")
+	List<Long> findLedgerIdsByUserId(@Param("userId") Long userId);
 }
 

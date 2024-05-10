@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/main/challenge.css}"/>
+
+    <title>이달의 거지 챌린지</title>
+</head>
+<body>
+<div th:replace="~{layout/header.html::main-header}"></div>
+<header>
+    <h1 class="challenge" th:href="@{/challengeList.html}">챌린지</h1>
+    <h1 class="poorchallenge">이달의 거지</h1>
+</header>
+<main>
+    <div class="logo_img">
+        <img th:src="@{/img/main/favicon.png}" alt="logo" class="logo-img">
+        <h3>
+            현명한 소비습관 만들기💸
+        </h3>
+        <h4>
+            moneygement 이달의 거지 챌린지에 참가해 목표금액을 설정하고 이달의 거지에 도전해보세요!
+        </h4>
+    </div>
+    <div class="goalset-group">
+        <h4>목표금액</h4>
+        <label class="goalset">목표금액</label>
+        <input type="number" id="goal-budget" name="goal-budget" placehold="금액을 입력해주세요">
+    </div>
+    <div class="goalset-notice">
+        <img th:src="@{/img/main/lightgreen_round.png}" alt="circle" class="circle-img">
+        <a>목표금액: </a>
+    </div>
+    <div class="goalset-notice">
+        <img th:src="@{/img/main/green_round.png}" alt="circle" class="circle-img">
+        <a>지출 금액: </a>
+    </div>
+</main>
+</body>
+</html>
