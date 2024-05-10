@@ -28,12 +28,13 @@ public class LedgerEntry {
 	@Column(name = "entry_id")
 	private Long entryId;
 
+	@JsonIgnoreProperties({"entries"})
 	@ManyToOne
 	@JoinColumn(name = "ledger_id")
 	private Ledger ledger;
-
-	@JsonIgnoreProperties({"entries"})
-	private Ledger ledgerId;
+	//
+	// @JsonIgnoreProperties({"entries"})
+	// private Ledger ledgerId;
 
 	@ManyToOne
 	@JoinColumn(name = "category_id",referencedColumnName = "category_id")

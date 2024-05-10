@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const dateButton = document.getElementById('date');
     const expendsList = document.getElementById('expends');
     let current = new Date();
@@ -7,21 +7,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const userId = document.getElementById('userId').getAttribute('data-user-id');
     console.log(userId);
 
-    document.getElementById('before').addEventListener('click', function() {
+    document.getElementById('before').addEventListener('click', function () {
         current.setDate(current.getDate() - 7);
         generateDateButtons();
         showExpend(current, userId);
         checkDiary(current, userId);
     });
 
-    document.getElementById('after').addEventListener('click', function() {
+    document.getElementById('after').addEventListener('click', function () {
         current.setDate(current.getDate() + 7);
         generateDateButtons();
         showExpend(current, userId);
         checkDiary(current, userId);
     });
 
-    document.getElementById('today').addEventListener('click', function() {
+    document.getElementById('today').addEventListener('click', function () {
         current = new Date(today);
         generateDateButtons();
         showExpend(current, userId);
@@ -29,12 +29,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     document.querySelectorAll('.circleBox').forEach(circle => {
-        circle.addEventListener('click', function (){
-            if (select === this){
+        circle.addEventListener('click', function () {
+            if (select === this) {
                 this.classList.remove('selected');
                 select = null;
-            }
-            else {
+            } else {
                 if (select) {
                     select.classList.remove('selected')
                 }
@@ -44,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    document.querySelector('.write').addEventListener('click', function (){
+    document.querySelector('.write').addEventListener('click', function () {
         if (select) {
             console.log(select.querySelector('.circleText').textContent);
             const theme = select.querySelector('.circleText').textContent;
@@ -81,19 +80,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 method: 'GET',
             })
                 .then(response => response.json())
-                .then(data=>{
+                .then(data => {
                     console.log("데이터가 성공적으로 전송되었습니다.");
                     const diaryBox = document.getElementById('diaryBox');
                     diaryBox.textContent = data.content;
-            })
+                })
                 .catch(error => console.error('에러:', error));
-        }
-        else{
+        } else {
             alert('테마를 선택해주세요!')
         }
     });
 
-    document.getElementById('saveDiary').addEventListener('click', function() {
+    document.getElementById('saveDiary').addEventListener('click', function () {
         var diaryContent = document.getElementById('diaryBox').innerText.trim();
 
         if (!diaryContent) {
@@ -134,21 +132,20 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (date.getDay() === 6) { //토요일
                 button.style.color = 'blue';
-            }
-            else if (date.getDay() === 0) { //일요일
+            } else if (date.getDay() === 0) { //일요일
                 button.style.color = 'red';
             }
 
             if (date.getFullYear() === today.getFullYear() &&
                 date.getMonth() === today.getMonth() &&
-                date.getDate() === today.getDate()){
-                    button.style.borderColor = '#1A4F32';
-                    button.style.borderWidth = '2px';
-                    button.style.borderStyle = 'dashed';
-                    button.style.borderRadius = '10px';
+                date.getDate() === today.getDate()) {
+                button.style.borderColor = '#1A4F32';
+                button.style.borderWidth = '2px';
+                button.style.borderStyle = 'dashed';
+                button.style.borderRadius = '10px';
             }
 
-            button.onclick = function() {
+            button.onclick = function () {
                 current = new Date(date);
                 showExpend(current, userId);
                 checkDiary(current, userId);
@@ -156,27 +153,36 @@ document.addEventListener('DOMContentLoaded', function() {
             dateButton.appendChild(button);
         }
     }
+
     function showExpend(date, userId) {
         const dateString = date.toISOString().split('T')[0];
 
         fetch(`/ledgerEntry/expenses?date=${dateString}&userId=${userId}`)
-        .then(response => response.json())
-        .then(data => {
-            displayExpenses(data, date);
-    })
-        .catch(error => console.error('에러:', error));
+            .then(response => response.json())
+            .then(data => {
+                if (Array.isArray(data)) { // 데이터가 배열인지 확인
+                    displayExpenses(data, date);
+                } else {
+                    console.error('Expected an array but got:', data);
+                    expendsList.innerHTML = '올바른 데이터 형식이 아닙니다.';
+                }
+            })
+            .catch(error => {
+                console.error('에러:', error);
+                expendsList.innerHTML = '데이터를 불러오는 중 에러가 발생했습니다.';
+            });
     }
 
-    function displayExpenses(expensesData, date){
+    function displayExpenses(expensesData, date) {
         expendsList.innerHTML = '';
 
         const dateInfo = document.createElement('h4');
         dateInfo.textContent = `${date.getMonth() + 1}월 ${date.getDate()}일의 지출 내역`;
         expendsList.appendChild(dateInfo);
 
-        if (expensesData.length === 0){
-        expendsList.innerHTML += '해당 날짜에 대한 지출 내역이 없습니다.';
-        return;
+        if (expensesData.length === 0) {
+            expendsList.innerHTML += '해당 날짜에 대한 지출 내역이 없습니다.';
+            return;
         }
 
 
@@ -204,7 +210,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (lastExpendBox) {
             const dividerHeight = lastExpendBox.offsetTop + lastExpendBox.offsetHeight - timelineBox.offsetTop;
-                // 마지막 비용의 상단과 높이를 더해서 부모요소부터 박스까지의 상단 간격을 빼서 마지막 비용 항목의 아랫쪽 위치를 구할 수 있음.
+            // 마지막 비용의 상단과 높이를 더해서 부모요소부터 박스까지의 상단 간격을 빼서 마지막 비용 항목의 아랫쪽 위치를 구할 수 있음.
 
             const divider = document.querySelector('.deco-flex .divider');
             divider.style.height = `${dividerHeight}px`;
@@ -228,6 +234,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.querySelector('.write').style.display = '';
             });
     }
+
     checkDiary(new Date(), userId);
     generateDateButtons();
     showExpend(new Date(), userId);
