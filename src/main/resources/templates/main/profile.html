@@ -66,31 +66,56 @@
                     </label>
                 </div>
             </div>
-        </div>
-        <div class="guest-book">
-            <div class="guestbook-button">
-                <p class="text2">방명록</p>
-            </div>
-                <form id="guestbook-form">
-                    <div class="form-group">
-                        <label for="name">이름:</label>
-                        <input type="text" id="name" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">메시지:</label>
-                        <textarea id="message" name="message" rows="3" required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">등록</button>
+            <div class="comments-section">
+                <span class="text">방명록</span>
+                <form th:action="@{/profile/{userId}/comments(userId=${user.userId})}" method="post" th:object="${newComment}">
+                    <label>
+                        <textarea th:field="*{content}" placeholder="방명록을 작성해주세요."></textarea>
+                    </label>
+                    <button class="button-submit" type="submit">작성</button>
                 </form>
-            <div class="guestbook-container" id="guestbook-container"></div>
+            </div>
+            <div class="comments-list">
+                <div th:each="comment : ${comments}">
+                    <div class="comment-item">
+                        <div class="time">
+                        <span th:text="${user.username}"></span>
+                        <span th:text="${#temporals.format(comment.updatedAt, 'yyyy-MM-dd HH:mm:ss')}"></span>
+                        </div>
+                        <p class="item-content" th:text="${comment.content}"></p>
+                        <div class="comment-actions">
+                            <a th:href="@{/profile/{userId}/comments/{commentId}/edit(userId=${user.userId}, commentId=${comment.commentId})}" class="edit-button">수정</a>
+                            <form th:action="@{/profile/{userId}/comments/{commentId}/delete(userId=${user.userId}, commentId=${comment.commentId})}" method="post">
+                                <button type="submit" class="delete-button">삭제</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <div class="pagination">
+                    <!-- 이전 페이지-->
+                    <a th:href="@{/profile/{userId}(userId=${user.userId}, page=0)}" th:class="${currentPage == 0 ? 'disabled' : ''}">«</a>
+                    <a th:href="@{/profile/{userId}(userId=${user.userId}, page=${currentPage - 1})}" th:class="${currentPage == 0 ? 'disabled' : ''}"><</a>
 
-            <div class="pagination" id="pagination-container"></div>
+                    <span th:if="${totalPages > 0}">
+                    <span th:each="i: ${#numbers.sequence(0, totalPages - 1)}">
+                    <a th:href="@{/profile/{userId}(userId=${user.userId}, page=${i})}" th:text="${i + 1}" th:class="${currentPage == i ? 'active' : ''}"></a></span>
+                    </span>
+                    <span th:unless="${totalPages > 0}">
+                    <!-- 페이지가 없을 때, 1 페이지를 표시 -->
+                    <a th:href="@{/profile/{userId}(userId=${user.userId}, page=0)}" th:text="1"></a>
+                    </span>
+
+                    <!-- 다음 페이지로 이동하는 링크 -->
+                    <a th:href="@{/profile/{userId}(userId=${user.userId}, page=${currentPage + 1})}" th:class="${currentPage == totalPages - 1 ? 'disabled' : ''}">></a>
+                    <a th:href="@{/profile/{userId}(userId=${user.userId}, page=${totalPages - 1})}" th:class="${currentPage == totalPages - 1 ? 'disabled' : ''}">»</a>
+                </div>
         </div>
-    </div>
 
+    </div>
+<script th:src="@{/js/comments.js}"></script>
 <script th:src="@{/js/followbutton.js}"></script>
 <script th:src="@{/js/profile.js}"></script>
-<script th:src="@{/js/guestbook.js}"></script>
 <script th:src="@{/js/dropdown.js}"></script>
 </body>
 </html>

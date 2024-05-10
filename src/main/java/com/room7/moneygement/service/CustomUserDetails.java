@@ -32,6 +32,7 @@ public class CustomUserDetails implements UserDetails {
 	public Long getUserId() {
 		return user.getUserId();
 	}
+
 	@Override
 	public boolean isAccountNonExpired() {
 		return true; // 계정 만료 여부를 처리, 여기선 항상 true
@@ -54,6 +55,10 @@ public class CustomUserDetails implements UserDetails {
 
 	public User getUser() {
 		return this.user;
+	}
+	// UserDTO를 반환하는 추가적인 메소드
+	public User getUserDTO() {
+		return user;
 	}
 
 	// UserDTO를 반환하는 추가적인 메소드

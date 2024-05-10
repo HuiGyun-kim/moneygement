@@ -1,25 +1,26 @@
 package com.room7.moneygement.controller;
 
+import java.util.List;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.room7.moneygement.dto.UserDTO;
-import com.room7.moneygement.model.User;
+import com.room7.moneygement.service.CategoryService;
 import com.room7.moneygement.service.CustomUserDetails;
-import com.room7.moneygement.service.UserService;
+import com.room7.moneygement.service.LedgerService;
 
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
 public class MainController {
 
-	private final UserService userService;
+	private final CategoryService categoryService;
+	private final LedgerService ledgerService;
 
 	// 기본 홈 페이지를 반환하는 메서드
 	@GetMapping("/")
@@ -64,7 +65,7 @@ public class MainController {
 		return "main/find-password";
 	}
 
-	@GetMapping("my-diary")
+	@GetMapping("/myDiary")
 	public String myDiary(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
 		model.addAttribute("user", userDetails.getUserDTO());
 		return "main/my-diary";
@@ -88,7 +89,11 @@ public class MainController {
 	}
 
 	@GetMapping("/history")
-	public String history() {
+	public String history(Model model,@AuthenticationPrincipal CustomUserDetails userDetails) {
+		Long userId = userDetails.getUserId();
+		List<Long> ledgerIds = ledgerService.getLedgerIdsByUser((userId));
+
+		model.addAttribute("ledgerIds", ledgerIds);
 		return "layout/history";
 	}
 }

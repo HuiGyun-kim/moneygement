@@ -27,6 +27,8 @@ import com.room7.moneygement.dto.UserDTO;
 import com.room7.moneygement.model.User;
 import com.room7.moneygement.service.CustomUserDetails;
 import com.room7.moneygement.service.UserService;
+import com.room7.moneygement.config.RestTemplateConfig;
+
 
 @Configuration
 @EnableWebSecurity
@@ -59,7 +61,6 @@ public class SecurityConfig implements WebMvcConfigurer {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
-
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers("/", "/login", "/signup", "/signup-email", "/users/**", "/ledgerEntry/**",
 								"/diary/**",
