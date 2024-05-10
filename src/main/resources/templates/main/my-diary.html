@@ -8,9 +8,9 @@
     <link rel="stylesheet" th:href="@{/css/main/style.css}"/>
     <link rel="icon" type="image/png" href="/img/main/favicon.png">
     <script th:src="@{/js/my-diary.js}"></script>
-
 </head>
 <body>
+<a id="userId" style="display: none;" th:attr="data-user-id=${currentUser.userId}"></a>
 <div th:replace="~{layout/header.html::main-header}"></div>
 <nav class="calender">
     <button id="before"><</button>
@@ -64,6 +64,7 @@
         <div class="write">일기작성해줘</div>
 
         <div id="diaryBox"></div>
+        <button id="saveDiary">저장</button>
     </div>
 
 </section>

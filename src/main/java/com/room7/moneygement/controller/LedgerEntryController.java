@@ -48,8 +48,8 @@ public class LedgerEntryController {
 
 	@GetMapping("/expenses")
 	public List<LedgerEntry> getExpense(@RequestParam("date")
-	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-		return ledgerEntryRepository.findByDate(date);
+  @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @RequestParam("userId") Long userId){
+		return ledgerEntryRepository.findByDateAndUserId(date, userId);
 	}
 
 	@GetMapping("/entries")

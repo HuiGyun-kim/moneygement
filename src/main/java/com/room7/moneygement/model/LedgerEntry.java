@@ -3,7 +3,11 @@ package com.room7.moneygement.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+
 import org.hibernate.annotations.CreationTimestamp;
+
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,6 +31,9 @@ public class LedgerEntry {
 	@ManyToOne
 	@JoinColumn(name = "ledger_id")
 	private Ledger ledger;
+
+	@JsonIgnoreProperties({"entries"})
+	private Ledger ledgerId;
 
 	@ManyToOne
 	@JoinColumn(name = "category_id",referencedColumnName = "category_id")

@@ -65,11 +65,23 @@ public class MainController {
 		return "main/find-password";
 	}
 
-	@GetMapping("my-diary")
+	@GetMapping("/myDiary")
 	public String myDiary(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
 		model.addAttribute("user", userDetails.getUserDTO());
 		return "main/my-diary";
-  }
+	}
+	@GetMapping("checkChallenge")
+	public String checkChallenge(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
+		model.addAttribute("user", userDetails.getUserDTO());
+		return "main/checkChallenge";
+	}
+
+	@GetMapping("challengeList")
+	public String challengeList(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
+		model.addAttribute("user", userDetails.getUserDTO());
+		return "main/challengeList";
+	}
+
 
 	@GetMapping("/history")
 	public String history(Model model,@AuthenticationPrincipal CustomUserDetails userDetails) {
