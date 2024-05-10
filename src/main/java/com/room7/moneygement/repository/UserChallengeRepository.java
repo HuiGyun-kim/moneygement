@@ -5,8 +5,11 @@ import org.springframework.stereotype.Repository;
 
 import com.room7.moneygement.model.UserChallenge;
 
+import java.util.List;
+
 @Repository
 public interface UserChallengeRepository extends JpaRepository<UserChallenge, Long> {
 
+    List<UserChallenge> findByUserId(Long userId);
 }
 

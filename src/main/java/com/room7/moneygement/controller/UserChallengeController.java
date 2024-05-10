@@ -1,19 +1,22 @@
 package com.room7.moneygement.controller;
 
+import com.room7.moneygement.dto.UserChallengeDTO;
+import com.room7.moneygement.model.LedgerEntry;
 import com.room7.moneygement.model.UserChallenge;
+import com.room7.moneygement.repository.LedgerEntryRepository;
 import com.room7.moneygement.repository.UserChallengeRepository;
 import com.room7.moneygement.service.CustomUserDetails;
+import com.room7.moneygement.serviceImpl.UserChallengeServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -22,6 +25,8 @@ import java.util.Map;
 public class UserChallengeController {
 
 	private final UserChallengeRepository userChallengeRepository;
+	private final UserChallengeServiceImpl userChallengeServiceImpl;
+	private final LedgerEntryRepository ledgerEntryRepository;
 
 	@PostMapping("/addUserChallenge")
 	public ResponseEntity<?> addUserChallenge(@RequestBody Map<String, Object> payload,
@@ -40,5 +45,33 @@ public class UserChallengeController {
 		Map<String, String> response = new HashMap<>();
 		response.put("message", "success");
 		return ResponseEntity.ok().body(response);
+	}
+
+	@GetMapping("/displayTarget/{userId}")
+	public ResponseEntity<?> getUserChallenge(@PathVariable Long userId){
+		Long targetAmount = userChallengeServiceImpl.getLatestTargetAmountByUserId(userId);
+
+		if (targetAmount != null){
+			return ResponseEntity.ok(targetAmount);
+		}
+		else{
+			return ResponseEntity.notFound().build();
+		}
+	}
+
+	@GetMapping("/displayExpense/{userId}")
+	public ResponseEntity<?> getMonthlyExpenses(@PathVariable Long userId) {
+		LocalDate startDate = LocalDate.of(LocalDate.now().getYear(), LocalDate.now().getMonthValue(), 1);
+		LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
+
+		List<LedgerEntry> expenses = ledgerEntryRepository.findByUserIdAndDateBetweenAndLedgerType(
+				userId, startDate, endDate, true);
+
+		long totalExpenses = expenses.stream()
+				.mapToLong(LedgerEntry::getAmount)
+				.sum();
+
+
+		return ResponseEntity.ok(totalExpenses);
 	}
 }

@@ -82,10 +82,10 @@ public class MainController {
 		return "main/challengeList";
 	}
 
-	@GetMapping("/monthBest")
+	@GetMapping("/poorChallenge")
 	public String monthBest(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
 		model.addAttribute("user", userDetails.getUserDTO());
-		return "main/monthBest";
+		return "main/poorChallenge";
 	}
 
 	@GetMapping("/history")
