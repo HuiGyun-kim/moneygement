@@ -38,7 +38,7 @@ public class Ledger {
 	private LocalDateTime createdAt;
 
 	// 일대다 관계 추가
-	@OneToMany(mappedBy = "ledgerId", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "ledger", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<LedgerEntry> entries = new ArrayList<>();
 }
 

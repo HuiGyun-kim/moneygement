@@ -1,6 +1,5 @@
 package com.room7.moneygement.service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import com.room7.moneygement.dto.LedgerDTO;
@@ -11,5 +10,6 @@ public interface LedgerService {
 	void saveLedger(Ledger ledger);
 	Ledger getLedgerById(Long id);
 	void deleteLedger(Long id);
+	List<Long> getLedgerIdsByUser(Long userId);
 }
 

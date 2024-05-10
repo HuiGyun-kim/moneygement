@@ -1,121 +1,271 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const modal = document.getElementById('modalWindow');
-    const modalAddIncome = document.getElementById('modalAddIncome');
 
-    // 모달을 닫는 함수
-    function closeModal(modal) {
-        modal.style.display = 'none';
-        document.body.style.overflow = 'auto';
+// 데이터 로드 함수 통합
+function loadData(ledgerType) {
+    const ledgerId = document.getElementById('ledgerIdValue').value;
+    const dataTable = ledgerType ? document.getElementById('expenseTableBody') : document.getElementById('incomeData');
+    // ledgerType이 undefined일 경우 기본값으로 false를 설정
+    ledgerType = ledgerType !== undefined ? ledgerType : false;
+    fetch(`/ledgerEntry/entries?ledgerId=${encodeURIComponent(ledgerId)}&ledgerType=${ledgerType}`)
+        .then(response => response.json())
+        .then(data => {
+            dataTable.innerHTML = '';
+            data.forEach(entry => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${entry.date}</td>
+                    <td>${entry.amount}</td>
+                    <td>${entry.description}</td>
+                    <td>${entry.categoryName}</td>
+                    <td>
+                        <button class="edit" onclick="editEntry(${entry.entryId}, ${ledgerType})">수정</button>
+                        <button class="delete" onclick="deleteEntry(${entry.entryId}, ${ledgerType})">삭제</button>
+                    </td>
+                `;
+                dataTable.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
+
+// 탭 전환 함수 수정
+function openTab(evt, tabName, ledgerType) {
+    const tabcontent = document.getElementsByClassName("tabcontent");
+    for (let i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
     }
+    const tablinks = document.getElementsByClassName("tablinks");
+    for (let i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(tabName).style.display = "block";
+    evt.currentTarget.className += " active";
+    loadData(ledgerType); // 탭 전환 시 데이터 로드
+}
 
-    // 각 모달의 닫기 버튼에 클릭 이벤트 핸들러 연결
-    document.getElementById('closeModal').onclick = () => closeModal(modal);
-    modalAddIncome.querySelector('.close').onclick = () => closeModal(modalAddIncome);
+function updateYearMonth() {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    document.getElementById('currentExpenseYearMonth').textContent = `${year}년 ${month}월`;
+    document.getElementById('currentIncomeYearMonth').textContent = `${year}년 ${month}월`;
+}
 
-    // 모달 외부를 클릭하면 모달 닫기
-    window.onclick = (event) => {
-        if (event.target == modal || event.target == modalAddIncome) {
-            closeModal(event.target);
-        }
+// 데이터 제출 및 로드 관련 함수
+document.getElementById('formAddIncome').onsubmit = function (event) {
+    event.preventDefault();
+    submitFormData();
+};
+
+function submitFormData() {
+    const categoryId = document.getElementById('edit-category').value;
+    const ledgerId = document.getElementById('ledgerId').value;
+    const amount = document.getElementById('amount').value;
+    const date = document.getElementById('date').value;
+    const description = document.getElementById('description').value;
+
+    const data = {
+        categoryId: parseInt(categoryId),
+        ledgerId: parseInt(ledgerId),
+        amount: parseInt(amount),
+        date: date,
+        description: description,
+        ledgerType: false
     };
 
-    // 탭을 전환하는 함수
-    function openTab(evt, tabName) {
-        const tabcontent = document.getElementsByClassName("tabcontent");
-        for (let i = 0; i < tabcontent.length; i++) {
-            tabcontent[i].style.display = "none";
-        }
-        const tablinks = document.getElementsByClassName("tablinks");
-        for (let i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-        document.getElementById(tabName).style.display = "block";
-        evt.currentTarget.className += " active";
-    }
-
-    window.openTab = openTab;
-
-    // 연도와 월을 업데이트하는 함수
-    function updateYearMonth() {
-        const date = new Date();
-        const year = date.getFullYear();
-        const month = date.getMonth() + 1;
-        document.getElementById('currentExpenseYearMonth').textContent = `${year}년 ${month}월`;
-        document.getElementById('currentIncomeYearMonth').textContent = `${year}년 ${month}월`;
-    }
-
-    updateYearMonth();
-
-    // 체크박스 선택 상태 업데이트
-    function updateCheckboxState(allCheckbox, checkboxes) {
-        const anyChecked = [...checkboxes].some(checkbox => checkbox.checked);
-        allCheckbox.checked = anyChecked;
-    }
-
-    const selectAllExpenseCheckbox = document.querySelector('.selectAllExpense');
-    const expenseCheckboxes = document.querySelectorAll('#expenseData input[type="checkbox"]');
-    selectAllExpenseCheckbox.addEventListener('change', () => {
-        expenseCheckboxes.forEach(checkbox => checkbox.checked = selectAllExpenseCheckbox.checked);
-    });
-    expenseCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', () => updateCheckboxState(selectAllExpenseCheckbox, expenseCheckboxes));
-    });
-    updateCheckboxState(selectAllExpenseCheckbox, expenseCheckboxes);
-
-    const selectAllIncomeCheckbox = document.querySelector('.selectAllIncome');
-    const incomeCheckboxes = document.querySelectorAll('#incomeData input[type="checkbox"]');
-    selectAllIncomeCheckbox.addEventListener('change', () => {
-        incomeCheckboxes.forEach(checkbox => checkbox.checked = selectAllIncomeCheckbox.checked);
-    });
-    incomeCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', () => updateCheckboxState(selectAllIncomeCheckbox, incomeCheckboxes));
-    });
-    updateCheckboxState(selectAllIncomeCheckbox, incomeCheckboxes);
-
-    // 수입 내역 추가 모달 열기
-    window.openAddIncomeModal = function () {
-        modalAddIncome.style.display = 'block';
-        document.body.style.overflow = 'hidden';
-    }
-
-    // 폼 제출 시 AJAX로 데이터 전송
-    document.getElementById('formAddIncome').onsubmit = function (event) {
-        event.preventDefault();
-
-        const ledgerId = document.getElementById('ledgerId').value;
-        const amount = document.getElementById('amount').value;
-        const date = document.getElementById('date').value;
-        const description = document.getElementById('description').value;
-
-        const data = {
-            ledgerId: parseInt(ledgerId),
-            amount: parseInt(amount),
-            date: date,
-            description: description,
-            ledgerType: true
-        };
-
-        fetch('/ledgerEntry/add', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+    fetch('/ledgerEntry/add', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+    })
+        .then(response => response.json())
+        .then(data => {
+            alert('수입 내역이 성공적으로 추가되었습니다.');
+            closeModal(modalAddIncome);
+            loadIncomeData();
         })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('오류 발생');
+        });
+}
+
+function loadCategories() {
+    fetch('/ledgerEntry/categories')
+        .then(response => response.json())
+        .then(data => {
+            categories = data;
+            const categorySelect = document.getElementById('edit-category');
+            const categoryExpenseSelect = document.getElementById('edit-category-expense');
+            categorySelect.innerHTML = '';
+            categoryExpenseSelect.innerHTML = '';
+            data.forEach(category => {
+                const option = document.createElement('option');
+                option.value = category.categoryId;
+                option.textContent = category.categoryName;
+                categorySelect.appendChild(option.cloneNode(true));
+                categoryExpenseSelect.appendChild(option.cloneNode(true));
+            });
+        })
+        .catch(error => console.error('Failed to load categories:', error));
+}
+
+function loadIncomeData() {
+    const ledgerId = document.getElementById('ledgerIdValue').value;
+    fetch(`/ledgerEntry/entries?ledgerId=${encodeURIComponent(ledgerId)}`)
+        .then(response => response.json())
+        .then(data => {
+            const incomeData = document.getElementById('incomeData');
+            incomeData.innerHTML = '';
+            data.forEach(entry => {
+                const id = entry.entryId;
+                const row = document.createElement('tr');
+                row.id = `row-${id}`;
+                row.innerHTML = `
+                   <td id="date-${id}">${entry.date}</td>
+                   <td id="amount-${id}">${entry.amount}</td>
+                   <td id="description-${id}">${entry.description}</td>
+                   <td id="edit-category-${id}">${entry.categoryName}</td>
+                   <td id="button-container-${id}">
+                       <button class="edit" onclick="editEntry(${id})">수정</button>
+                       <button class="delete" onclick="deleteEntry(${id})">삭제</button>
+                   </td>
+               `;
+                incomeData.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Error fetching income data:', error));
+}
+
+// 수정 및 삭제 관련 함수
+function submitEditEntry(id,isExpense = false) {
+    if (typeof id !== 'number' || isNaN(id)) {
+        alert("수정하려는 항목의 ID가 유효하지 않습니다.");
+        return;
+    }
+
+    const ledgerId = parseInt(document.getElementById('ledgerIdValue').value);
+    const dateField = document.getElementById(`date-${id}`).innerText;
+    const amountField = document.getElementById(`amount-${id}`).innerText;
+    const descriptionField = document.getElementById(`description-${id}`).innerText;
+    const categoryIdElement = document.getElementById(`edit-category-select-${id}`);
+    if (!categoryIdElement) {
+        console.error('Category select element not found');
+        return;
+    }
+    const categoryId = parseInt(categoryIdElement.value);
+
+    const data = {
+        ledgerId: ledgerId,
+        date: dateField,
+        amount: parseInt(amountField),
+        description: descriptionField,
+        categoryId: categoryId,
+        ledgerType: isExpense
+    };
+
+    fetch(`/ledgerEntry/edit/${id}`, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+    })
+        .then(response => {
+            if (response.ok) {
+                alert(`${isExpense?'지출':'수입'}내역이 성공적으로 수정되었습니다.`);
+                resetEditing(id, isExpense);
+            } else {
+                alert('내역 수정에 실패했습니다.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('오류 발생');
+        });
+}
+
+function resetEditing(id, isExpense=false) {
+    const dateField = document.getElementById(`date-${id}`);
+    const amountField = document.getElementById(`amount-${id}`);
+    const descriptionField = document.getElementById(`description-${id}`);
+    const categorySelect = document.getElementById(`edit-category-select-${id}`);
+    const buttonContainer = document.getElementById(`button-container-${id}`);
+
+    dateField.contentEditable = false;
+    amountField.contentEditable = false;
+    descriptionField.contentEditable = false;
+
+    categorySelect.replaceWith(categorySelect.options[categorySelect.selectedIndex].text);
+
+    buttonContainer.innerHTML = `
+       <button class="edit"onclick="editEntry(${id}, ${isExpense})">수정</button>
+       <button class="delete" onclick="deleteEntry(${id}, ${isExpense})">삭제</button>
+   `;
+}
+
+function editEntry(id, isExpense = false) {
+    if (typeof id !== 'number' || isNaN(id)) {
+        console.error("Invalid ID for editEntry:", id);
+        alert("수정하려는 항목의 ID가 유효하지 않습니다.");
+        return;
+    }
+
+    const dateField = document.getElementById(`date-${id}`);
+    const amountField = document.getElementById(`amount-${id}`);
+    const descriptionField = document.getElementById(`description-${id}`);
+    dateField.contentEditable = true;
+    amountField.contentEditable = true;
+    descriptionField.contentEditable = true;
+
+    const categorySelect = document.createElement('select');
+    categorySelect.id = `edit-category-select-${id}`;
+    categories.forEach(category => {
+        const option = document.createElement('option');
+        option.value = category.categoryId;
+        option.textContent = category.categoryName;
+        categorySelect.appendChild(option);
+    });
+
+    const currentCategoryText = document.getElementById(`edit-category-${id}`).textContent;
+    const currentCategory = categories.find(cat => cat.categoryName === currentCategoryText);
+    if (currentCategory) {
+        categorySelect.value = currentCategory.categoryId;
+    }
+
+    const oldCategoryField = document.getElementById(`edit-category-${id}`);
+    oldCategoryField.innerHTML = '';
+    oldCategoryField.appendChild(categorySelect);
+
+    const buttonContainer = document.getElementById(`button-container-${id}`);
+    buttonContainer.innerHTML = '';
+    const editButton = document.createElement('button');
+    editButton.textContent = '수정 완료';
+    editButton.onclick = () => submitEditEntry(id,isExpense);
+    buttonContainer.appendChild(editButton);
+}
+
+function deleteEntry(id, isExpense = false) {
+    if (typeof id !== 'number' || isNaN(id)) {
+        alert("삭제하려는 항목의 ID가 유효하지 않습니다.");
+        return;
+    }
+
+    if (confirm(`정말로 이 ${isExpense ? '지출' : '수입'}내역을 삭제하시겠습니까?`)) {
+        fetch(`/ledgerEntry/delete/${id}`, {method: 'DELETE'})
             .then(response => {
                 if (response.ok) {
-                    alert('수입 내역이 성공적으로 추가되었습니다.');
-                    closeModal(modalAddIncome);
+                    document.getElementById(`row-${id}`).remove();
+                    alert(`${isExpense ? '지출' : '수입'} 내역이 성공적으로 삭제되었습니다.`);
                 } else {
-                    alert('내역 추가에 실패했습니다.');
+                    alert('삭제에 실패했습니다.');
                 }
             })
             .catch(error => {
-                console.error('Error:', error);
+                console.error('Error deleting entry:', error);
                 alert('오류 발생');
             });
     }
-});
+}
 
-// 수입/지출 내역 모달 열기
+// 모달 열기 및 닫기 관련 함수
 function openModal(tabName = 'defaultOpen') {
     const modal = document.getElementById('modalWindow');
     modal.style.display = 'block';
@@ -123,6 +273,101 @@ function openModal(tabName = 'defaultOpen') {
 
     const tabButton = document.querySelector(`.tablinks[onclick="openTab(event, '${tabName}')"]`);
     if (tabButton) {
-        openTab({ currentTarget: tabButton }, tabName);
+        openTab({currentTarget: tabButton}, tabName);
     }
+}
+
+function closeModal(modal) {
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+// 페이지 로드 시 실행
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('modalWindow');
+    const modalAddIncome = document.getElementById('modalAddIncome');
+    const modalAddExpense = document.getElementById('modalAddExpense');
+
+    window.openAddExpenseModal = function () {
+        modalAddExpense.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    window.openAddIncomeModal = function () {
+        modalAddIncome.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+    }
+
+    document.getElementById('closeModal').onclick = () => closeModal(modal);
+    modalAddIncome.querySelector('.close').onclick = () => closeModal(modalAddIncome);
+    modalAddExpense.querySelector('.close').onclick = () => closeModal(modalAddExpense);
+
+    window.onclick = (event) => {
+        if (event.target == modal || event.target == modalAddIncome || event.target == modalAddExpense) {
+            closeModal(event.target);
+        }
+    };
+    loadCategories();
+    updateYearMonth();
+    loadIncomeData();
+    loadExpenseData();
+});
+
+function submitExpenseData() {
+    const categoryId = document.getElementById('edit-category-expense').value;
+    const ledgerId = document.getElementById('ledgerId-expense').value;
+    const amount = document.getElementById('amount-expense').value;
+    const date = document.getElementById('date-expense').value;
+    const description = document.getElementById('description-expense').value;
+
+    const data = {
+        categoryId: parseInt(categoryId),
+        ledgerId: parseInt(ledgerId),
+        amount: parseInt(amount),
+        date: date,
+        description: description,
+        ledgerType: true // 지출 내역이므로 true
+    };
+
+    fetch('/ledgerEntry/addExpense', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+    })
+        .then(response => response.json())
+        .then(data => {
+            alert('지출 내역이 성공적으로 추가되었습니다.');
+            closeModal(modalAddExpense);
+            loadExpenseData(); // 지출 내역을 불러오는 함수 호출
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('오류 발생');
+        });
+}
+function loadExpenseData() {
+    const ledgerId = document.getElementById('ledgerIdValue').value;
+    fetch(`/ledgerEntry/entries?ledgerId=${encodeURIComponent(ledgerId)}&ledgerType=true`)
+        .then(response => response.json())
+        .then(data => {
+            const expenseTableBody = document.getElementById('expenseTableBody');
+            expenseTableBody.innerHTML = '';
+            data.forEach(entry => {
+                const id = entry.entryId;
+                const row = document.createElement('tr');
+                row.id = `row-${id}`;
+                row.innerHTML = `
+                   <td id="date-${id}">${entry.date}</td>
+                   <td id="amount-${id}">${entry.amount}</td>
+                   <td id="description-${id}">${entry.description}</td>
+                   <td id="edit-category-${id}">${entry.categoryName}</td>
+                   <td id="button-container-${id}">
+                       <button class="edit" onclick="editEntry(${id}, true)">수정</button>
+                       <button class="delete" onclick="deleteEntry(${id}, true)">삭제</button>
+                   </td>
+               `;
+                expenseTableBody.appendChild(row);
+            });
+        })
+        .catch(error => console.error('Error fetching expense data:', error));
 }

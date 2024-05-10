@@ -33,6 +33,7 @@
       <thead>
       <tr>
         <th>번호</th>
+        <th>가계부 번호</th>
         <th>가계부 이름</th>
         <th>생성 날짜</th>
         <th>수정/삭제</th>
@@ -42,6 +43,7 @@
       <!-- 실제 데이터는 서버에서 타임리프를 통해 주입 -->
       <tr th:each="ledger, iterStat : ${ledgers}">
         <td th:text="${iterStat.count}"></td>
+        <td th:text="${ledger.ledgerId}"></td>
         <td th:text="${ledger.title}"></td>
         <td th:text="${ledger.createdAt}"></td>
         <td>

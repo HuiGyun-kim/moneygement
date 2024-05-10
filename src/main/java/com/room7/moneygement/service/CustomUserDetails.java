@@ -32,6 +32,7 @@ public class CustomUserDetails implements UserDetails {
 	public Long getUserId() {
 		return user.getUserId();
 	}
+
 	@Override
 	public boolean isAccountNonExpired() {
 		return true; // 계정 만료 여부를 처리, 여기선 항상 true
