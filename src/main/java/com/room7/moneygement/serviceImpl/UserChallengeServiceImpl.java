@@ -1,5 +1,6 @@
 package com.room7.moneygement.serviceImpl;
 
+import com.room7.moneygement.model.UserChallenge;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserChallengeServiceImpl implements UserChallengeService {
 	private final UserChallengeRepository userChallengeRepository;
+
+	public UserChallenge addUserChallenge(UserChallenge userChallenge){
+		return userChallengeRepository.save(userChallenge);
+	}
 
 }
 

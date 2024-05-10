@@ -64,6 +64,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers("/", "/login", "/signup", "/signup-email", "/users/**", "/ledgerEntry/**",
 								"/diary/**",
+								"/userChallenges/**","/attendance/**",
 								"/users/send-id-verification-code", "/users/verify-id-code", "/users/verifyEmail",
 								"/sendEmail",
 								"/users/sendEmail", "/emailVerified", "/find-id", "/users/find-id", "/find-password",
@@ -84,7 +85,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 				.exceptionHandling(e -> e
 						.accessDeniedPage("/access-denied"))
 				.csrf(csrf -> csrf
-						.ignoringRequestMatchers("/ledgerEntry/**", "/users/sendEmail")
+						.ignoringRequestMatchers("/ledgerEntry/**", "/users/sendEmail", "/diary/**", "/userChallenges/**")
 				);
 		return http.build();
 	}
