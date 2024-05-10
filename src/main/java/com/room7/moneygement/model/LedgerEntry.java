@@ -3,6 +3,8 @@ package com.room7.moneygement.model;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.CreationTimestamp;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,10 +26,11 @@ public class LedgerEntry {
 
 	@ManyToOne
 	@JoinColumn(name = "ledger_id")
-	private Ledger ledgerId;
+	private Ledger ledger;
 
-	@Column(name = "category_id")
-	private Long categoryId;
+	@ManyToOne
+	@JoinColumn(name = "category_id",referencedColumnName = "category_id")
+	private Category category;
 
 	@Column(name = "receipt_id")
 	private Long receiptId;
@@ -36,24 +39,25 @@ public class LedgerEntry {
 
 	private String description;
 
-	private LocalDate date;
+	private LocalDate date = LocalDate.now();
 
+	@CreationTimestamp
 	@Column(name = "created_at")
 	private LocalDateTime createAt;
 
 	@Column(name = "ledger_type", columnDefinition = "TINYINT(1)")
-	private Boolean LedgerType;
+	private Boolean ledgerType;
 
 	public LedgerEntry() {
 
 	}
 
 	public LedgerEntry(Ledger ledger, Long amount, LocalDate date, String description, boolean ledgerType) {
-		this.ledgerId = ledger;
+		this.ledger = ledger;
 		this.amount = amount;
 		this.date = date;
 		this.description = description;
-		this.LedgerType = ledgerType;
+		this.ledgerType = ledgerType;
 	}
 }
 

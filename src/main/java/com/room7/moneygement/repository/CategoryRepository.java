@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import com.room7.moneygement.model.Category;
 
 @Repository
-public interface CategoryRepository extends JpaRepository<Category, String> {
+public interface CategoryRepository extends JpaRepository<Category, Long> {
 }
