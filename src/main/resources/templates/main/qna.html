@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
-    <title>QnA</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moneygement 소비 QnA</title>
+    <link rel="stylesheet" href="/css/main/qna.css"> <!-- CSS 파일을 로드합니다. -->
 </head>
 <body>
-<form th:action="@{/qna}" method="post">
-    <input type="text" name="question" placeholder="Enter your question" required>
-    <button type="submit">Ask</button>
-</form>
-<div th:if="${question != null}">
-    <p><strong>Question:</strong> <span th:text="${question}"></span></p>
-    <p><strong>Answer:</strong> <span th:text="${answer}"></span></p>
+<div class="chat-container" id="chatContainer">
+    <div class="chat-box" id="chatBox"></div>
+    <form id="messageForm">
+        <input type="text" id="userInput" placeholder="질문을 입력하세요.">
+        <button type="submit">전송</button>
+    </form>
 </div>
+
+<script src="/js/qna.js"></script> <!-- JavaScript 파일을 로드합니다. -->
 </body>
 </html>
