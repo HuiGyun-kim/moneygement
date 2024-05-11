@@ -1,15 +1,13 @@
 package com.room7.moneygement.serviceImpl;
 import com.room7.moneygement.repository.FollowRepository;
-import java.time.LocalDateTime;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.room7.moneygement.model.Ledger;
 import com.room7.moneygement.model.User;
-import com.room7.moneygement.repository.LedgerRepository;
 import com.room7.moneygement.repository.UserRepository;
 import com.room7.moneygement.service.UserService;
 import lombok.RequiredArgsConstructor;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +15,7 @@ public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;
 	private final FollowRepository followRepository;
+	private final BCryptPasswordEncoder encoder;
 
 	// private final PasswordEncoder passwordEncoder;
 	@Override
@@ -48,9 +47,36 @@ public class UserServiceImpl implements UserService {
 	// public boolean checkPassword(String rawPassword, String encodedPassword) {
 	// 	return passwordEncoder.matches(rawPassword, encodedPassword);
 	// }
+
 	@Override
 	public User findById(Long id) { // findById 메서드 구현
 		return userRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("User not found"));
+	}
+
+	// 비밀번호 확인
+	public boolean checkPassword(User user, String password) {
+		return encoder.matches(password, user.getPassword());
+	}
+
+	// 비밀번호 변경
+	@Transactional
+	public boolean changePassword(User user, String currentPassword, String newPassword) {
+		if (user != null && encoder.matches(currentPassword, user.getPassword())) {
+			// 현재 비밀번호가 일치하는 경우 새 비밀번호로 변경
+			user.setPassword(encoder.encode(newPassword));
+			userRepository.save(user);
+			return true;
+		}
+		return false;
+	}
+
+	// 회원 탈퇴
+	@Transactional
+	public User deleteUser(User user) {
+		// 회원 탈퇴 시 연관된 정보들도 삭제해야함
+		// 방명록, 댓글, 팔로우 등에서 해당 user의 정보 삭제후
+		userRepository.delete(user);
+		return user;
 	}
 }

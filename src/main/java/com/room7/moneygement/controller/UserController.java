@@ -21,11 +21,8 @@ import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -136,5 +133,17 @@ public class UserController {
 				return result;
 			})
 			.orElse(Collections.emptyMap());
+	}
+
+	// 마이페이지 - 회원정보 수정 / 탈퇴 뷰
+	@GetMapping("/change-password")
+	public String changePassword() {
+		return "change-Password";
+	}
+
+	// 마이페이지 -  탈퇴 뷰
+	@GetMapping("/delete-account")
+	public String deleteAccount() {
+		return "delete-account";
 	}
 }

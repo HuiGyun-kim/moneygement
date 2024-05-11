@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -65,7 +66,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 						.requestMatchers("/", "/login", "/signup", "/signup-email", "/users/**", "/ledgerEntry/**",
 								"/diary/**",
 								"/users/send-id-verification-code", "/users/verify-id-code", "/users/verifyEmail",
-								"/sendEmail",
+								"/sendEmail", "/qna/**",
 								"/users/sendEmail", "/emailVerified", "/find-id", "/users/find-id", "/find-password",
 								"/ledgers/**", "/css/**", "/js/**", "/img/**").permitAll()
 						.requestMatchers("/manager/**").hasAuthority("ADMIN")
@@ -84,7 +85,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 				.exceptionHandling(e -> e
 						.accessDeniedPage("/access-denied"))
 				.csrf(csrf -> csrf
-						.ignoringRequestMatchers("/ledgerEntry/**", "/users/sendEmail")
+						.ignoringRequestMatchers("/ledgerEntry/**", "/users/sendEmail","/qna/**")
 				);
 		return http.build();
 	}
@@ -136,13 +137,15 @@ public class SecurityConfig implements WebMvcConfigurer {
 				.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메서드
 				.allowCredentials(true);
 	}
+
+	  // 패스워드 인코더로 사용할 빈 등록
+ 	@Bean
+ 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
+ 		return new BCryptPasswordEncoder();
+ 	}
 }
 
-//  // 패스워드 인코더로 사용할 빈 등록
-// 	@Bean
-// 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-// 		return new BCryptPasswordEncoder();
-// 	}
+
 //
 // }
 //
