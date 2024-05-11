@@ -3,50 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/main/poorchallenge.css}"/>
     <link rel="stylesheet" th:href="@{/css/main/style.css}"/>
     <link rel="icon" type="image/png" href="/img/main/favicon.png">
     <script th:src="@{/js/poorChallenge.js}"></script>
 
     <title>이달의 거지 챌린지</title>
-    <link rel="stylesheet" href="../../static/css/main/poorChallenge.css">
 </head>
 <body>
 <a id="userId" style="display: none;" th:attr="data-user-id=${currentUser.userId}"></a>
 <div th:replace="~{layout/header.html::main-header}"></div>
-<div>
-    <a class="poorchallenge">이달의 거지</a>
-</div>
-<main>
-    <div class="logo_img">
-        <img th:src="@{/img/main/logo.png}" alt="logo" class="logo-img">
-        <div class = "logoTitle">
-            <h3>
-                현명한 소비습관 만들기💸
-            </h3>
-            <h4>
-                moneygement 이달의 거지 챌린지에 참가해 목표금액을 설정하고 이달의 거지에 도전해보세요!
-            </h4>
-            <div class="goalset-group">
-                <input type="number" id="target_amount" name="goal-budget" placehold="목표 금액을 입력해주세요">
-                <button id="targetButton">등록</button>
-            </div>
+<div class="poorchallenge-container">
+    <div class="container-mt-4-sidebar-container">
+        <div th:replace="~{layout/sidebar.html::main-sidebar}"></div>
+    </div>
+    <div class="container">
+        <div>
+            <span class="poorchallenge">이달의 거지</span>
         </div>
-    </div>
+        <main>
+            <div class="logo_img">
+                <img th:src="@{/img/main/logo.png}" alt="logo" class="logo-img">
+                <div class = "logoTitle">
+                    <h3>
+                        현명한 소비습관 만들기💸
+                    </h3>
+                    <h4>
+                        moneygement 이달의 거지 챌린지에 참가해 목표금액을 설정하고 이달의 거지에 도전해보세요!
+                    </h4>
+                    <div class="goalset-group">
+                        <input type="number" id="target_amount" name="goal-budget" placehold="목표 금액을 입력해주세요">
+                        <button id="targetButton">등록</button>
+                    </div>
+                </div>
+            </div>
 
-    <div class="goalset-notice">
-        <img th:src="@{/img/main/lightgreen_round.png}" alt="circle" class="circle-img">
-        <a id="target">목표 금액: </a>
+            <div class="goalset-notice">
+                <img th:src="@{/img/main/lightgreen_round.png}" alt="circle" class="circle-img">
+                <a id="target">목표 금액: </a>
+            </div>
+            <div class="goalset-notice">
+                <img th:src="@{/img/main/green_round.png}" alt="circle" class="circle-img">
+                <a id="expense">지출 금액: </a>
+            </div>
+            <div class = "alert">
+                앞으로 목표 금액까지
+                <a></a>
+                남았습니다!
+            </div>
+        </main>
     </div>
-    <div class="goalset-notice">
-        <img th:src="@{/img/main/green_round.png}" alt="circle" class="circle-img">
-        <a id="expense">지출 금액: </a>
-    </div>
-    <div class = "alert">
-        앞으로 목표 금액까지
-        <a></a>
-        남았습니다!
-    </div>
-</main>
+</div>
 </body>
 </html>

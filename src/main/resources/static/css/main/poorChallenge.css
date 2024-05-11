@@ -18,8 +18,18 @@ html, body{
 header{
     margin-bottom: 50px;
 }
+
 body{
     font-family: 'Interop';
+}
+
+.container-mt-4-sidebar-container{
+    width: 250px;
+}
+
+.poorchallenge-container{
+    display: flex;
+    flex-direction: row;
 }
 
 main{
@@ -32,7 +42,6 @@ main{
 }
 
 .poorchallenge{
-    margin-left: 25%;
     text-align: left;
     color: white;
     background-color: #1A4F32;
