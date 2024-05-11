@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
 @RequestMapping("/qna")
@@ -24,11 +25,6 @@ public class QnAController {
 	@Autowired
 	public QnAController(QnAService qnaService) {
 		this.qnaService = qnaService;
-	}
-
-	@GetMapping("/chat")
-	public String showQnaPage() {
-		return "qnachat"; // qnachat.html 파일 이름과 동일해야 합니다.
 	}
 
 	@PostMapping("/ask")
@@ -58,6 +54,11 @@ public class QnAController {
 	private String communicateWithAlan(String question) {
 		// 앨런 AI API와의 통신을 위한 RestTemplate 객체 생성
 		RestTemplate restTemplate = new RestTemplate();
+		String uri = UriComponentsBuilder
+				.fromHttpUrl(alanApiUrl)
+				.queryParam("content", question)
+				.queryParam("client_id", alanApiKey)
+				.toUriString();
 		// 앨런 AI API에 POST 요청을 보냅니다.
 		String alanApiResponse = restTemplate.getForObject(alanApiUrl + "?content=" + question, String.class);
 		return alanApiResponse;

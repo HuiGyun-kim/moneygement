@@ -1,15 +1,7 @@
 // 사용자가 입력한 질문을 서버에 전송하고 답변을 받아오는 함수
 function communicateWithAlan(userInput) {
     // 질문을 서버에 전송하고 답변을 받아옵니다.
-    fetch('/qna/ask', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            question: userInput
-        })
-    })
+    fetch(`/qna/ask?question=${userInput}`)
         .then(response => response.json())
         .then(data => {
             // 받은 답변을 채팅 창에 표시합니다.
