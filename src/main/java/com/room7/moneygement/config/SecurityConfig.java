@@ -63,8 +63,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 		http
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers("/", "/login", "/signup", "/signup-email", "/users/**", "/ledgerEntry/**",
-								"/diary/**",
-								"/userChallenges/**","/attendance/**",
+								"/diary/**", "/diary/saveDiary",
 								"/users/send-id-verification-code", "/users/verify-id-code", "/users/verifyEmail",
 								"/sendEmail",
 								"/users/sendEmail", "/emailVerified", "/find-id", "/users/find-id", "/find-password",
