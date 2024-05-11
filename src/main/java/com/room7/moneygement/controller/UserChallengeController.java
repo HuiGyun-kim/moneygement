@@ -1,6 +1,5 @@
 package com.room7.moneygement.controller;
 
-import com.room7.moneygement.dto.UserChallengeDTO;
 import com.room7.moneygement.model.LedgerEntry;
 import com.room7.moneygement.model.UserChallenge;
 import com.room7.moneygement.repository.LedgerEntryRepository;
@@ -73,5 +72,13 @@ public class UserChallengeController {
 
 
 		return ResponseEntity.ok(totalExpenses);
+	}
+	@GetMapping("/isJoinDate/{userId}")
+	public ResponseEntity<Boolean> isJoinDate(@PathVariable Long userId) {
+		LocalDate today = LocalDate.now();
+		LocalDateTime startDateTime = today.withDayOfMonth(1).atStartOfDay();
+		LocalDateTime endDateTime = today.withDayOfMonth(today.lengthOfMonth()).atTime(23, 59, 59, 999999999);
+		boolean hasJoined = userChallengeRepository.existsByUserIdAndJoinDateBetween(userId, startDateTime, endDateTime);
+		return ResponseEntity.ok(hasJoined);
 	}
 }

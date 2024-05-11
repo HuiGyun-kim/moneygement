@@ -26,6 +26,11 @@ document.addEventListener('DOMContentLoaded', function() {
         displayExpense(userId);
         update();
     });
+    checkParticipationThisMonth(userId).then(isJoined => {
+        if (isJoined) {
+            document.querySelector('.goalset-group').style.display = 'none';
+        }
+    });
     displayTarget(userId);
     displayExpense(userId);
     update();
@@ -71,3 +76,11 @@ document.addEventListener('DOMContentLoaded', function() {
         const remainAmountBox = document.querySelector('.alert a');
         remainAmountBox.textContent = `${remain}₩`;
     }
+
+    function checkParticipationThisMonth(userId) {
+    return fetch(`/userChallenges/isJoinDate/${userId}`)
+        .then(response => response.json())
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+}
