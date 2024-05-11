@@ -10,6 +10,7 @@ public interface LedgerEntryService {
 	void updateEntry(LedgerEntry entry);
 	void deleteEntry(Long id);
 	LedgerEntry getEntryById(Long id);
+	List<LedgerEntryDTO> getEntriesByLedgerAndType(Long ledgerId, Boolean ledgerType);
 	List<LedgerEntryDTO> getMonthlyIncomeSummary(Long ledgerId, int year, int month);
 	List<LedgerEntryDTO> getMonthlyExpenseSummary(Long ledgerId, int year, int month);
 }

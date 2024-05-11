@@ -26,12 +26,14 @@ public class LedgerEntryServiceImpl implements LedgerEntryService {
 	private final LedgerRepository ledgerRepository;
 	private final CategoryRepository categoryRepository;
 
+	@Override
 	public List<LedgerEntryDTO> getEntriesByLedgerAndType(Long ledgerId, Boolean ledgerType) {
 		Ledger ledger = ledgerRepository.findById(ledgerId).orElse(null);
-		if (ledger == null)
+		if (ledger == null) {
 			return Collections.emptyList();
+		}
 
-		List<LedgerEntry> entries = ledgerEntryRepository.findByLedger_ledgerIdAndLedgerType(ledgerId, ledgerType);
+		List<LedgerEntry> entries = ledgerEntryRepository.findByLedgerAndLedgerType(ledger, ledgerType);
 		return entries.stream()
 			.map(entry -> new LedgerEntryDTO(
 				entry.getEntryId(),

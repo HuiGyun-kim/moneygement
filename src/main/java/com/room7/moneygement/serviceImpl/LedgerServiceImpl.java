@@ -22,14 +22,12 @@ public class LedgerServiceImpl implements LedgerService {
 	private final UserService userService;
 	private final LedgerEntryRepository ledgerEntryRepository;
 
+	@Override
 	public List<LedgerDTO> getLedgersByUser(Long userId) {
 		User user = userService.findUserById(userId);
 		List<Ledger> ledgers = ledgerRepository.findByUserId(user);
 		return ledgers.stream()
-			.map(ledger -> new LedgerDTO(
-				ledger.getLedgerId(),
-				ledger.getTitle(),
-				ledger.getCreatedAt()))
+			.map(ledger -> new LedgerDTO(ledger.getLedgerId(), ledger.getTitle(), ledger.getCreatedAt()))
 			.collect(Collectors.toList());
 	}
 	@Override
@@ -45,10 +43,6 @@ public class LedgerServiceImpl implements LedgerService {
 	@Override
 	public void deleteLedger(Long id) {
 		ledgerRepository.deleteById(id);
-	}
-	@Override
-	public List<Long> getLedgerIdsByUser(Long userId) {
-		return ledgerRepository.findLedgerIdsByUserId(userId);
 	}
 }
 

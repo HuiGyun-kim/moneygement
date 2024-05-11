@@ -18,6 +18,7 @@
 <div class="history-container">
     <div th:replace="~{layout/sidebar.html::main-sidebar}"></div>
     <div class="col-md-6 p-3">
+        <input type="hidden" id="currentUserId" th:value="${currentUser.userId}">
         <h2 class="section-title">수입 / 지출 내역</h2>
         <hr class="section-divider">
         <span id="currentYear" class="year"></span>
@@ -75,7 +76,7 @@
                 </div>
             </div>
             <div class="asset-info">
-            <!--데이터를 동적으로 생성-->
+                <!--데이터를 동적으로 생성-->
             </div>
         </div>
     </div>
@@ -95,6 +96,15 @@
         <span class="close" id="closeModal">&times;</span>
         <h3 id="modalTitle">수입/지출 내역</h3>
 
+        <!-- 여기에 추가 -->
+        <div class="ledger-select">
+            <label for="ledgerSelect">가계부 선택:</label>
+            <select id="ledgerSelect" onchange="loadIncomeData(); loadExpenseData();">
+                <option value="">가계부 선택</option>
+                <!-- 사용자의 가계부 목록을 동적으로 추가 -->
+            </select>
+        </div>
+
         <div class="tab">
             <!-- 수입/지출 탭을 전환할 수 있도록 openTab 함수와 연결 -->
             <button class="tablinks" onclick="openTab(event, 'incomeTab')">수입 내역</button>
@@ -106,7 +116,6 @@
             <div class="income-month">
                 <span id="currentIncomeYearMonth"></span>
                 <!-- 수입 내역 추가 모달 열기 -->
-                <input type="hidden" id="ledgerIdValue" th:value="${#lists.isEmpty(ledgerIds) ? 'default' : ledgerIds.get(0)}" />
                 <button class="btn-addhistory-info-income" onclick="openAddIncomeModal()">수입 내역 추가</button>
             </div>
             <table class="table-center">
@@ -154,9 +163,6 @@
         <span class="close">&times;</span>
         <h3>수입 내역 추가</h3>
         <form id="formAddIncome">
-            <label for="ledgerId">가계부 ID:</label>
-            <input type="text" id="ledgerId" name="ledgerId" required><br>
-
             <label for="date">날짜:</label>
             <input type="date" id="date" name="date" required><br>
 
@@ -180,9 +186,6 @@
         <span class="close">&times;</span>
         <h3>지출 내역 추가</h3>
         <form id="formAddExpense" onsubmit="submitExpenseData(); return false;">
-            <label for="ledgerId-expense">가계부 ID:</label>
-            <input type="text" id="ledgerId-expense" name="ledgerId" required><br>
-
             <label for="date-expense">날짜:</label>
             <input type="date" id="date-expense" name="date" required><br>
 
@@ -200,6 +203,11 @@
         </form>
     </div>
 </div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    window.currentUserId = /*[[${currentUser.userId}]]*/ null;
+    /*]]>*/
+</script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
 <script th:src="@{/js/history-modal.js}"></script>
 <script th:src="@{/js/calendar.js}"></script>

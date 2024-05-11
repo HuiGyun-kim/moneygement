@@ -85,10 +85,6 @@ public class MainController {
 
 	@GetMapping("/history")
 	public String history(Model model,@AuthenticationPrincipal CustomUserDetails userDetails) {
-		Long userId = userDetails.getUserId();
-		List<Long> ledgerIds = ledgerService.getLedgerIdsByUser((userId));
-
-		model.addAttribute("ledgerIds", ledgerIds);
 		return "layout/history";
 	}
 }

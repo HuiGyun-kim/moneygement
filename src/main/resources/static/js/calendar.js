@@ -3,33 +3,41 @@ const nextMonthButton = document.getElementById('nextMonth');
 const calendarDates = document.getElementById('calendarDates');
 const currentYear = document.getElementById('currentYear');
 const currentMonth = document.getElementById('currentMonth');
-const ledgerIdInput = document.getElementById('ledgerIdValue');
-const ledgerId = ledgerIdInput.value; // ledgerId 값을 가져옵니다.
 let date = new Date();
+let selectedLedgerId;
+let selectedUserId;
 
+document.addEventListener('DOMContentLoaded', () => {
+    selectedUserId = window.currentUserId;
+    renderCalendar();
+});
+
+// 가계부 선택 드롭다운 변경 시 처리
+document.getElementById('ledgerSelect').addEventListener('change', (event) => {
+    selectedUserId = event.target.options[event.target.selectedIndex].dataset.userId;
+});
 // 각 날짜에 대한 수입과 지출 데이터를 서버에서 불러오는 함수
-async function fetchDataForDate(ledgerId, year, month) {
+async function fetchDataForDate(userId, year, month) {
     try {
-        const incomePromise = fetch(`/ledgerEntry/monthly-income-summary?ledgerId=${ledgerId}&year=${year}&month=${month}`);
-        const expensePromise = fetch(`/ledgerEntry/monthly-expense-summary?ledgerId=${ledgerId}&year=${year}&month=${month}`);
+        const response = await fetch(`/ledgerEntry/entriesAll?userId=${userId}&year=${year}&month=${month}`);
 
-        const [incomeResponse, expenseResponse] = await Promise.all([incomePromise, expensePromise]);
-
-        if (!incomeResponse.ok || !expenseResponse.ok) {
+        if (!response.ok) {
             throw new Error('Failed to fetch data');
         }
-        const incomeData = await incomeResponse.json();
-        const expenseData = await expenseResponse.json();
+        const data = await response.json();
 
         // 데이터를 날짜별로 합치기
         const indexedData = {};
-        incomeData.forEach(entry => {
+        data.forEach(entry => {
             const day = new Date(entry.date).getDate();
-            indexedData[day] = {...indexedData[day], income: entry.amount};
-        });
-        expenseData.forEach(entry => {
-            const day = new Date(entry.date).getDate();
-            indexedData[day] = {...indexedData[day], expense: entry.amount};
+            if (!indexedData[day]) {
+                indexedData[day] = { income: 0, expense: 0 };
+            }
+            if (entry.ledgerType) {
+                indexedData[day].expense += entry.amount;
+            } else {
+                indexedData[day].income += entry.amount;
+            }
         });
 
         return indexedData;
@@ -44,10 +52,10 @@ async function fetchDataForDate(ledgerId, year, month) {
 async function renderCalendar() {
     calendarDates.innerHTML = '';
 
-
     const year = date.getFullYear();
     const month = date.getMonth();
-    const dataForMonth = await fetchDataForDate(ledgerId, year, month + 1); // 데이터 로드
+    const userId = selectedUserId; // 로그인한 유저의 ID
+    const dataForMonth = await fetchDataForDate(userId, year, month + 1);
 
     currentYear.textContent = year;
     currentMonth.textContent = month + 1 + '월';
@@ -112,5 +120,3 @@ nextMonthButton.addEventListener('click', () => {
     date.setMonth(date.getMonth() + 1);
     renderCalendar();
 });
-
-renderCalendar();

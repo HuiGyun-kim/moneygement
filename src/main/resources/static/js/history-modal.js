@@ -29,14 +29,13 @@ document.getElementById('formAddIncome').onsubmit = function (event) {
 
 function submitFormData() {
     const categoryId = document.getElementById('edit-category').value;
-    const ledgerId = document.getElementById('ledgerId').value;
     const amount = document.getElementById('amount').value;
     const date = document.getElementById('date').value;
     const description = document.getElementById('description').value;
 
     const data = {
         categoryId: parseInt(categoryId),
-        ledgerId: parseInt(ledgerId),
+        ledgerId: selectedLedgerId,
         amount: parseInt(amount),
         date: date,
         description: description,
@@ -59,7 +58,31 @@ function submitFormData() {
             alert('오류 발생');
         });
 }
-
+function loadLedgers() {
+    const ledgerSelect = document.getElementById('ledgerSelect');
+    const userId = window.currentUserId;
+    if (userId) {
+        fetch(`/ledgers/user/${userId}`)
+            .then(response => response.json())
+            .then(ledgers => {
+                ledgerSelect.addEventListener('change', (event) => {
+                    selectedLedgerId = event.target.value;
+                    selectedUserId = event.target.options[event.target.selectedIndex].dataset.userId;
+                    renderCalendar(); // 가계부 변경 시 달력 다시 렌더링
+                });
+                ledgers.forEach(ledger => {
+                    const option = document.createElement('option');
+                    option.value = ledger.ledgerId;
+                    option.textContent = ledger.title;
+                    option.dataset.userId = userId; // dataset.userId 값 설정
+                    ledgerSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Failed to load ledgers:', error));
+    } else {
+        console.error('currentUserId element not found');
+    }
+}
 function loadCategories() {
     fetch('/ledgerEntry/categories')
         .then(response => response.json())
@@ -81,7 +104,12 @@ function loadCategories() {
 }
 
 function loadIncomeData() {
-    const ledgerId = document.getElementById('ledgerIdValue').value;
+    const ledgerId = document.getElementById('ledgerSelect').value;
+    if (!ledgerId) {
+        clearIncomeData();
+        return;
+    }
+
     fetch(`/ledgerEntry/entries?ledgerId=${encodeURIComponent(ledgerId)}`)
         .then(response => response.json())
         .then(data => {
@@ -113,6 +141,13 @@ function loadIncomeData() {
         })
         .catch(error => console.error('Error fetching income data:', error));
 }
+function clearIncomeData() {
+    const incomeData = document.getElementById('incomeData');
+    incomeData.innerHTML = '';
+    const message = document.createElement('tr');
+    message.innerHTML = '<td colspan="5">가계부를 선택하세요.</td>';
+    incomeData.appendChild(message);
+}
 // 수정 및 삭제 관련 함수
 function submitEditEntry(id,isExpense = false) {
     if (typeof id !== 'number' || isNaN(id)) {
@@ -120,7 +155,6 @@ function submitEditEntry(id,isExpense = false) {
         return;
     }
 
-    const ledgerId = parseInt(document.getElementById('ledgerIdValue').value);
     const dateField = document.getElementById(`date-${id}`).innerText;
     const amountField = document.getElementById(`amount-${id}`).innerText;
     const descriptionField = document.getElementById(`description-${id}`).innerText;
@@ -132,7 +166,7 @@ function submitEditEntry(id,isExpense = false) {
     const categoryId = parseInt(categoryIdElement.value);
 
     const data = {
-        ledgerId: ledgerId,
+        ledgerId: selectedLedgerId,
         date: dateField,
         amount: parseInt(amountField),
         description: descriptionField,
@@ -300,18 +334,18 @@ document.addEventListener('DOMContentLoaded', () => {
     updateYearMonth();
     loadIncomeData();
     loadExpenseData();
+    loadLedgers();
 });
 
 function submitExpenseData() {
     const categoryId = document.getElementById('edit-category-expense').value;
-    const ledgerId = document.getElementById('ledgerId-expense').value;
     const amount = document.getElementById('amount-expense').value;
     const date = document.getElementById('date-expense').value;
     const description = document.getElementById('description-expense').value;
 
     const data = {
         categoryId: parseInt(categoryId),
-        ledgerId: parseInt(ledgerId),
+        ledgerId: selectedLedgerId,
         amount: parseInt(amount),
         date: date,
         description: description,
@@ -335,17 +369,26 @@ function submitExpenseData() {
         });
 }
 function loadExpenseData() {
-    const ledgerId = document.getElementById('ledgerIdValue').value;
+    const ledgerId = document.getElementById('ledgerSelect').value;
+    if (!ledgerId) {
+        clearExpenseData();
+        return;
+    }
     fetch(`/ledgerEntry/entries?ledgerId=${encodeURIComponent(ledgerId)}&ledgerType=true`)
         .then(response => response.json())
         .then(data => {
             const expenseTableBody = document.getElementById('expenseTableBody');
             expenseTableBody.innerHTML = '';
-            data.forEach(entry => {
-                const id = entry.entryId;
+            if (data.length === 0) {
                 const row = document.createElement('tr');
-                row.id = `row-${id}`;
-                row.innerHTML = `
+                row.innerHTML = '<td colspan="5">지출 내역이 없습니다.</td>';
+                expenseTableBody.appendChild(row);
+            } else {
+                data.forEach(entry => {
+                    const id = entry.entryId;
+                    const row = document.createElement('tr');
+                    row.id = `row-${id}`;
+                    row.innerHTML = `
                    <td id="date-${id}">${entry.date}</td>
                    <td id="amount-${id}">${entry.amount}</td>
                    <td id="description-${id}">${entry.description}</td>
@@ -355,8 +398,16 @@ function loadExpenseData() {
                        <button class="delete" onclick="deleteEntry(${id}, true)">삭제</button>
                    </td>
                `;
-                expenseTableBody.appendChild(row);
-            });
+                    expenseTableBody.appendChild(row);
+                });
+            }
         })
         .catch(error => console.error('Error fetching expense data:', error));
+}
+function clearExpenseData() {
+    const expenseTableBody = document.getElementById('expenseTableBody');
+    expenseTableBody.innerHTML = '';
+    const row = document.createElement('tr');
+    row.innerHTML = '<td colspan="5">가계부를 선택하세요.</td>';
+    expenseTableBody.appendChild(row);
 }

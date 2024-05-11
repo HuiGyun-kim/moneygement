@@ -50,8 +50,5 @@ public class User {
 
 	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Follow> followings = new ArrayList<>();
-
-	
-
 }
 

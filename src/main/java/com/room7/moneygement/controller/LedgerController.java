@@ -2,6 +2,7 @@ package com.room7.moneygement.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -85,5 +86,10 @@ public class LedgerController {
 	public String deleteLedger(@PathVariable Long id) {
 		ledgerService.deleteLedger(id);
 		return "redirect:/ledgers/ledger";
+	}
+	@GetMapping("/user/{userId}")
+	public ResponseEntity<List<LedgerDTO>> getLedgersByUser(@PathVariable Long userId) {
+		List<LedgerDTO> ledgers = ledgerService.getLedgersByUser(userId);
+		return ResponseEntity.ok(ledgers);
 	}
 }
