@@ -79,10 +79,11 @@
             <div class="fortune-widget">
                 <h4>오늘의 금전운</h4>
                 <div class="input-group">
-                    <input type="number" id="birthYearInput" placeholder="태어난 년도를 입력하세요" oninput="limitLength(this)" />
-                    <button id="fortuneButton">확인</button>
+                    <input type="number" id="birthYearInput" placeholder="태어난 년도 4자리를 입력하세요" oninput="limitInputLength(this)" />
+                    <button id="fortuneButton" disabled>확인</button>
                 </div>
-                <div id="fortuneResult" class="fortune-result"></div>
+                <div id="loadingSpinner" class="loading-spinner" style="display: none;"></div>
+                <div id="fortuneResult" class="fortune-result" style="display: none;"></div>
             </div>
         </div>
     </div>

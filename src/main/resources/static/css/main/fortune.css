@@ -1,47 +1,82 @@
 .fortune-widget {
-    background-color: #f8f9fa;
-    border-radius: 8px;
+    background-color: #f5f5f5;
+    border-radius: 10px;
     padding: 20px;
     margin-bottom: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 357px;
 }
 
 .fortune-widget h4 {
-    font-size: 18px;
+    color: #333;
+    font-size: 24px;
     font-weight: bold;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    text-align: center;
+    text-transform: uppercase;
 }
 
 .input-group {
     display: flex;
-    margin-bottom: 10px;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
 }
 
 #birthYearInput {
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 16px;
+    outline: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
     flex: 1;
-    padding: 8px;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    margin-right: 10px;
+}
+
+#birthYearInput:focus {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 #fortuneButton {
-    padding: 8px 16px;
-    background-color: #007bff;
+    background-color: #ccc;
     color: #fff;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 10px;
 }
 
 #fortuneButton:hover {
-    background-color: #0056b3;
+    background-color: #ffdf00;
 }
 
 .fortune-result {
-    margin-top: 10px;
-    padding: 10px;
     background-color: #fff;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
+    border-radius: 5px;
+    padding: 20px;
+    font-size: 18px;
+    text-align: left;
+    line-height: 1.6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#fortuneButton:not([disabled]) {
+    background-color: #ffd700;
+    color: #333;
+    cursor: pointer;
+}
+
+.loading-spinner {
+    width: 380px;
+    height: 280px;
+    margin-top: -40px;
+    background-image: url(/img/main/dalacat.gif);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
