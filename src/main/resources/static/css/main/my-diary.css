@@ -13,7 +13,6 @@ html, body{
     height: 100px;
     margin: 0;
     padding: 0;
-    font-family: 'Interop';
 }
 
 .myDiary-container{
@@ -23,6 +22,10 @@ html, body{
 
 .container-mt-4-sidebar-container{
     width: 250px;
+}
+
+.containers{
+    font-family: 'Interop';
 }
 
 nav{

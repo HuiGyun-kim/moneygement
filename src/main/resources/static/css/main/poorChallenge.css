@@ -16,17 +16,17 @@ html, body{
 }
 
 header{
-    margin-bottom: 50px;
-}
-
-body{
-    font-family: 'Interop';
 }
 
 .container-mt-4-sidebar-container{
     width: 250px;
 }
 
+.containers{
+    font-family: 'Interop';
+    margin-top: 50px;
+    margin-left: 50px;
+}
 .poorchallenge-container{
     display: flex;
     flex-direction: row;
