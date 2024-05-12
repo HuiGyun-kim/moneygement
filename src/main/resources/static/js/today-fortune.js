@@ -28,9 +28,17 @@ document.addEventListener('DOMContentLoaded', () => {
         fortuneResult.style.display = 'none';
         fortuneResult.textContent = '';
 
+
         const birthYear = input.value;
+        const currentDate = new Date();
+        const formattedDate = currentDate.toLocaleDateString('ko-KR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        console.log(formattedDate)
         const lastTwoDigits = birthYear.slice(-2);
-        const fortuneQuery = lastTwoDigits + '년생에 오늘의 금전운을 검색해서 알려주되, 텍스트는 150자 이내로 해서 답변을 줘. 만약 150자가 넘어가면 요약해서 답해줘.';
+        const fortuneQuery = lastTwoDigits + `년생에 ${formattedDate} 의 금전운을 검색해서 알려주되, 텍스트는 150자 이내로 해서 답변을 줘. 만약 150자가 넘어가면 요약해서 답해줘.`;
 
         const urlData = {
             detail: [{
