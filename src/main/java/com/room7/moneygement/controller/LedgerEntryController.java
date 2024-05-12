@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.room7.moneygement.dto.LedgerEntryDTO;
 import com.room7.moneygement.service.CategoryService;
@@ -120,5 +122,18 @@ public class LedgerEntryController {
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving entries: " + e.getMessage());
 		}
+	}
+	@GetMapping("/fortuneRequest")
+	public ResponseEntity<String> diaryRequestProxy(@RequestParam Map<String, String> allParams) {
+		RestTemplate restTemplate = new RestTemplate();
+		String baseUrl = "https://kdt-api-function.azurewebsites.net/api/v1/question";
+		String url = UriComponentsBuilder.fromHttpUrl(baseUrl)
+			.queryParam("content", allParams.get("content"))
+			.queryParam("client_id", allParams.get("client_id"))
+			.toUriString();
+		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+		return ResponseEntity.ok()
+			.headers(response.getHeaders())
+			.body(response.getBody());
 	}
 }

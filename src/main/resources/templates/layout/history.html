@@ -11,6 +11,7 @@
     <link rel="stylesheet" th:href="@{/css/main/style.css}"/>
     <link rel="stylesheet" th:href="@{/css/main/history.css}"/>
     <link rel="stylesheet" th:href="@{/css/main/history-modal.css}"/>
+    <link rel="stylesheet" th:href="@{/css/main/fortune.css}"/>
     <link rel="icon" type="image/png" href="/img/main/favicon.png">
 </head>
 <body>
@@ -75,8 +76,13 @@
                     <span id="location"></span>
                 </div>
             </div>
-            <div class="asset-info">
-                <!--데이터를 동적으로 생성-->
+            <div class="fortune-widget">
+                <h4>오늘의 금전운</h4>
+                <div class="input-group">
+                    <input type="number" id="birthYearInput" placeholder="태어난 년도를 입력하세요" oninput="limitLength(this)" />
+                    <button id="fortuneButton">확인</button>
+                </div>
+                <div id="fortuneResult" class="fortune-result"></div>
             </div>
         </div>
     </div>
@@ -212,5 +218,6 @@
 <script th:src="@{/js/history-modal.js}"></script>
 <script th:src="@{/js/calendar.js}"></script>
 <script th:src="@{/js/weather-widget.js}"></script>
+<script th:src="@{/js/today-fortune.js}"></script>
 </body>
 </html>
