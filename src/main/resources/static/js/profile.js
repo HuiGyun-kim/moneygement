@@ -1,3 +1,8 @@
+document.addEventListener('DOMContentLoaded', function() {
+    const userId = document.getElementById('userId').getAttribute('data-user-id');
+    updateExp(userId);
+});
+
 let currentExp = 0;
 const baseExpPerLevel = 100; // 초기 레벨당 필요한 경험치
 const maxLevel = 6; // 최대 레벨
@@ -61,6 +66,25 @@ function getRequiredExpForLevel(level) {
     return baseExpPerLevel + (level - 1) * expIncreasePerLevel;
 }
 
-// 테스트
-addExp(40); // 40만큼의 경험치 추가
+function updateExp(userId) {
+    fetch(`/level/exp/${userId}`)
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('네트워크 응답이 올바르지 않습니다.');
+        })
+        .then(data => {
+            const {exp, level} = data;
+            currentLevelSpan.textContent = level;
+            filledExpSpan.textContent = exp;
+            requiredExpSpan.textContent = getRequiredExpForLevel(level);
+
+            const percent = (exp / getRequiredExpForLevel(level)) * 100;
+            progressBar.style.width = `${percent}%`;
+        })
+        .catch((error) => {
+            console.error('문제가 발생했습니다:', error);
+        });
+}
 
