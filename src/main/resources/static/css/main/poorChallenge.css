@@ -82,7 +82,7 @@ main{
     height: 30px;
 }
 
-button{
+#targetButton{
     background-color: #1A4F32;
     color: white;
     font-size: 15px;
