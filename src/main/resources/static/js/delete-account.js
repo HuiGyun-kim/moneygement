@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        fetch('/users/delete-account', {
+        fetch('/api/delete-account', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

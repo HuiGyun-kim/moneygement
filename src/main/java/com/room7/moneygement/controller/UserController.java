@@ -134,16 +134,4 @@ public class UserController {
 			})
 			.orElse(Collections.emptyMap());
 	}
-
-	// 마이페이지 - 회원정보 수정 / 탈퇴 뷰
-	@GetMapping("/change-password")
-	public String changePassword() {
-		return "change-Password";
-	}
-
-	// 마이페이지 -  탈퇴 뷰
-	@GetMapping("/delete-account")
-	public String deleteAccount() {
-		return "delete-account";
-	}
 }

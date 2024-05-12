@@ -8,7 +8,7 @@ document.getElementById('changePwdBtn').addEventListener('click', function() {
         alert('새 비밀번호와 새 비밀번호 확인이 일치하지 않습니다.');  // 비밀번호 불일치 메시지
         return;  // 함수 종료
     }
-    fetch('/users/change-password', {
+    fetch('/api/change-pw', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

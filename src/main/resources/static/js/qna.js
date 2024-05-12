@@ -5,10 +5,12 @@ function communicateWithAlan(userInput) {
         .then(response => response.json())
         .then(data => {
             // 받은 답변을 채팅 창에 표시합니다.
-            displayMessage('Alan AI', data.answer);
+            displayMessage('Moneygement', data.answer);
         })
         .catch(error => console.error('Error:', error));
 }
+
+
 
 // 폼 제출 이벤트를 처리하는 함수
 document.getElementById('messageForm').addEventListener('submit', function(event) {
