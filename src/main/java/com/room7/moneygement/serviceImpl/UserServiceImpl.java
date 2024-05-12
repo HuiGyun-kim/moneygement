@@ -2,6 +2,7 @@ package com.room7.moneygement.serviceImpl;
 import com.room7.moneygement.repository.FollowRepository;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.room7.moneygement.model.User;
@@ -15,7 +16,9 @@ public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;
 	private final FollowRepository followRepository;
-	private final BCryptPasswordEncoder encoder;
+
+	// BCryptPasswordEncoder를 PasswordEncoder 인터페이스로 사용
+	private final PasswordEncoder encoder = new BCryptPasswordEncoder();
 
 	// private final PasswordEncoder passwordEncoder;
 	@Override

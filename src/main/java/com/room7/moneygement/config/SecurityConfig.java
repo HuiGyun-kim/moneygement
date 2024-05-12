@@ -2,7 +2,6 @@ package com.room7.moneygement.config;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
 import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -28,8 +26,6 @@ import com.room7.moneygement.dto.UserDTO;
 import com.room7.moneygement.model.User;
 import com.room7.moneygement.service.CustomUserDetails;
 import com.room7.moneygement.service.UserService;
-import com.room7.moneygement.config.RestTemplateConfig;
-
 
 @Configuration
 @EnableWebSecurity
@@ -47,13 +43,13 @@ public class SecurityConfig implements WebMvcConfigurer {
 				throw new UsernameNotFoundException("User not found");
 			}
 			UserDTO userDTO = UserDTO.builder()
-					.userId(user.getUserId())
-					.username(user.getUsername())
-					.password(user.getPassword())
-					.profileImg(user.getProfileImg())
-					.role(user.getRole())
-					.introduction(user.getIntroduction())
-					.build(); // 프로필 이미지 등 추가 데이터 설정
+				.userId(user.getUserId())
+				.username(user.getUsername())
+				.password(user.getPassword())
+				.profileImg(user.getProfileImg())
+				.role(user.getRole())
+				.introduction(user.getIntroduction())
+				.build(); // 프로필 이미지 등 추가 데이터 설정
 
 			return new CustomUserDetails(user); // CustomUserDetails 객체 반환
 		};
@@ -62,31 +58,31 @@ public class SecurityConfig implements WebMvcConfigurer {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
-				.authorizeHttpRequests(auth -> auth
-						.requestMatchers("/", "/login", "/signup", "/signup-email", "/users/**", "/ledgerEntry/**",
-								"/diary/**",
-								"/users/send-id-verification-code", "/users/verify-id-code", "/users/verifyEmail",
-								"/sendEmail", "/qna/**",
-								"/users/sendEmail", "/emailVerified", "/find-id", "/users/find-id", "/find-password",
-								"/ledgers/**", "/css/**", "/js/**", "/img/**").permitAll()
-						.requestMatchers("/manager/**").hasAuthority("ADMIN")
-						.anyRequest().authenticated())
-				.formLogin(form -> form
-						.loginPage("/login")
-						.loginProcessingUrl("/users/login")
-						.failureHandler(customFailureHandler())
-						.successHandler(customSuccessHandler())
-						.permitAll())
-				.logout(logout -> logout
-						.logoutUrl("/logout")
-						.logoutSuccessUrl("/login")
-						.invalidateHttpSession(true)
-						.deleteCookies("JSESSIONID"))
-				.exceptionHandling(e -> e
-						.accessDeniedPage("/access-denied"))
-				.csrf(csrf -> csrf
-						.ignoringRequestMatchers("/ledgerEntry/**", "/users/sendEmail","/qna/**")
-				);
+			.authorizeHttpRequests(auth -> auth
+				.requestMatchers("/", "/login", "/signup", "/signup-email", "/users/**", "/ledgerEntry/**",
+					"/diary/**",
+					"/users/send-id-verification-code", "/users/verify-id-code", "/users/verifyEmail",
+					"/sendEmail", "/qna/**",
+					"/users/sendEmail", "/emailVerified", "/find-id", "/users/find-id", "/find-password",
+					"/ledgers/**", "/css/**", "/js/**", "/img/**").permitAll()
+				.requestMatchers("/manager/**").hasAuthority("ADMIN")
+				.anyRequest().authenticated())
+			.formLogin(form -> form
+				.loginPage("/login")
+				.loginProcessingUrl("/users/login")
+				.failureHandler(customFailureHandler())
+				.successHandler(customSuccessHandler())
+				.permitAll())
+			.logout(logout -> logout
+				.logoutUrl("/logout")
+				.logoutSuccessUrl("/login")
+				.invalidateHttpSession(true)
+				.deleteCookies("JSESSIONID"))
+			.exceptionHandling(e -> e
+				.accessDeniedPage("/access-denied"))
+			.csrf(csrf -> csrf
+				.ignoringRequestMatchers("/ledgerEntry/**", "/users/sendEmail", "/qna/**")
+			);
 		return http.build();
 	}
 
@@ -127,25 +123,19 @@ public class SecurityConfig implements WebMvcConfigurer {
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
+		// 테스트 환경
 		return NoOpPasswordEncoder.getInstance();
+
+		// // 실제 운영 환경
+		// return new BCryptPasswordEncoder();
 	}
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
-				.allowedOrigins("http://localhost:8080") // 허용할 도메인과 포트
-				.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메서드
-				.allowCredentials(true);
+			.allowedOrigins("http://localhost:8080") // 허용할 도메인과 포트
+			.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메서드
+			.allowCredentials(true);
 	}
 
-	  // 패스워드 인코더로 사용할 빈 등록
- 	@Bean
- 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
- 		return new BCryptPasswordEncoder();
- 	}
 }
-
-
-//
-// }
-//
