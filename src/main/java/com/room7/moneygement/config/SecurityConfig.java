@@ -69,6 +69,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 								"/users/sendEmail", "/emailVerified", "/find-id", "/users/find-id", "/find-password",
 								"/ledgers/**", "/css/**", "/js/**", "/img/**").permitAll()
 						.requestMatchers("/manager/**").hasAuthority("ADMIN")
+						.requestMatchers("/admin/**").hasAuthority("ADMIN")
 						.anyRequest().authenticated())
 				.formLogin(form -> form
 						.loginPage("/login")
