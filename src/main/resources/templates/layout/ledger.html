@@ -43,15 +43,17 @@
                         <tbody>
                         <tr th:each="ledger, iterStat : ${ledgers}">
                             <td th:text="${ledgers.number * ledgers.size + iterStat.count}"></td>
-                            <td th:text="${ledger.title}"></td>
+                            <td>
+                                <span th:text="${ledger.title}" th:id="'title-' + ${ledger.ledgerId}" onclick="showLedgerDetails(this.id)"></span>
+                                <input type="text" th:value="${ledger.title}" th:id="'edit-' + ${ledger.ledgerId}" style="display:none;">
+                            </td>
                             <td th:text="${#temporals.format(ledger.createdAt, 'yyyy-MM-dd')}"></td>
                             <td>
-                                <button class="ledger-button edit-button">수정</button>
-                                <form th:action="@{/ledgers/delete/{id}(id=${ledger.ledgerId})}" method="post"
-                                      class="delete-form">
+                                <button class="ledger-button edit-button" th:onclick="'toggleEditMode(this, ' + ${ledger.ledgerId} + ')'">수정</button>
+                                <form th:action="@{/ledgers/delete/{id}(id=${ledger.ledgerId})}" method="post" class="delete-form" onsubmit="return confirmDelete()">
                                     <button type="submit" class="ledger-button delete-button">삭제</button>
                                 </form>
-                                <button class="ledger-button save-button" style="display: none;">수정 완료</button>
+                                <button class="ledger-button save-button" style="display: none;" th:onclick="'saveEdit(this, ' + ${ledger.ledgerId} + ')'">수정 완료</button>
                             </td>
                         </tr>
                         </tbody>
@@ -73,20 +75,21 @@
         <div class="ledger-quote" id="ledgerQuote">
             <p>"돈은 좋은 하인이지만 나쁜 주인이다." - P.T. 바넘</p>
         </div>
-        <div class="ledger-details" id="ledgerDetails" style="display: none;">
+        <div class="ledger-details" id="ledgerDetails">
             <div class="details-container">
                 <div class="income-container">
                     <h3>수입 내역</h3>
-                    <!-- 수입 내역 추가 -->
+                    <table id="incomeTable"></table>
+                    <div id="incomePagination" class="pagination"></div>
                 </div>
                 <div class="expense-container">
                     <h3>지출 내역</h3>
-                    <!-- 지출 내역 추가 -->
+                    <table id="expenseTable"></table>
+                    <div id="expensePagination" class="pagination"></div>
                 </div>
             </div>
         </div>
     </div>
-
 </div>
 <script th:src="@{/js/ledger.js}"></script>
 </body>
