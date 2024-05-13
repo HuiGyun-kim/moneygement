@@ -66,7 +66,5 @@ public class User {
 		return level;
 	}
 
-	
-
 }
 

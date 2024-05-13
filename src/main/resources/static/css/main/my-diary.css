@@ -13,10 +13,16 @@ html, body{
     height: 100px;
     margin: 0;
     padding: 0;
+    font-family: 'Interop';
 }
 
-body{
-    font-family: 'Interop';
+.myDiary-container{
+    display: flex;
+    flex-direction: row;
+}
+
+.container-mt-4-sidebar-container{
+    width: 250px;
 }
 
 nav{
@@ -184,6 +190,13 @@ article h3{
     padding: 1px 20px;
     margin-bottom: 20px;
     border-radius: 10px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.expendBox p{
+    margin-top: 16px;
 }
 
 #expends h4{
