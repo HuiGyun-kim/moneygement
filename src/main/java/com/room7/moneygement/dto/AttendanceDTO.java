@@ -9,5 +9,5 @@ public class AttendanceDTO {
 	private Long id;
 	private Long userId;
 	private LocalDate date;
-	private boolean completed;
+	private boolean attended;
 }

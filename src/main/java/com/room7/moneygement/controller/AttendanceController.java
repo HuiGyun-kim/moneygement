@@ -1,10 +1,10 @@
 package com.room7.moneygement.controller;
 
 import com.room7.moneygement.dto.AttendanceDTO;
-import com.room7.moneygement.dto.UserChallengeDTO;
 import com.room7.moneygement.model.Attendance;
 import com.room7.moneygement.model.UserChallenge;
 import com.room7.moneygement.service.AttendanceService;
+import com.room7.moneygement.service.CustomUserDetails;
 import com.room7.moneygement.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
@@ -12,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -30,41 +32,45 @@ public class AttendanceController {
 
     // 출석 체크하는 메소드
     @PostMapping("/check")
-    public ResponseEntity<?> checkAttendance(@RequestBody Map<String, String> request) {
+    public ResponseEntity<?> checkAttendance(@RequestBody Map<String, String> request, @AuthenticationPrincipal CustomUserDetails userDetails) {
         try {
             // 요청에서 날짜 정보 가져오기
             String dateString = request.get("date");
             LocalDate date = LocalDate.parse(dateString);
 
-            // 현재 로그인한 사용자의 ID 가져오기 (예시로 userId = 1로 가정)
-            Long userId = 1L; // 실제로는 세션 또는 인증 정보를 통해 가져와야 합니다.
+            Long userId = userDetails.getUser().getUserId();
 
             // 출석체크 저장
             attendanceService.checkAttendance(userId, date);
 
-            return ResponseEntity.ok().build();
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "출석체크가 성공적으로 완료되었습니다.");
+            response.put("date", dateString);
+            response.put("userId", userId);
+
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             // 예외 발생 시 에러 응답
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while checking attendance.");
         }
     }
 
-    @PostMapping("/attendance/check")
-    public ResponseEntity<String> checkAttendance(@RequestBody AttendanceDTO requestData) {
-        try {
-            Long userId = requestData.getUserId();
-            LocalDate date = requestData.getDate();
-
-            // 출석체크를 처리하는 서비스 메소드 호출
-            attendanceService.checkAttendance(userId, date);
-
-            // 출석체크가 성공적으로 처리되었음을 응답으로 전송
-            return ResponseEntity.ok("출석체크가 완료되었습니다!");
-        } catch (Exception e) {
-            // 출석체크 처리 중 에러가 발생한 경우 에러 응답을 전송
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("출석체크에 실패했습니다.");
-        }
-    }
+//    @PostMapping("/attendance/check")
+//    public ResponseEntity<String> checkAttendance(@RequestBody AttendanceDTO requestData) {
+//        try {
+//            Long userId = requestData.getUserId();
+//            LocalDate date = requestData.getDate();
+//
+//            // 출석체크를 처리하는 서비스 메소드 호출
+//            attendanceService.checkAttendance(userId, date);
+//
+//            // 출석체크가 성공적으로 처리되었음을 응답으로 전송
+//            return ResponseEntity.ok("출석체크가 완료되었습니다!");
+//        } catch (Exception e) {
+//            // 출석체크 처리 중 에러가 발생한 경우 에러 응답을 전송
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("출석체크에 실패했습니다.");
+//        }
+//    }
 
 
     // 리워드 지급 가능 여부 확인 API
@@ -108,6 +114,7 @@ public class AttendanceController {
         attendanceDTO.setId(attendance.getId());
         attendanceDTO.setUserId(attendance.getUserId());
         attendanceDTO.setDate(attendance.getDate());
+        attendanceDTO.setAttended(attendance.isAttended());
         return attendanceDTO;
     }
 
