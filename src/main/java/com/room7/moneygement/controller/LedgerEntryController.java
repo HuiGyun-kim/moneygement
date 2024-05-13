@@ -1,7 +1,6 @@
 package com.room7.moneygement.controller;
 
 import com.room7.moneygement.dto.CategoryDTO;
-import com.room7.moneygement.dto.FinancialInfoDTO;
 import com.room7.moneygement.model.Category;
 import com.room7.moneygement.model.LedgerEntry;
 import com.room7.moneygement.repository.CategoryRepository;
@@ -22,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.room7.moneygement.dto.LedgerEntryDTO;
 import com.room7.moneygement.service.CategoryService;
@@ -60,7 +61,7 @@ public class LedgerEntryController {
 	public ResponseEntity<List<LedgerEntryDTO>> getEntries(
 		@RequestParam Long ledgerId,
 		@RequestParam(required = false, defaultValue = "false") Boolean ledgerType) {
-		return ResponseEntity.ok(ledgerEntryServiceImpl.getEntriesByLedgerAndType(ledgerId, ledgerType));
+		return ResponseEntity.ok(ledgerEntryService.getEntriesByLedgerAndType(ledgerId, ledgerType));
 	}
 
 	@PostMapping("/add")
@@ -106,20 +107,33 @@ public class LedgerEntryController {
 		ledgerEntryService.addLedgerEntry(ledgerEntryDTO);
 		return ResponseEntity.ok(Map.of("message", "Expense entry added successfully"));
 	}
-	@GetMapping("/monthly-income-summary")
-	public ResponseEntity<List<LedgerEntryDTO>> getMonthlyIncomeSummary(@RequestParam Long ledgerId, @RequestParam int year, @RequestParam int month) {
-		List<LedgerEntryDTO> incomeSummary = ledgerEntryService.getMonthlyIncomeSummary(ledgerId, year, month);
-		return ResponseEntity.ok(incomeSummary);
-	}
+	@GetMapping("/entriesAll")
+	public ResponseEntity<?> getEntriesByUserAndDate(
+		@RequestParam("userId") Long userId,
+		@RequestParam("year") int year,
+		@RequestParam("month") int month
+	) {
+		try {
+			LocalDate startDate = LocalDate.of(year, month, 1);
+			LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
 
-	@GetMapping("/monthly-expense-summary")
-	public ResponseEntity<List<LedgerEntryDTO>> getMonthlyExpenseSummary(@RequestParam Long ledgerId, @RequestParam int year, @RequestParam int month) {
-		List<LedgerEntryDTO> expenseSummary = ledgerEntryService.getMonthlyExpenseSummary(ledgerId, year, month);
-		return ResponseEntity.ok(expenseSummary);
+			List<LedgerEntry> entries = ledgerEntryRepository.findByUserIdAndDateBetween(userId, startDate, endDate);
+			return ResponseEntity.ok(entries);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving entries: " + e.getMessage());
+		}
 	}
-	@GetMapping("/financial-info")
-	public ResponseEntity<FinancialInfoDTO> getFinancialInfo(@RequestParam Long ledgerId, @RequestParam int year, @RequestParam int month) {
-		FinancialInfoDTO financialInfo = ledgerEntryService.calculateFinancialInfo(ledgerId, year, month);
-		return ResponseEntity.ok(financialInfo);
+	@GetMapping("/fortuneRequest")
+	public ResponseEntity<String> diaryRequestProxy(@RequestParam Map<String, String> allParams) {
+		RestTemplate restTemplate = new RestTemplate();
+		String baseUrl = "https://kdt-api-function.azurewebsites.net/api/v1/question";
+		String url = UriComponentsBuilder.fromHttpUrl(baseUrl)
+			.queryParam("content", allParams.get("content"))
+			.queryParam("client_id", allParams.get("client_id"))
+			.toUriString();
+		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+		return ResponseEntity.ok()
+			.headers(response.getHeaders())
+			.body(response.getBody());
 	}
 }

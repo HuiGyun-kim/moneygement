@@ -1,39 +1,209 @@
+body {
+    background-image: url('https://example.com/background.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.main-container {
+    display: flex;
+}
+
+.ledger-book {
+    display: flex;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    margin: 20px;
+    overflow: hidden;
+    position: relative;
+    width: 199%;
+    height: 755px;
+    left: -19%;
+}
+
+.ledger-book::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 20px;
+    height: 100%;
+    background-color: #000000;
+    transform: translateX(-50%);
+    z-index: 1;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.ledger-container {
+    padding: 40px 75px;
+    background-color: rgba(255, 255, 255, 0.8);
+    animation: fadeIn 1s ease-in-out;
+    position: relative;
+    z-index: 2;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.ledger-container h2 {
+    font-size: 32px;
+    margin-bottom: 30px;
+    color: #333;
+    text-align: center;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+#create-ledger {
+    padding: 12px 24px;
+    font-size: 18px;
+    background-color: #ff6b6b;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 22px;
+    transition: background-color 0.3s ease-in-out;
+    float: right;
+}
+
+#create-ledger:hover {
+    background-color: #ff4f4f;
+}
+
 table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 30px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    animation: slideIn 1s ease-in-out;
+}
+
+@keyframes slideIn {
+    0% {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
+    padding: 14px 14px;
     text-align: center;
+    border-bottom: 1px solid #ddd;
 }
 
 th {
-    background-color: #f2f2f2;
+    background-color: #4ecdc4;
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+}
+
+tr:nth-child(even) {
+    background-color: #f8f9fa;
 }
 
 .ledger-button {
-    background-color: #4CAF50;
-    color: white;
+    padding: 8px 16px;
+    font-size: 16px;
+    background-color: #ff6b6b;
+    color: #fff;
     border: none;
-    padding: 8px 12px;
+    border-radius: 4px;
     cursor: pointer;
+    margin-right: 10px;
+    transition: background-color 0.3s ease-in-out;
 }
 
 .ledger-button:hover {
-    background-color: #45a049;
+    background-color: #ff4f4f;
+    transform: scale(1.05);
 }
 
-#login-warning {
-    color: red;
-    font-weight: bold;
-    font-size: 18px;
+.delete-form {
+    display: inline;
 }
 
-#ledger-section {
+.ledger-quote {
+    flex: 1;
+    padding: 40px;
+    background-color: #4ecdc4;
+    color: #fff;
+    font-size: 24px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.5s ease-in-out;
+    position: relative;
+    z-index: 2;
+}
+
+.ledger-details {
+    flex: 1;
+    background-color: #fff;
+    transition: opacity 0.5s ease-in-out;
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.details-container {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    height: 100%;
+    padding: 20px;
+    gap: 38%;
+}
+
+.income-container,
+.expense-container {
+    margin-bottom: 30px;
+}
+
+.income-container h3,
+.expense-container h3 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+.ledger-header{
+    padding: 10px 0;
+}
+.pagination {
+    margin-top: 25px;
+    justify-content: center;
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    border: 1px solid #ddd;
+    margin: 0 4px;
+    border-radius: 5px;
+}
+
+.pagination a.active {
+    background-color: #4CAF50;
+    color: white;
+    border: 1px solid #4CAF50;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #ddd;
 }

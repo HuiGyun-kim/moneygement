@@ -43,7 +43,7 @@ public class User {
 
 	private int exp;
 
-  private String introduction;
+  	private String introduction;
   
 	@OneToMany(mappedBy = "followMemberId", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Follow> followers = new ArrayList<>();
@@ -51,7 +51,20 @@ public class User {
 	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Follow> followings = new ArrayList<>();
 
-	
+	public int getCurrentLevel() {
+		int baseExpPerLevel = 100;
+		int maxLevel = 6;
+		int expIncreasePerLevel = 500;
+		int level = 1;
+
+		int requiredExp = baseExpPerLevel;
+		while(level < maxLevel && this.exp >= requiredExp) {
+			level++;
+			requiredExp = baseExpPerLevel + (level - 1) * expIncreasePerLevel;
+		}
+
+		return level;
+	}
 
 }
 

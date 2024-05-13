@@ -1,10 +1,9 @@
 package com.room7.moneygement.service;
 
-import java.time.LocalDateTime;
-
-import org.springframework.transaction.annotation.Transactional;
-
 import com.room7.moneygement.model.User;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 
 public interface UserService {
@@ -17,7 +16,18 @@ public interface UserService {
 
 	User findUserById(Long userId);
 
+	boolean checkPassword(User user, String Password);
 
+	boolean changePassword(User user, String currentPassword, String newPassword);
+
+	User deleteUser(User user);
 	// boolean checkPassword(String rawpassword, String encodedPassword);
+
+//	-----------------------------------------------
+
+	String uploadProfileImage(MultipartFile file, User user) throws IOException;
+
+	String deleteProfileImage(User user);
 }
+
 

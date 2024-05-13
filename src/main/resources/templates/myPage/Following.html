@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Following</title>
+    <link rel="stylesheet" th:href="@{/css/main/followers.css}"/>
 </head>
 <body>
 <h1>Following</h1>
+<button class="back-button" onclick="goBack()">뒤로 가기</button>
 <ul>
     <li th:each="following : ${following}">
         <span th:text="${following.username}"></span>
@@ -16,7 +18,6 @@
         </button>
     </li>
 </ul>
-<button onclick="goBack()">Back to Profile</button>
 <script th:src="@{/js/follower.js}"></script>
 </body>
 </html>

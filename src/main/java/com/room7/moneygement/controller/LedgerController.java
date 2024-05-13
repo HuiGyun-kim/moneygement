@@ -1,7 +1,12 @@
 package com.room7.moneygement.controller;
 
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,6 +17,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.room7.moneygement.dto.LedgerDTO;
 import com.room7.moneygement.model.Ledger;
@@ -31,14 +39,14 @@ public class LedgerController {
 	private final UserService userService;
 
 	@GetMapping("/ledger")
-	public String showLedgerPage(Model model) {
+	public String showLedgerPage(@RequestParam(defaultValue = "0") int page, Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null && authentication.isAuthenticated()) {
 			if (authentication.getPrincipal() instanceof CustomUserDetails) {
 				CustomUserDetails userDetails = (CustomUserDetails)authentication.getPrincipal();
-				// 필요한 사용자 정보 처리
-				Long userId = userDetails.getUserId(); // `CustomUserDetails`에서 직접 userId 가져오기
-				List<LedgerDTO> ledgers = ledgerService.getLedgersByUser(userId);
+				Long userId = userDetails.getUserId();
+				Pageable pageable = PageRequest.of(page, 5); // 페이지당 5개씩 보여주도록 설정
+				Page<LedgerDTO> ledgers = ledgerService.getLedgersByUser(userId, pageable);
 				model.addAttribute("ledgers", ledgers);
 			}
 		}
@@ -85,5 +93,11 @@ public class LedgerController {
 	public String deleteLedger(@PathVariable Long id) {
 		ledgerService.deleteLedger(id);
 		return "redirect:/ledgers/ledger";
+	}
+	@GetMapping("/user/{userId}")
+	public ResponseEntity<List<LedgerDTO>> getLedgersByUser(@PathVariable Long userId, @RequestParam(defaultValue = "0") int page) {
+		Pageable pageable = PageRequest.of(page, 5); // 페이지당 5개씩 보여주도록 설정
+		Page<LedgerDTO> ledgers = ledgerService.getLedgersByUser(userId, pageable);
+		return ResponseEntity.ok(ledgers.getContent());
 	}
 }

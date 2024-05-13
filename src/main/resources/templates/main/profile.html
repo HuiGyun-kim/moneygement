@@ -6,6 +6,7 @@
     <title>profile</title>
     <link rel="stylesheet" th:href="@{/css/main/profile.css}">
     <link rel="stylesheet" th:href="@{/css/main/style.css}"/>
+    <a id="userId" style="display: none;" th:attr="data-user-id=${currentUser.userId}"></a>
 </head>
 <body>
     <div th:replace="~{layout/header.html::main-header}"></div>
@@ -14,17 +15,18 @@
     </div>
     <div class="my-profile">
         <div class="profile-img">
-        <img th:src="@{/img/main/img_1.png}" alt="" width="250"/>
+            <img th:src="@{/img/main/primaryImage.png}" alt="" width="250" th:if="${user.profileImg == null}"/>
+            <img th:src="${user.profileImg}" alt="" width="250" th:if="${user.profileImg != null}"/>
         </div>
         <div class="more-container">
-            <form th:action="@{/follow/{userId}(userId=${user.userId})}" method="post">
-                <button class="follow-button" id="followButton" type="submit"  th:data-userId="${user.userId}">Follow</button>
-            </form>
+            <div class="follow-button-container" th:unless="${currentUser.userId == user.userId}">
+                <form th:action="@{/follow/{userId}(userId=${user.userId})}" method="post">
+                    <button class="follow-button" id="followButton" type="submit"  th:data-userId="${user.userId}">Follow</button>
+                </form>
+            </div>
             <img class="more" th:src="@{/img/main/more.png}" alt=""/>
             <div class="dropdown-menu" id="myDropdown">
-                <a>프로필사진 변경</a>
-                <a>소개 작성</a>
-                <a>항목 3</a>
+                <a href="/profile/detail">프로필변경</a>
             </div>
         </div>
 
@@ -32,14 +34,13 @@
             <p th:text="${user.username}"></p>
             <div class="follow-list">
                 <div class="follow">
-                    <a class="followers-button" th:href="@{/followers/{userId}(userId=${user.userId})}">Followers</a>
+                    <a class="followers-button" th:href="@{/follow/followers/{userId}(userId=${user.userId})}">Followers</a>
                     <span id="followersCount" th:text="${followersCount}">0</span>
                 </div>
                 <div class="following">
-                    <a class="following-button" th:href="@{/following/{userId}(userId=${user.userId})}">Following</a>
+                    <a class="following-button" th:href="@{/follow/following/{userId}(userId=${user.userId})}">Following</a>
                     <span id="followingCount" th:text="${followingCount}">0</span>
                 </div>
-
             </div>
         </div>
         <div class="side-view">
@@ -79,7 +80,6 @@
                 <div th:each="comment : ${comments}">
                     <div class="comment-item">
                         <div class="time">
-                        <span th:text="${user.username}"></span>
                         <span th:text="${#temporals.format(comment.updatedAt, 'yyyy-MM-dd HH:mm:ss')}"></span>
                         </div>
                         <p class="item-content" th:text="${comment.content}"></p>
@@ -113,6 +113,11 @@
         </div>
 
     </div>
+    <script th:inline="javascript">
+        const currentUser = {
+            userId:[[${currentUser.userId}]]
+        };
+    </script>
 <script th:src="@{/js/comments.js}"></script>
 <script th:src="@{/js/followbutton.js}"></script>
 <script th:src="@{/js/profile.js}"></script>
