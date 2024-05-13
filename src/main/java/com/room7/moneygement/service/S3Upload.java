@@ -1,8 +1,8 @@
-package com.room7.moneygement.controller;
+package com.room7.moneygement.service;
 
 
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
@@ -22,32 +22,38 @@ import java.util.UUID;
 @Service
 @Component
 @Slf4j
-public class S3Uploader {
-    private final AmazonS3 amazonS3;
+public class S3Upload {
+    private final AmazonS3Client amazonS3Client;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    public String upload(MultipartFile multipartFile, String dirName) throws IOException {
+    //MultiparFile을 전달 받아 File로 전환 후 S3 에 업로드
+    public String uploadFiles(MultipartFile multipartFile, String dirName) throws IOException {
         File uploadFile = convert(multipartFile)
                 .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File 전환 실패"));
-        return uploadFile(uploadFile,dirName);
+        return upload(uploadFile,dirName);
     }
-    private String uploadFile(File uploadFile, String dirName){
-        String fileName = dirName + "/" + UUID.randomUUID() + uploadFile.getName();
+
+    private String upload(File uploadFile, String dirName){
+        String fileName = dirName + "/" + UUID.randomUUID() + "." + uploadFile.getName();
         String uploadImageUrl = putS3(uploadFile, fileName);
 
-        removeNewFile(uploadFile);
+        removeNewFile(uploadFile); //로컬에 생성된 file 삭제 (MultipartFile > File 전환하며 로컬에 파일 생성
 
-        return uploadImageUrl;
+        return uploadImageUrl; //업로드된 파일의 S3 URL 주소 반환
     }
+
+//    S3 버킷에 이미지 업로드
     private String putS3(File uploadFile,String fileName){
-        amazonS3.putObject(
+        amazonS3Client.putObject(
                 new PutObjectRequest(bucket, fileName, uploadFile)
-                        .withCannedAcl(CannedAccessControlList.PublicRead)
+                        .withCannedAcl(CannedAccessControlList.PublicRead) //PublicRead 권한으로 업로드
         );
-        return amazonS3.getUrl(bucket, fileName).toString();
+        return amazonS3Client.getUrl(bucket, fileName).toString();
     }
+
+    //로컬에 있는 이미지 삭제
     private void removeNewFile(File targetFile){
         if (targetFile.delete()){
             log.info("파일 삭제가 완료되었습니다.");
@@ -56,10 +62,9 @@ public class S3Uploader {
         }
     }
 
+//    변환
     private Optional<File> convert(MultipartFile files) throws IOException{
-        File convertFile = new File(System.getProperty("java.io.tmpdir") +
-                System.getProperty("file.separator") +
-                files.getOriginalFilename());
+        File convertFile = new File(System.getProperty("user.dir") + "/" + ".jpg");
 
         if(convertFile.createNewFile()){
             try(FileOutputStream fos = new FileOutputStream(convertFile)){
@@ -68,14 +73,6 @@ public class S3Uploader {
             return Optional.of(convertFile);
         }
         return Optional.empty();
-    }
-
-    public void fileDelete(String s3Key){
-        try{
-            amazonS3.deleteObject(this.bucket,s3Key);
-        } catch (AmazonServiceException e){
-            System.out.println(e.getErrorMessage());
-        }
     }
 
 }

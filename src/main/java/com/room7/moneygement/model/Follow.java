@@ -7,15 +7,16 @@ import lombok.*;
 @Data
 @Table(name = "follow")
 public class Follow {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "follow_id")
     private Long followId;
 
-    @Column(name = "follow_member_id")
-    private Long followMemberId;
+    @ManyToOne
+    @JoinColumn(name = "follower_id", referencedColumnName = "user_id")
+    private User follower; // 팔로워
 
-    @Column(name = "user_id")
-    private Long userId;
+    @ManyToOne
+    @JoinColumn(name = "following_id", referencedColumnName = "user_id")
+    private User following; // 팔로잉
 }
