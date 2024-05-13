@@ -6,14 +6,10 @@
     <title>운영자 관리페이지</title>
     <link rel="stylesheet" th:href="@{/css/main/style.css}"/>
     <link rel="stylesheet" th:href="@{/css/main/admin.css}">
-    <script th:src="@{/js/admin.js}"></script>
-
 </head>
 <body>
+<div th:replace="~{layout/header.html::main-header}"></div>
 <div class="container">
-    <div class="title">
-        <h2 class="title1">전체회원/운영진</h2>
-    </div>
     <div class="top">
         <p class="totalUser">전체회원: <span class="countHighlight" th:text="${total}">총 회원수</span>명</p>
         <div class="search1">
@@ -47,5 +43,10 @@
         </tr>
         </tbody>
     </table>
+    <form class="refresh" action="/admin/refresh" method="get">
+        <div class="button-container">
+            <button id="btnBack">돌아가기</button>
+        </div>
+    </form>
 </div>
 </body>
