@@ -2,6 +2,9 @@ package com.room7.moneygement.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.room7.moneygement.dto.LedgerEntryDTO;
 import com.room7.moneygement.model.LedgerEntry;
 
@@ -10,8 +13,6 @@ public interface LedgerEntryService {
 	void updateEntry(LedgerEntry entry);
 	void deleteEntry(Long id);
 	LedgerEntry getEntryById(Long id);
-	List<LedgerEntryDTO> getEntriesByLedgerAndType(Long ledgerId, Boolean ledgerType);
-	List<LedgerEntryDTO> getMonthlyIncomeSummary(Long ledgerId, int year, int month);
-	List<LedgerEntryDTO> getMonthlyExpenseSummary(Long ledgerId, int year, int month);
+	Page<LedgerEntryDTO> getEntriesByLedgerAndType(Long ledgerId, Boolean ledgerType, Pageable pageable);
 }
 

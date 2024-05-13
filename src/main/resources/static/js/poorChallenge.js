@@ -83,4 +83,21 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch((error) => {
             console.error('Error:', error);
         });
-}
+    }
+
+    // function completeChallenge(challengeId) {
+    //     fetch(`/level/complete/${challengeId}`, {
+    //         method: 'POST',
+    //         headers: {
+    //             'Content-Type': 'application/json'
+    //         }
+    //     })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             console.log('Success:', data.message);
+    //         })
+    //         .catch((error) => {
+    //             console.error('Error:', error);
+    //         });
+    //
+    // }
