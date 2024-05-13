@@ -26,6 +26,8 @@ function previewImage(file) {
     reader.readAsDataURL(file); // 파일 객체를 읽어서 이미지 URL로 변환
 }
 
+//-------------------------------------------------------------------------
+
 // 등록 버튼 클릭 이벤트 핸들러
 submitButton.addEventListener('click', (event) => {
     event.preventDefault();
@@ -65,6 +67,8 @@ submitButton.addEventListener('click', (event) => {
         });
 });
 
+//-----------------------------------------------------------------
+
 // 프로필 이미지 URL을 서버로 전송하여 데이터베이스 업데이트
 function updateProfileImageUrl(imageUrl) {
     fetch(`/updateProfileImage`, {
@@ -88,6 +92,8 @@ function updateProfileImageUrl(imageUrl) {
         });
 }
 
+//------------------------------------------------------------------
+
 // 데이터 URL을 파일 객체로 변환하는 함수
 function dataURLtoFile(dataUrl, filename) {
     const arr = dataUrl.split(',');
@@ -102,3 +108,10 @@ function dataURLtoFile(dataUrl, filename) {
 
     return new File([u8arr], filename, { type: mime });
 }
+
+//------------------------------------------------------------------------
+
+// 취소 버튼 클릭 이벤트 핸들러
+document.querySelector('.cancel-button').addEventListener('click', function() {
+    history.back();
+});

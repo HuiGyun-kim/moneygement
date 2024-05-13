@@ -25,7 +25,7 @@
             </div>
             <img class="more" th:src="@{/img/main/more.png}" alt=""/>
             <div class="dropdown-menu" id="myDropdown">
-                <a href="/profile-detail">프로필변경</a>
+                <a th:if="${currentUser.userId == user.userId}" href="/profile-detail">프로필변경</a>
             </div>
         </div>
 
