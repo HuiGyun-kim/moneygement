@@ -39,7 +39,7 @@ public class S3Upload {
         String fileName = dirName + "/" + UUID.randomUUID() + "." + uploadFile.getName();
         String uploadImageUrl = putS3(uploadFile, fileName);
 
-        removeNewFile(uploadFile); //로컬에 생성된 file 삭제 (MultipartFile > File 전환하며 로컬에 파일 생성
+        removeNewFile(uploadFile); // 로컬에 생성된 파일 삭제
 
         return uploadImageUrl; //업로드된 파일의 S3 URL 주소 반환
     }

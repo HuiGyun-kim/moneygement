@@ -15,8 +15,7 @@
     </div>
     <div class="my-profile">
         <div class="profile-img">
-            <img th:src="@{/img/main/primaryImage.png}" alt="" width="250" th:if="${user.profileImg == null}"/>
-            <img th:src="${user.profileImg}" alt="" width="250" th:if="${user.profileImg != null}"/>
+            <img class="img-width" th:src="${user.profileImg}" alt=""/>
         </div>
         <div class="more-container">
             <div class="follow-button-container" th:unless="${currentUser.userId == user.userId}">

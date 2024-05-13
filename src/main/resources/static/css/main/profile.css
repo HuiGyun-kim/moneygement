@@ -138,7 +138,7 @@ time, mark, audio, video {
     background-color: #f9f9f9;
     min-width: 120px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    margin-top: 200px;
+    margin-top: 100px;
     z-index: 1;
 }
 
@@ -231,4 +231,11 @@ textarea{
     position: relative;
     top: -10px;
     border: none;
+}
+.img-width{
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
 }

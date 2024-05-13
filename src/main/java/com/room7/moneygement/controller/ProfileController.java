@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Map;
 
 
 @Controller
@@ -114,4 +115,24 @@ public class ProfileController {
 
     //------------------------------------------------------------------------------------------
     //프로필 이미지 업데이트
+
+    @PostMapping("/updateProfileImage")
+    public ResponseEntity<String> updateProfileImage(@RequestBody Map<String, String> request) {
+        String imageUrl = request.get("imageUrl");
+
+        // 현재 인증된 사용자 정보 가져오기 (Spring Security 사용 시)
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        User user = userService.findByUsername(username);
+
+        if (user != null) {
+            // User 객체의 프로필 이미지 URL 업데이트
+            user.setProfileImg(imageUrl);
+            userService.save(user); // 데이터베이스에 저장
+
+            return ResponseEntity.ok("Profile image updated successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+    }
 }

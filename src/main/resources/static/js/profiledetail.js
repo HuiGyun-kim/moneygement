@@ -26,7 +26,6 @@ function previewImage(file) {
     reader.readAsDataURL(file); // 파일 객체를 읽어서 이미지 URL로 변환
 }
 
-
 // 등록 버튼 클릭 이벤트 핸들러
 submitButton.addEventListener('click', (event) => {
     event.preventDefault();
@@ -34,8 +33,10 @@ submitButton.addEventListener('click', (event) => {
     const profileImage = document.getElementById('profileImage');
     const imageDataUrl = profileImage.src; // 프로필 이미지의 데이터 URL 가져오기
 
+    const file = dataURLtoFile(imageDataUrl, 'profileImage.jpg'); // 데이터 URL을 파일 객체로 변환
+
     const formData = new FormData();
-    formData.append('profileImg', dataURLtoFile(imageDataUrl, 'profileImage.jpg')); // 데이터 URL을 파일로 변환하여 FormData에 추가
+    formData.append('profileImg', file); // 변환된 파일을 FormData에 추가
 
     fetch(`/profileDetail/upload`, {
         method: 'POST',
@@ -51,7 +52,7 @@ submitButton.addEventListener('click', (event) => {
             if (data && data.imageUrl) {
                 // 서버 응답에서 imageUrl을 제대로 받았을 경우
                 profileImage.src = data.imageUrl;
-                updateProfileImageUrl(data.imageUrl);// 프로필 이미지 업데이트
+                updateProfileImageUrl(data.imageUrl); // 프로필 이미지 URL을 서버로 전송하여 데이터베이스 업데이트
             } else {
                 // 서버 응답에서 imageUrl이 없거나 비정상적인 경우
                 throw new Error('Invalid response from server');
@@ -63,6 +64,29 @@ submitButton.addEventListener('click', (event) => {
             alert('프로필 이미지 업로드 중 오류가 발생했습니다.');
         });
 });
+
+// 프로필 이미지 URL을 서버로 전송하여 데이터베이스 업데이트
+function updateProfileImageUrl(imageUrl) {
+    fetch(`/updateProfileImage`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ imageUrl }), // 프로필 이미지 URL을 서버에 전송
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            // 데이터베이스 업데이트 성공 처리
+            console.log('Profile image updated successfully');
+        })
+        .catch((error) => {
+            // 데이터베이스 업데이트 실패 처리
+            console.error('Error updating profile image:', error);
+            alert('프로필 이미지 업데이트 중 오류가 발생했습니다.');
+        });
+}
 
 // 데이터 URL을 파일 객체로 변환하는 함수
 function dataURLtoFile(dataUrl, filename) {
@@ -77,7 +101,4 @@ function dataURLtoFile(dataUrl, filename) {
     }
 
     return new File([u8arr], filename, { type: mime });
-}
-
-function updateProfileImageUrl(imageUrl) {
 }
