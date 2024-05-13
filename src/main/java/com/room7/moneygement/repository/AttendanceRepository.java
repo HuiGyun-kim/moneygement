@@ -14,4 +14,7 @@ public interface AttendanceRepository extends JpaRepository<Attendance, Long> {
     List<Attendance> findByUserId(Long userId);
 
     int countByUserId(Long userId);
+
+    boolean existsByUserIdAndDateBetween(Long userId, LocalDate startDate, LocalDate endDate);
+
 }

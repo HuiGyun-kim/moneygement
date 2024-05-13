@@ -3,6 +3,7 @@ package com.room7.moneygement.controller;
 import com.room7.moneygement.dto.AttendanceDTO;
 import com.room7.moneygement.model.Attendance;
 import com.room7.moneygement.model.UserChallenge;
+import com.room7.moneygement.repository.AttendanceRepository;
 import com.room7.moneygement.service.AttendanceService;
 import com.room7.moneygement.service.CustomUserDetails;
 import com.room7.moneygement.service.UserService;
@@ -28,6 +29,7 @@ public class AttendanceController {
 
     private final AttendanceService attendanceService;
     private final UserService userService;
+    private final AttendanceRepository attendanceRepository;
 
 
     // 출석 체크하는 메소드
@@ -118,7 +120,14 @@ public class AttendanceController {
         return attendanceDTO;
     }
 
-
+    @GetMapping("/isAttend/{userId}")
+    public ResponseEntity<Boolean> isAttend(@PathVariable Long userId) {
+        LocalDate today = LocalDate.now();
+        LocalDate startDateTime = LocalDate.from(today.atStartOfDay());
+        LocalDate endDateTime = LocalDate.from(today.atTime(23, 59, 59, 999999999));
+        boolean hasattend = attendanceRepository.existsByUserIdAndDateBetween(userId, startDateTime, endDateTime);
+        return ResponseEntity.ok(hasattend);
+    }
 
 }
 

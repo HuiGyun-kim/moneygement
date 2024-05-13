@@ -235,6 +235,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
     
     fetchAttendanceData();
+    checkParticipation(userId).then(hasattend => {
+        if (hasattend) {
+            document.querySelector('.attendanceButton').style.display = 'none';
+        }
+    });
 });
 
-
+function checkParticipation(userId) {
+    return fetch(`/attendance/isAttend/${userId}`)
+        .then(response => response.json())
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+}
