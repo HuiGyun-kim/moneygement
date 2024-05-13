@@ -1,22 +1,19 @@
 package com.room7.moneygement.serviceImpl;
 
-import com.room7.moneygement.controller.S3Uploader;
+import com.room7.moneygement.service.S3Upload;
 import com.room7.moneygement.repository.FollowRepository;
-
-import java.io.IOException;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.room7.moneygement.model.User;
 import com.room7.moneygement.repository.UserRepository;
 import com.room7.moneygement.service.UserService;
-
 import lombok.RequiredArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
-import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @RequiredArgsConstructor
@@ -24,7 +21,7 @@ public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;
 	private final FollowRepository followRepository;
-	private final S3Uploader s3Uploader;
+	private final S3Upload s3Uploader;
 
 	// BCryptPasswordEncoder를 PasswordEncoder 인터페이스로 사용
 	private final PasswordEncoder encoder = new BCryptPasswordEncoder();
@@ -65,21 +62,22 @@ public class UserServiceImpl implements UserService {
 			.orElseThrow(() -> new RuntimeException("User not found"));
 	}
 
-	//	--------------------------------------------
-	@Override
-	@Transactional
-	public String uploadProfileImage(MultipartFile file, User user) throws IOException {
-		User requestUser = userRepository.findById(user.getUserId())
-			.orElseThrow(() -> new RuntimeException("로그인 후 사용하세요."));
-		if (file != null && !file.isEmpty()) {
-			String profileImageUrl = s3Uploader.upload(file, "profile");
-			requestUser.setProfileImg(profileImageUrl);
-			userRepository.save(requestUser);
-		} else {
-			requestUser.setProfileImg("/img/main/img_2.png"); // 기본 이미지 경로
+	public List<User> searchUsers(String searchType, String searchKey){
+		if (searchType != null && searchKey != null && !searchKey.isEmpty()) {
+			List<User> result = new ArrayList<>();
+
+			if ("searchId".equals(searchType)) {
+				Optional<User> user = userRepository.findByUsername(searchKey);
+				user.ifPresent(result::add);
+			}
+
+			return result;
 		}
-		return "프로필 사진 업로드에 성공하였습니다.";
+		else {
+			return userRepository.findAll();
+		}
 	}
+
 
 	// 비밀번호 확인
 	public boolean checkPassword(User user, String password) {
@@ -107,19 +105,5 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}
 
-	@Override
-	@Transactional
-	public String deleteProfileImage(User user) {
-		User requestUser = userRepository.findById(user.getUserId()).orElseThrow(
-			() -> new IllegalArgumentException("로그인 후 사용하세요.")
-		);
-		String s3Url = user.getProfileImg();
-		String s3Key = s3Url.substring(s3Url.indexOf("profile/"));
-
-		s3Uploader.fileDelete(s3Key);
-		requestUser.setProfileImg("/img/main/img_2.png");
-
-		return "프로필 사진 제거에 성공했습니다.";
-	}
-
 }
+
