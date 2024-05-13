@@ -1,27 +1,51 @@
 document.addEventListener('DOMContentLoaded', function() {
     const unfollowButtons = document.querySelectorAll('.unfollow-button');
-    const userIdInputs = document.querySelectorAll('.user-id');
 
-    unfollowButtons.forEach(function(button, index) {
+    unfollowButtons.forEach(function(button) {
         button.addEventListener('click', function() {
-            const userId = userIdInputs[index].value;
+            const followerId = button.getAttribute('data-follower-id');
 
-            fetch(`/follow/unfollow/${userId}`, {
+            fetch(`/follow/unfollow-me/${followerId}`, {
                 method: 'DELETE'
             })
                 .then(response => {
                     if (response.ok) {
-                        // 언팔로우 성공 시 해당 사용자를 리스트에서 삭제합니다.
                         const followerElement = button.closest('li');
                         followerElement.remove();
                     } else {
-                        // 언팔로우 실패 시 에러 처리를 수행합니다.
-                        console.error('언팔로우 실패');
+                        console.error('Unfollow failed');
                     }
                 })
                 .catch(error => {
-                    console.error('네트워크 오류:', error);
+                    console.error('Network error:', error);
+                });
+        });
+    });
+
+    const followingUnfollowButtons = document.querySelectorAll('.following-unfollow-button');
+
+    followingUnfollowButtons.forEach(function(button) {
+        button.addEventListener('click', function() {
+            const followingId = button.getAttribute('data-following-id');
+
+            fetch(`/follow/unfollow/${followingId}`, {
+                method: 'DELETE'
+            })
+                .then(response => {
+                    if (response.ok) {
+                        const followingElement = button.closest('li');
+                        followingElement.remove();
+                    } else {
+                        console.error('Unfollow failed');
+                    }
+                })
+                .catch(error => {
+                    console.error('Network error:', error);
                 });
         });
     });
 });
+
+function goBack() {
+    window.history.back();
+}

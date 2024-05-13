@@ -62,7 +62,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 						.requestMatchers("/", "/login", "/signup", "/signup-email", "/users/**", "/ledgerEntry/**",
 								"/diary/**", "/level/**","/diary/saveDiary",
 								"/users/send-id-verification-code", "/users/verify-id-code", "/users/verifyEmail",
-								"/sendEmail",
+								"/sendEmail","/follow/unfollow/{userId}","/follow/followers/{userId}","/follow/following/{userId}",
 								"/users/sendEmail", "/emailVerified", "/find-id", "/users/find-id", "/find-password",
 								"/ledgers/**", "/css/**", "/js/**", "/img/**").permitAll()
 						.requestMatchers("/manager/**").hasAuthority("ADMIN")
