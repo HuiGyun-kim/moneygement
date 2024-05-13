@@ -92,5 +92,17 @@ public class MainController {
 	public String history(Model model,@AuthenticationPrincipal CustomUserDetails userDetails) {
 		return "layout/history";
 	}
+
+	// 마이페이지 - 회원정보 수정 / 탈퇴 뷰
+	@GetMapping("/change-password")
+	public String changePassword() {
+		return "/myPage/change-Password";
+	}
+
+	// 마이페이지 -  탈퇴 뷰
+	@GetMapping("/delete-account")
+	public String deleteAccount() {
+		return "/myPage/deleteAccount";
+	}
 }
 
