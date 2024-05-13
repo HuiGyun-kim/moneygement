@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const userId = document.getElementById('userId').getAttribute('data-user-id');
+    const userId = window.location.pathname.split('/')[2];
     updateExp(userId);
 });
 
