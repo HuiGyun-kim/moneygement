@@ -97,7 +97,7 @@ public class AttendanceController {
 
 
     @GetMapping("/all")
-    public ResponseEntity<List<AttendanceDTO>> getAllAttendance(Long userId) {
+    public ResponseEntity<List<AttendanceDTO>> getAllAttendance(@RequestParam Long userId) {
         //유저id 통해 출석 정보 조회
         List<Attendance> attendances = attendanceService.getAllAttendance(userId);
         //출석 정보를 dto로 변환

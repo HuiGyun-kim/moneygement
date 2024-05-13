@@ -112,7 +112,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ date: new Date().toISOString().split('T')[0] })
+                // body: JSON.stringify({ date: new Date().toISOString().split('T')[0] }) UTC기준임.
+                body: JSON.stringify({ date: new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().split('T')[0]}) // 한국시간대.
             });
 
             if (response.ok) {
@@ -201,5 +202,39 @@ function provideReward() {
     // 리워드 지급 로직 작성
     alert('리워드 50p를 제공합니다!');
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    // 사용자 ID를 설정
+    const userId = document.getElementById('userId').getAttribute('data-user-id');
+
+    // 서버에서 출석체크 정보를 가져오는 함수
+    function fetchAttendanceData() {
+        fetch(`/attendance/all?userId=${userId}`)
+            .then(response => response.json())
+            .then(data => {
+                // 출석체크 데이터를 사용하여 UI 업데이트
+                updateUIWithAttendanceData(data);
+            })
+            .catch(error => console.error('Error fetching attendance data:', error));
+    }
+
+    // 출석체크 데이터를 사용하여 UI 업데이트하는 함수
+    function updateUIWithAttendanceData(attendanceData) {
+        const daysTag = document.querySelector('.days');
+
+        attendanceData.forEach(attendance => {
+            const date = new Date(attendance.date);
+            const day = date.getDate(); // 이 부분은 유지
+
+            const dayElement = daysTag.querySelector(`.day-${day}`);
+            if(dayElement) {
+                dayElement.classList.add('completed');
+            }
+        });
+    }
+
+    
+    fetchAttendanceData();
+});
 
 
