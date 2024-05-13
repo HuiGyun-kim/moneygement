@@ -4,83 +4,90 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>다이어리</title>
-    <link rel="stylesheet" th:href="@{/css/main/my-diary.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/main/style.css}"/>
     <link rel="icon" type="image/png" href="/img/main/favicon.png">
+    <link rel="stylesheet" th:href="@{/css/main/my-diary.css}">
     <script th:src="@{/js/my-diary.js}"></script>
 </head>
 <body>
-<a id="userId" style="display: none;" th:attr="data-user-id=${currentUser.userId}"></a>
-<div th:replace="~{layout/header.html::main-header}"></div>
-<nav class="calender">
-    <button id="before"><</button>
-    <div id="date"></div>
-    <button id="after">></button>
-</nav>
-<div class="buttonBox">
-    <button id="today">오늘</button>
-</div>
-
-<section>
-    <h1>AI로 자동일기를 써보세요!</h1>
-    <span>테마를 선택하면 AI가 일기작성을!?</span>
-    <div class="theme">
-        <div class="themeSelect">
-            <div class="circleBox">
-                <div class="circle">
-                    <img th:src="@{/img/main/diary.png}"/>
-                </div>
-                <div class="circleText">일기</div>
-            </div>
-
-            <div class="circleBox">
-                <div class="circle">
-                    <img th:src="@{/img/main/clap.png}"/>
-                </div>
-                <div class="circleText">칭찬</div>
-            </div>
-
-            <div class="circleBox">
-                <div class="circle">
-                    <img th:src="@{/img/main/double_heart.png}"/>
-                </div>
-                <div class="circleText">위로</div>
-            </div>
-
-            <div class="circleBox">
-                <div class="circle">
-                    <img th:src="@{/img/main/megaphone.png}"/>
-                </div>
-                <div class="circleText">잔소리</div>
-            </div>
-
-            <div class="circleBox">
-                <div class="circle">
-                    <img th:src="@{/img/main/note-pen.png}"/>
-                </div>
-                <div class="circleText">감성적</div>
-            </div>
+    <a id="userId" style="display: none;" th:attr="data-user-id=${currentUser.userId}"></a>
+    <div th:replace="~{layout/header.html::main-header}"></div>
+    <div class="myDiary-container">
+        <div class="container-mt-4-sidebar-container">
+            <div th:replace="~{layout/sidebar.html::main-sidebar}"></div>
         </div>
-        <div class="write">일기작성해줘</div>
-
-        <div id="diaryBox"></div>
-        <button id="saveDiary">저장</button>
-    </div>
-
-</section>
-
-<article class="timeline">
-    <h3>타임라인</h3>
-    <div class="timelineBox">
-        <div class = "deco">
-            <div class="deco-flex">
-                <img th:src="@{/img/main/dot.png}"/>
-                <div class="divider"></div>
+        <div class="containers">
+            <nav class="calender">
+                <button id="before"><</button>
+                <div id="date"></div>
+                <button id="after">></button>
+            </nav>
+            <div class="buttonBox">
+                <button id="today">오늘</button>
             </div>
-        </div>
-        <div id="expends"></div>
-    </div>
-</article>
 
+            <section>
+                <h1>AI로 자동일기를 써보세요!</h1>
+                <span>테마를 선택하면 AI가 일기작성을!?</span>
+                <div class="theme">
+                    <div class="themeSelect">
+                        <div class="circleBox">
+                            <div class="circle">
+                                <img th:src="@{/img/main/diary.png}"/>
+                            </div>
+                            <div class="circleText">일기</div>
+                        </div>
+
+                        <div class="circleBox">
+                            <div class="circle">
+                                <img th:src="@{/img/main/clap.png}"/>
+                            </div>
+                            <div class="circleText">칭찬</div>
+                        </div>
+
+                        <div class="circleBox">
+                            <div class="circle">
+                                <img th:src="@{/img/main/double_heart.png}"/>
+                            </div>
+                            <div class="circleText">위로</div>
+                        </div>
+
+                        <div class="circleBox">
+                            <div class="circle">
+                                <img th:src="@{/img/main/megaphone.png}"/>
+                            </div>
+                            <div class="circleText">잔소리</div>
+                        </div>
+
+                        <div class="circleBox">
+                            <div class="circle">
+                                <img th:src="@{/img/main/note-pen.png}"/>
+                            </div>
+                            <div class="circleText">감성적</div>
+                        </div>
+                    </div>
+                    <div class="write">일기작성해줘</div>
+
+                    <div id="diaryBox"></div>
+                    <button id="saveDiary">저장</button>
+                </div>
+
+            </section>
+
+            <article class="timeline">
+                <h3>타임라인</h3>
+                <div class="timelineBox">
+                    <div class = "deco">
+                        <div class="deco-flex">
+                            <img th:src="@{/img/main/dot.png}"/>
+                            <div class="divider"></div>
+                        </div>
+                    </div>
+                    <div id="expends"></div>
+                </div>
+            </article>
+        </div>
+    </div>
 </body>
 </html>

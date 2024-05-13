@@ -1,0 +1,103 @@
+@font-face {
+    font-family: 'Interop';
+    src: url('https://raw.githubusercontent.com/payw-org/Interop/main/web/fonts/Interop-Regular.woff2')
+    format('woff2'),
+    url('https://raw.githubusercontent.com/payw-org/Interop/main/web/fonts/Interop-Regular.woff')
+    format('woff');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
+html, body{
+    height: 100px;
+    margin: 0;
+    padding: 0;
+}
+
+header{
+}
+
+.container-mt-4-sidebar-container{
+    width: 250px;
+}
+
+.containers{
+    font-family: 'Interop';
+    margin-top: 50px;
+    margin-left: 50px;
+}
+.poorchallenge-container{
+    display: flex;
+    flex-direction: row;
+}
+
+main{
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.poorchallenge{
+    text-align: left;
+    color: white;
+    background-color: #1A4F32;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: 300;
+    word-wrap: break-word;
+}
+
+.logo_img{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-img{
+    width: 265px;
+    height: 275px;
+}
+
+.logoTitle{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.goalset-group{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+}
+
+#target_amount{
+    border: 1px solid #000000;
+    border-radius: 5px;
+    width: 350px;
+    height: 30px;
+}
+
+#targetButton{
+    background-color: #1A4F32;
+    color: white;
+    font-size: 15px;
+    text-align: center;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 60px;
+    height: 33px;
+    padding: 1px;
+    border: 1px solid #1A4F32;
+    align-self: center;
+}
+
+.goalset-notice {
+    text-align: left;
+    display: flex;
+    align-items: center;
+}

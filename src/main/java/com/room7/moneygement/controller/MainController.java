@@ -82,13 +82,14 @@ public class MainController {
 		return "main/challengeList";
 	}
 
+	@GetMapping("/poorChallenge")
+	public String monthBest(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
+		model.addAttribute("user", userDetails.getUserDTO());
+		return "main/poorChallenge";
+	}
 
 	@GetMapping("/history")
 	public String history(Model model,@AuthenticationPrincipal CustomUserDetails userDetails) {
-		Long userId = userDetails.getUserId();
-		List<Long> ledgerIds = ledgerService.getLedgerIdsByUser((userId));
-
-		model.addAttribute("ledgerIds", ledgerIds);
 		return "layout/history";
 	}
 

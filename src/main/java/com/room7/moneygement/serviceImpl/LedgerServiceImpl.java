@@ -3,6 +3,8 @@ package com.room7.moneygement.serviceImpl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.room7.moneygement.dto.LedgerDTO;
@@ -22,15 +24,11 @@ public class LedgerServiceImpl implements LedgerService {
 	private final UserService userService;
 	private final LedgerEntryRepository ledgerEntryRepository;
 
-	public List<LedgerDTO> getLedgersByUser(Long userId) {
+	@Override
+	public Page<LedgerDTO> getLedgersByUser(Long userId, Pageable pageable) {
 		User user = userService.findUserById(userId);
-		List<Ledger> ledgers = ledgerRepository.findByUserId(user);
-		return ledgers.stream()
-			.map(ledger -> new LedgerDTO(
-				ledger.getLedgerId(),
-				ledger.getTitle(),
-				ledger.getCreatedAt()))
-			.collect(Collectors.toList());
+		Page<Ledger> ledgers = ledgerRepository.findByUserId(user, pageable);
+		return ledgers.map(ledger -> new LedgerDTO(ledger.getLedgerId(), ledger.getTitle(), ledger.getCreatedAt()));
 	}
 	@Override
 	public void saveLedger(Ledger ledger) {
@@ -45,10 +43,6 @@ public class LedgerServiceImpl implements LedgerService {
 	@Override
 	public void deleteLedger(Long id) {
 		ledgerRepository.deleteById(id);
-	}
-	@Override
-	public List<Long> getLedgerIdsByUser(Long userId) {
-		return ledgerRepository.findLedgerIdsByUserId(userId);
 	}
 }
 

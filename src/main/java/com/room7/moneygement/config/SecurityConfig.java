@@ -58,31 +58,31 @@ public class SecurityConfig implements WebMvcConfigurer {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http
-			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/", "/login", "/signup", "/signup-email", "/users/**", "/ledgerEntry/**",
-					"/diary/**",
-					"/users/send-id-verification-code", "/users/verify-id-code", "/users/verifyEmail",
-					"/sendEmail", "/qna/**",
-					"/users/sendEmail", "/emailVerified", "/find-id", "/users/find-id", "/find-password",
-					"/ledgers/**", "/css/**", "/js/**", "/img/**").permitAll()
-				.requestMatchers("/manager/**").hasAuthority("ADMIN")
-				.anyRequest().authenticated())
-			.formLogin(form -> form
-				.loginPage("/login")
-				.loginProcessingUrl("/users/login")
-				.failureHandler(customFailureHandler())
-				.successHandler(customSuccessHandler())
-				.permitAll())
-			.logout(logout -> logout
-				.logoutUrl("/logout")
-				.logoutSuccessUrl("/login")
-				.invalidateHttpSession(true)
-				.deleteCookies("JSESSIONID"))
-			.exceptionHandling(e -> e
-				.accessDeniedPage("/access-denied"))
-			.csrf(csrf -> csrf
-				.ignoringRequestMatchers("/ledgerEntry/**", "/users/sendEmail", "/qna/**")
-			);
+				.authorizeHttpRequests(auth -> auth
+						.requestMatchers("/", "/login", "/signup", "/signup-email", "/users/**", "/ledgerEntry/**",
+								"/diary/**", "/level/**","/diary/saveDiary",
+								"/users/send-id-verification-code", "/users/verify-id-code", "/users/verifyEmail",
+								"/sendEmail",
+								"/users/sendEmail", "/emailVerified", "/find-id", "/users/find-id", "/find-password",
+								"/ledgers/**", "/css/**", "/js/**", "/img/**").permitAll()
+						.requestMatchers("/manager/**").hasAuthority("ADMIN")
+						.anyRequest().authenticated())
+				.formLogin(form -> form
+						.loginPage("/login")
+						.loginProcessingUrl("/users/login")
+						.failureHandler(customFailureHandler())
+						.successHandler(customSuccessHandler())
+						.permitAll())
+				.logout(logout -> logout
+						.logoutUrl("/logout")
+						.logoutSuccessUrl("/login")
+						.invalidateHttpSession(true)
+						.deleteCookies("JSESSIONID"))
+				.exceptionHandling(e -> e
+						.accessDeniedPage("/access-denied"))
+				.csrf(csrf -> csrf
+						.ignoringRequestMatchers("/ledgerEntry/**", "/users/sendEmail", "/diary/**", "/userChallenges/**", "/qna/**")
+				);
 		return http.build();
 	}
 
