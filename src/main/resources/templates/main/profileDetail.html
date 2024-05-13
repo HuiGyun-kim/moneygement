@@ -2,16 +2,15 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>profiledetail</title>
+    <title>profileDetail</title>
     <link rel="stylesheet" th:href="@{/css/main/profiledetail.css}"/>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <div class="profile-container">
-    <form class="profile-form" method="post" enctype="multipart/form-data" action="/profile/upload">
+    <form class="profile-form" method="post">
         <div class="user-profile">
             <figure class="profile-image" aria-label="프로필">
-                <img  th:src="${user.profileImg} ?: '/img/main/primaryImage.png'" class="profile-image" alt="프로필" >
+                <img id="profileImage" th:src="${user.profileImg}" class="profile-image" alt="프로필">
                 <div class="button-container">
                     <button class="edit-button" type="button">수정</button>
                     <button class="basic-image" type="button">기본 이미지로 설정</button>

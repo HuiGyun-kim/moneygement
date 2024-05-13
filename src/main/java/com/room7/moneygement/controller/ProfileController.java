@@ -1,21 +1,25 @@
 package com.room7.moneygement.controller;
 
 import com.room7.moneygement.dto.CommentDTO;
+import com.room7.moneygement.dto.ResponseDto;
 import com.room7.moneygement.model.User;
-import com.room7.moneygement.service.CommentService;
-import com.room7.moneygement.service.CustomUserDetails;
-import com.room7.moneygement.service.FollowService;
-import com.room7.moneygement.service.UserService;
+import com.room7.moneygement.service.*;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 
 
 @Controller
@@ -25,6 +29,7 @@ public class ProfileController {
     private final UserService userService;
     private final FollowService followService;
     private final CommentService commentService;
+    private final S3Upload s3Upload;
 
     @GetMapping("/profile/{userId}")
     public String profile(@PathVariable Long userId, @RequestParam(defaultValue = "0") int page, Model model) {
@@ -53,6 +58,9 @@ public class ProfileController {
             return "redirect:/";
         }
     }
+
+    //-------------------------------------------------------------------------------------------------
+
     @PostMapping("/profile/{userId}/comments")
     public String createComment(@PathVariable Long userId, @ModelAttribute CommentDTO commentDTO) {
         commentService.createComment(commentDTO);
@@ -80,4 +88,30 @@ public class ProfileController {
         return "main/comment-edit";
     }
 
+    //------------------------------------------------------------------------------------------------------
+
+
+    @GetMapping("/profile-detail")
+    public String getProfileDetailPage(@AuthenticationPrincipal CustomUserDetails customUserDetails, Model model) {
+        User user = customUserDetails.getUser();
+        model.addAttribute("user", user);
+        return "main/profileDetail";
+    }
+
+    @PostMapping("/profileDetail/upload")
+    public ResponseEntity<ResponseDto> imageUpload(@RequestPart(name = "profileImg", required = false) MultipartFile multipartFile) {
+        if (multipartFile == null || multipartFile.isEmpty()) {
+            return ResponseEntity.badRequest().body(new ResponseDto("Invalid file. Please select a file to upload.", null));
+        }
+        try {
+            String imageUrl = s3Upload.uploadFiles(multipartFile, "static");
+            return ResponseEntity.ok(new ResponseDto("File uploaded successfully.", imageUrl));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("Failed to upload file.", null));
+        }
+    }
+
+    //------------------------------------------------------------------------------------------
+    //프로필 이미지 업데이트
 }
