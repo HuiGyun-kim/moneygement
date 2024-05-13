@@ -2,11 +2,13 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Followers</title>
+    <title>팔로워</title>
+    <link rel="stylesheet" th:href="@{/css/main/followers.css}"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <h1>Followers</h1>
-
+<button class="back-button" onclick="goBack()">뒤로 가기</button>
 <ul>
     <li th:each="follower : ${followers}">
         <span th:text="${follower.username}"></span>
@@ -17,8 +19,9 @@
         </button>
     </li>
 </ul>
+<script th:src="@{/js/Follower.js}"></script>
 
-<button onclick="goBack()">Back to Profile</button>
-<script th:src="@{/js/follower.js}"></script>
+<div id="item-list"></div>
+<div id="load-more-target"></div>
 </body>
 </html>

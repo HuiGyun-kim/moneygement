@@ -38,6 +38,7 @@ public class FollowServiceImpl implements FollowService {
         followMember.getFollowers().add(follow);
     }
 
+
     @Override
     public void unfollow(Long followMemberId, String username) {
         User follower = userService.findByUsername(username);
@@ -51,7 +52,6 @@ public class FollowServiceImpl implements FollowService {
         follower.getFollowings().remove(follow);
         followMember.getFollowers().remove(follow);
     }
-
     @Override
     public List<User> getFollowers(Long userId) {
         List<Follow> follows = followRepository.findByFollowMemberId(userId);
