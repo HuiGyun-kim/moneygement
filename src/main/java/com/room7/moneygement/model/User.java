@@ -2,7 +2,10 @@ package com.room7.moneygement.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -44,12 +47,14 @@ public class User {
 	private int exp;
 
   	private String introduction;
-  
-	@OneToMany(mappedBy = "followMemberId", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Follow> followers = new ArrayList<>();
 
-	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Follow> followings = new ArrayList<>();
+	// 이 사용자를 팔로우하는 사람들 (즉, 이 사용자가 'following_id')
+	@OneToMany(mappedBy = "following")
+	private Set<Follow> followers = new HashSet<>();
+
+	// 이 사용자가 팔로우하는 사람들 (즉, 이 사용자가 'follower_id')
+	@OneToMany(mappedBy = "follower")
+	private Set<Follow> followings = new HashSet<>();
 
 	public int getCurrentLevel() {
 		int baseExpPerLevel = 100;
@@ -62,9 +67,7 @@ public class User {
 			level++;
 			requiredExp = baseExpPerLevel + (level - 1) * expIncreasePerLevel;
 		}
-
 		return level;
 	}
-
 }
 

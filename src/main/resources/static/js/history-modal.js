@@ -103,25 +103,25 @@ function loadCategories() {
         .catch(error => console.error('Failed to load categories:', error));
 }
 
-function loadIncomeData() {
+function loadIncomeData(page = 0) {
     const ledgerId = document.getElementById('ledgerSelect').value;
     if (!ledgerId) {
         clearIncomeData();
         return;
     }
 
-    fetch(`/ledgerEntry/entries?ledgerId=${encodeURIComponent(ledgerId)}`)
+    fetch(`/ledgerEntry/entries?ledgerId=${encodeURIComponent(ledgerId)}&page=${page}&sort=date,desc`)
         .then(response => response.json())
         .then(data => {
             const incomeData = document.getElementById('incomeData');
             incomeData.innerHTML = '';
 
-            if (data.length === 0) {
+            if (data.content && data.content.length === 0) {
                 const message = document.createElement('tr');
                 message.innerHTML = '<td colspan="5">수입 내역이 없습니다.</td>';
                 incomeData.appendChild(message);
             } else {
-                data.forEach(entry => {
+                data.content.forEach(entry => {
                     const id = entry.entryId;
                     const row = document.createElement('tr');
                     row.id = `row-${id}`;
@@ -137,6 +137,53 @@ function loadIncomeData() {
                     `;
                     incomeData.appendChild(row);
                 });
+            }
+            // 페이지네이션 처리
+            // 페이지네이션 처리 수정
+            const pagination = document.getElementById('incomePagination');
+            pagination.innerHTML = '';
+
+            if (data.totalPages > 0) {
+                if (data.hasPrevious) {
+                    const prevLink = document.createElement('a');
+                    prevLink.href = '#';
+                    prevLink.textContent = '<';
+                    prevLink.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        loadIncomeData(data.number - 1);
+                    });
+                    pagination.appendChild(prevLink);
+                }
+
+                const pageNumberSequence = Array.from(
+                    { length: Math.min(data.number + 2, data.totalPages) - Math.max(data.number - 1, 0) },
+                    (_, i) => Math.max(0, data.number - 1) + i
+                );
+
+                pageNumberSequence.forEach(pageNumber => {
+                    const pageLink = document.createElement('a');
+                    pageLink.href = '#';
+                    pageLink.textContent = pageNumber + 1;
+                    if (pageNumber === data.number) {
+                        pageLink.classList.add('active');
+                    }
+                    pageLink.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        loadIncomeData(pageNumber);
+                    });
+                    pagination.appendChild(pageLink);
+                });
+
+                if (data.hasNext) {
+                    const nextLink = document.createElement('a');
+                    nextLink.href = '#';
+                    nextLink.textContent = '>';
+                    nextLink.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        loadIncomeData(data.number + 1);
+                    });
+                    pagination.appendChild(nextLink);
+                }
             }
         })
         .catch(error => console.error('Error fetching income data:', error));
@@ -302,7 +349,11 @@ function openModal(tabName = 'defaultOpen') {
 function closeModal(modal) {
     modal.style.display = 'none';
     document.body.style.overflow = 'auto';
-    location.reload();
+
+    // defaultOpen 모달이 닫힐 때 페이지 새로고침
+    if (modal.id === 'modalWindow') {
+        location.reload();
+    }
 }
 
 // 페이지 로드 시 실행
@@ -368,23 +419,24 @@ function submitExpenseData() {
             alert('오류 발생');
         });
 }
-function loadExpenseData() {
+function loadExpenseData(page = 0) {
     const ledgerId = document.getElementById('ledgerSelect').value;
     if (!ledgerId) {
         clearExpenseData();
         return;
     }
-    fetch(`/ledgerEntry/entries?ledgerId=${encodeURIComponent(ledgerId)}&ledgerType=true`)
+    fetch(`/ledgerEntry/entries?ledgerId=${encodeURIComponent(ledgerId)}&ledgerType=true&page=${page}&sort=date,desc`)
         .then(response => response.json())
         .then(data => {
             const expenseTableBody = document.getElementById('expenseTableBody');
             expenseTableBody.innerHTML = '';
-            if (data.length === 0) {
+
+            if (data.content && data.content.length === 0) {
                 const row = document.createElement('tr');
                 row.innerHTML = '<td colspan="5">지출 내역이 없습니다.</td>';
                 expenseTableBody.appendChild(row);
             } else {
-                data.forEach(entry => {
+                data.content.forEach(entry => {
                     const id = entry.entryId;
                     const row = document.createElement('tr');
                     row.id = `row-${id}`;
@@ -400,6 +452,52 @@ function loadExpenseData() {
                `;
                     expenseTableBody.appendChild(row);
                 });
+            }
+            // 페이지네이션 처리
+            const pagination = document.getElementById('expensePagination');
+            pagination.innerHTML = '';
+
+            if (data.totalPages > 0) {
+                if (data.hasPrevious) {
+                    const prevLink = document.createElement('a');
+                    prevLink.href = '#';
+                    prevLink.textContent = '<';
+                    prevLink.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        loadExpenseData(data.number - 1);
+                    });
+                    pagination.appendChild(prevLink);
+                }
+
+                const pageNumberSequence = Array.from(
+                    { length: Math.min(data.number + 2, data.totalPages) - Math.max(data.number - 1, 0) },
+                    (_, i) => Math.max(0, data.number - 1) + i
+                );
+
+                pageNumberSequence.forEach(pageNumber => {
+                    const pageLink = document.createElement('a');
+                    pageLink.href = '#';
+                    pageLink.textContent = pageNumber + 1;
+                    if (pageNumber === data.number) {
+                        pageLink.classList.add('active');
+                    }
+                    pageLink.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        loadExpenseData(pageNumber);
+                    });
+                    pagination.appendChild(pageLink);
+                });
+
+                if (data.hasNext) {
+                    const nextLink = document.createElement('a');
+                    nextLink.href = '#';
+                    nextLink.textContent = '>';
+                    nextLink.addEventListener('click', (event) => {
+                        event.preventDefault();
+                        loadExpenseData(data.number + 1);
+                    });
+                    pagination.appendChild(nextLink);
+                }
             }
         })
         .catch(error => console.error('Error fetching expense data:', error));

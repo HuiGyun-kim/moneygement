@@ -23,11 +23,6 @@ public interface UserService {
 	User deleteUser(User user);
 	// boolean checkPassword(String rawpassword, String encodedPassword);
 
-//	-----------------------------------------------
-
-	String uploadProfileImage(MultipartFile file, User user) throws IOException;
-
-	String deleteProfileImage(User user);
 }
 
 

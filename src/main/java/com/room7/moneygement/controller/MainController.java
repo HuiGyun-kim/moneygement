@@ -2,6 +2,9 @@ package com.room7.moneygement.controller;
 
 import java.util.List;
 
+import com.room7.moneygement.model.User;
+import com.room7.moneygement.repository.UserRepository;
+
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +24,7 @@ public class MainController {
 
 	private final CategoryService categoryService;
 	private final LedgerService ledgerService;
+	private final UserRepository userRepository;
 
 	// 기본 홈 페이지를 반환하는 메서드
 	@GetMapping("/")
@@ -48,7 +52,7 @@ public class MainController {
 
 	@GetMapping("/emailVerified")
 	public String emailVerified(@RequestParam(value = "status", required = false) String status,
-								@RequestParam(value = "message", required = false) String message, Model model) {
+		@RequestParam(value = "message", required = false) String message, Model model) {
 		model.addAttribute("status", status);
 		model.addAttribute("message", message);
 
@@ -66,30 +70,41 @@ public class MainController {
 	}
 
 	@GetMapping("/myDiary")
-	public String myDiary(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
+	public String myDiary(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
 		model.addAttribute("user", userDetails.getUserDTO());
 		return "main/my-diary";
 	}
+
 	@GetMapping("checkChallenge")
-	public String checkChallenge(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
+	public String checkChallenge(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
 		model.addAttribute("user", userDetails.getUserDTO());
 		return "main/checkChallenge";
 	}
 
 	@GetMapping("challengeList")
-	public String challengeList(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
+	public String challengeList(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
 		model.addAttribute("user", userDetails.getUserDTO());
 		return "main/challengeList";
 	}
 
+	@GetMapping("admin")
+	public String admin(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
+		model.addAttribute("user", userDetails.getUserDTO());
+		List<User> userList = userRepository.findAll();
+		model.addAttribute("userList", userList);
+		model.addAttribute("total", userRepository.countAllUsers());
+		return "main/admin";
+	}
+
 	@GetMapping("/poorChallenge")
-	public String monthBest(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
+	public String monthBest(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
 		model.addAttribute("user", userDetails.getUserDTO());
 		return "main/poorChallenge";
+
 	}
 
 	@GetMapping("/history")
-	public String history(Model model,@AuthenticationPrincipal CustomUserDetails userDetails) {
+	public String history(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
 		return "layout/history";
 	}
 
