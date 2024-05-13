@@ -1,6 +1,9 @@
 package com.room7.moneygement.service;
 
 import com.room7.moneygement.model.User;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 
 public interface UserService {
@@ -19,5 +22,12 @@ public interface UserService {
 
 	User deleteUser(User user);
 	// boolean checkPassword(String rawpassword, String encodedPassword);
+
+//	-----------------------------------------------
+
+	String uploadProfileImage(MultipartFile file, User user) throws IOException;
+
+	String deleteProfileImage(User user);
 }
+
 

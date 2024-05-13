@@ -6,6 +6,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (userId) {
         userId = userId.trim(); // userId 값의 앞뒤 공백 제거
     }
+    if (followButton) {
+        if (currentUser && currentUser.userId && currentUser.userId === [[${user.userId}]]) {
+            followButton.style.display = 'none';
+        }
+    }
+
     followButton.addEventListener('click', (event) => {
         event.preventDefault();
 
