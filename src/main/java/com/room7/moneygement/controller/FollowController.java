@@ -4,6 +4,8 @@ package com.room7.moneygement.controller;
 import com.room7.moneygement.model.User;
 import com.room7.moneygement.service.FollowService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +30,12 @@ public class FollowController {
     }
 
     @DeleteMapping("/unfollow/{userId}")
-    public String unfollow(@PathVariable Long userId, Principal principal) {
+    public ResponseEntity<String> unfollow(@PathVariable Long userId, Principal principal) {
         try {
             followService.unfollow(userId, principal.getName());
-            return "redirect:/following/" + userId;
+            return new ResponseEntity<>("Unfollowed successfully", HttpStatus.OK);
         } catch (Exception e) {
-            return "redirect:/following/" + userId;
+            return new ResponseEntity<>("Failed to unfollow", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

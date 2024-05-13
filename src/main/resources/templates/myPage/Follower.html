@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>팔로워</title>
     <link rel="stylesheet" th:href="@{/css/main/followers.css}"/>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <h1>Followers</h1>
@@ -12,14 +11,12 @@
 <ul>
     <li th:each="follower : ${followers}">
         <span th:text="${follower.username}"></span>
-        <button class="unfollow-button"
-                data-authenticated-user-id="${#authentication.principal.id}"
-                data-user-id="${follower.userId}">
-            Unfollow
-        </button>
+        <button class="unfollow-button">Unfollow</button>
+        <input type="hidden" class="user-id" th:value="${follower.userId}">
     </li>
 </ul>
 <script th:src="@{/js/Follower.js}"></script>
+<script th:src="@{/js/unfollow.js}"></script>
 
 <div id="item-list"></div>
 <div id="load-more-target"></div>

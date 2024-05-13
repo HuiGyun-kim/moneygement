@@ -49,9 +49,16 @@ public class FollowServiceImpl implements FollowService {
 
         followRepository.delete(follow);
 
-        follower.getFollowings().remove(follow);
-        followMember.getFollowers().remove(follow);
+        // 팔로잉 리스트에서 언팔로우 대상을 제거
+        List<Follow> followerFollowingList = follower.getFollowings();
+        followerFollowingList.removeIf(f -> f.getFollowMemberId().equals(followMember.getUserId()));
+
+        // 팔로워 리스트에서 언팔로우 대상을 제거
+        List<Follow> followMemberFollowerList = followMember.getFollowers();
+        followMemberFollowerList.removeIf(f -> f.getUserId().equals(follower.getUserId()));
     }
+
+
     @Override
     public List<User> getFollowers(Long userId) {
         List<Follow> follows = followRepository.findByFollowMemberId(userId);
