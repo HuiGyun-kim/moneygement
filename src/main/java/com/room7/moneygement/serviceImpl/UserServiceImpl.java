@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
 			return userRepository.findAll();
 		}
 	}
-}
+
 
 	// 비밀번호 확인
 	public boolean checkPassword(User user, String password) {
