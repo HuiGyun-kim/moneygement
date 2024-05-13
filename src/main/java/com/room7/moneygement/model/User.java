@@ -43,7 +43,7 @@ public class User {
 
 	private int exp;
 
-  private String introduction;
+  	private String introduction;
   
 	@OneToMany(mappedBy = "followMemberId", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Follow> followers = new ArrayList<>();
@@ -51,7 +51,6 @@ public class User {
 	@OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Follow> followings = new ArrayList<>();
 
-	
 
 }
 

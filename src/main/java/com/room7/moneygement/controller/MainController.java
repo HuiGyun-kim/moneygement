@@ -2,6 +2,8 @@ package com.room7.moneygement.controller;
 
 import java.util.List;
 
+import com.room7.moneygement.model.User;
+import com.room7.moneygement.repository.UserRepository;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,7 @@ public class MainController {
 
 	private final CategoryService categoryService;
 	private final LedgerService ledgerService;
+	private final UserRepository userRepository;
 
 	// 기본 홈 페이지를 반환하는 메서드
 	@GetMapping("/")
@@ -82,6 +85,14 @@ public class MainController {
 		return "main/challengeList";
 	}
 
+	@GetMapping("admin")
+	public String admin(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
+		model.addAttribute("user", userDetails.getUserDTO());
+		List<User> userList = userRepository.findAll();
+		model.addAttribute("userList", userList);
+		model.addAttribute("total", userRepository.countAllUsers());
+		return "main/admin";
+	}
 
 	@GetMapping("/history")
 	public String history(Model model,@AuthenticationPrincipal CustomUserDetails userDetails) {

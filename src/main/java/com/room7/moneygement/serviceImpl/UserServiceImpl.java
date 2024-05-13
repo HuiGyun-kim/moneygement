@@ -9,6 +9,9 @@ import com.room7.moneygement.repository.LedgerRepository;
 import com.room7.moneygement.repository.UserRepository;
 import com.room7.moneygement.service.UserService;
 import lombok.RequiredArgsConstructor;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -52,5 +55,21 @@ public class UserServiceImpl implements UserService {
 	public User findById(Long id) { // findById 메서드 구현
 		return userRepository.findById(id)
 				.orElseThrow(() -> new RuntimeException("User not found"));
+	}
+
+	public List<User> searchUsers(String searchType, String searchKey){
+		if (searchType != null && searchKey != null && !searchKey.isEmpty()) {
+			List<User> result = new ArrayList<>();
+
+			if ("searchId".equals(searchType)) {
+				Optional<User> user = userRepository.findByUsername(searchKey);
+				user.ifPresent(result::add);
+			}
+
+			return result;
+		}
+		else {
+			return userRepository.findAll();
+		}
 	}
 }

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>운영자 관리페이지</title>
+    <link rel="stylesheet" th:href="@{/css/main/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/main/admin.css}">
+    <script th:src="@{/js/admin.js}"></script>
+
+</head>
+<body>
+<div class="container">
+    <div class="title">
+        <h2 class="title1">전체회원/운영진</h2>
+    </div>
+    <div class="top">
+        <p class="totalUser">전체회원: <span class="countHighlight" th:text="${total}">총 회원수</span>명</p>
+        <div class="search1">
+            <form class="searching" action="/admin/search" method="get">
+                <label>
+                    <select class="choice" name="searchType">
+                        <option value="searchId">아이디</option>
+                    </select>
+                </label>
+                <label class="searchKey"><input name="searchKey" alt=""></label>
+                <button type="submit">검색</button>
+            </form>
+        </div>
+    </div>
+    <p class ="message" th:style="${message} != null ? 'visibility:visible;' : 'visibility:hidden;'" th:text="${message} ?: '경고 메세지'">경고 메세지</p>
+    <table class="table">
+        <thead>
+        <tr>
+            <th class="th-title1">번호</th>
+            <th class="th-title2">아이디</th>
+            <th class="th-title3">이메일</th>
+            <th class="th-title4">등급</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${userList}">
+            <td th:text="${user.userId}">아이디</td>
+            <td th:text="${user.username}">아이디</td>
+            <td th:text="${user.email}">이메일</td>
+            <td th:text="${user.getCurrentLevel()}">등급</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
