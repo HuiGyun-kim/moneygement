@@ -1,11 +1,13 @@
 package com.room7.moneygement.controller;
 
 import com.room7.moneygement.dto.QnADTO;
+import com.room7.moneygement.service.CustomUserDetails;
 import com.room7.moneygement.service.QnAService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -28,12 +30,14 @@ public class QnAController {
 	}
 
 	@PostMapping("/ask")
-	public ResponseEntity<QnADTO> askQuestion(@RequestBody QnADTO qnaDTO) {
+	public ResponseEntity<QnADTO> askQuestion(@RequestBody QnADTO qnaDTO, @AuthenticationPrincipal CustomUserDetails userDetails) {
+		Long userId = userDetails.getUserId();
 		// 사용자가 입력한 질문을 받아옵니다.
 		String question = qnaDTO.getQuestion();
 		// 앨런 AI와의 통신을 통해 답변을 받습니다.
 		String alanApiResponse = communicateWithAlan(question);
 		// 앨런 AI로부터 받은 답변을 QnADTO에 저장합니다.
+		qnaDTO.setUserId(userId);
 		qnaDTO.setAnswer(alanApiResponse);
 		// 답변이 포함된 DTO를 저장하고 응답합니다.
 		QnADTO savedQnA = qnaService.saveQnA(qnaDTO);
@@ -59,8 +63,9 @@ public class QnAController {
 				.queryParam("content", question)
 				.queryParam("client_id", alanApiKey)
 				.toUriString();
+
 		// 앨런 AI API에 POST 요청을 보냅니다.
-		String alanApiResponse = restTemplate.getForObject(alanApiUrl + "?content=" + question, String.class);
+		String alanApiResponse = restTemplate.getForObject(uri, String.class);
 		return alanApiResponse;
 	}
 }

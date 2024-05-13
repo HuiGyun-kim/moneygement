@@ -14,7 +14,10 @@ document.addEventListener('DOMContentLoaded', function() {
         fetch('/api/delete-account', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'header': header,
+                'X-Requested-With': 'XMLHttpRequest',
+                "Content-Type": "application/json",
+                'X-CSRF-Token': token
             },
             body: JSON.stringify({ password: password })
         })
