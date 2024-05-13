@@ -64,7 +64,7 @@ public class S3Upload {
 
 //    변환
     private Optional<File> convert(MultipartFile files) throws IOException{
-        File convertFile = new File(System.getProperty("user.dir") + "/" + ".jpg");
+        File convertFile = new File(System.getProperty("user.dir") + "/" + ".png");
 
         if(convertFile.createNewFile()){
             try(FileOutputStream fos = new FileOutputStream(convertFile)){
