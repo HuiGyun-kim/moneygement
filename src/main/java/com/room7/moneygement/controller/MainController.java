@@ -86,12 +86,13 @@ public class MainController {
 	}
 
 	@GetMapping("admin")
-	public String admin(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
+	public String admin(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
 		model.addAttribute("user", userDetails.getUserDTO());
 		List<User> userList = userRepository.findAll();
 		model.addAttribute("userList", userList);
 		model.addAttribute("total", userRepository.countAllUsers());
 		return "main/admin";
+	}
 
 	@GetMapping("/poorChallenge")
 	public String monthBest(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
