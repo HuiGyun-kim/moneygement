@@ -5,24 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>출석체크</title>
     <link rel="stylesheet" th:href="@{/css/main/checkChallenge.css}">
-    <!-- FullCalendar 라이브러리 -->
-<!--    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>-->
-<!--    <link rel="stylesheet" href="../../static/main/challenge.css?after">-->
-
-<!--    <script>-->
-
-<!--        document.addEventListener('DOMContentLoaded', function() {-->
-<!--            const calendarEl = document.getElementById('calendar');-->
-<!--            const calendar = new FullCalendar.Calendar(calendarEl, {-->
-<!--                initialView: 'dayGridMonth'-->
-<!--            });-->
-<!--            calendar.render();-->
-<!--        });-->
-
-<!--    </script>-->
 </head>
 <body>
 <div>
+<!--    <div th:replace="~{layout/header.html::main-header}"></div>-->
     <header>
         <h1 class="challenge">챌린지</h1>
         <h1 class="checkChallenge">출석 체크</h1>
@@ -59,7 +45,7 @@
 
     <!--출석체크 버튼-->
     <button id="attendanceButton" class="attendanceButton">
-        <img src="/static/img/main/attendace_btn.png">
+        <img src="/img/main/attendace_icon.png">
     </button>
 
     <!--js 파일-->

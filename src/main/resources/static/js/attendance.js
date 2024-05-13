@@ -81,6 +81,25 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    //리워드 확인 함수
+    // 리워드 확인 함수
+    function checkRewardEligibility() {
+        // AJAX를 사용하여 백엔드로 리워드 확인 요청 보내기
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/attendance/reward/eligible');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                // 리워드 지급 가능한 경우 메시지 출력
+                alert('축하합니다! 리워드를 받을 수 있습니다.');
+            } else {
+                // 리워드 지급 불가능한 경우 메시지 출력
+                alert('리워드 지급 대상이 아닙니다.');
+            }
+        };
+        xhr.send();
+    }
+
     /* AJAX 통신 */
     document.addEventListener('DOMContentLoaded', function () {
         // 출석체크 버튼 클릭 이벤트 처리
@@ -92,8 +111,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (xhr.status === 200) {
                     // 통신 성공 시 출석체크 완료 메시지 표시
                     alert('출석체크가 완료되었습니다!');
-                    // 출석체크 횟수 증가
-                    attendanceCount++;
+                    //화면 업데이트 로직 추가
+                    updateAttendanceUI();
+
                     // 출석체크 횟수가 25일 이상인 경우 리워드 제공
                     if (attendanceCount >= 25){
                         provideReward();
@@ -105,7 +125,12 @@ document.addEventListener('DOMContentLoaded', function () {
             };
             xhr.send(JSON.stringify({ date: new Date().toISOString().split('T')[0] }));
         });
+        //화면 업데이트 함수
+        function updateAttendanceUI(){
+
+        }
     });
+
 });
 
 

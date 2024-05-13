@@ -28,4 +28,7 @@ public class Attendance {
     @Column(name = "is_attended")
     private boolean attended; //출첵 여부
 
+    public Long getId() {
+        return id;
+    }
 }

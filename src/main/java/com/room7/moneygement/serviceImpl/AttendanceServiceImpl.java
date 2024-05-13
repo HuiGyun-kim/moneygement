@@ -21,13 +21,13 @@ public class AttendanceServiceImpl implements AttendanceService {
 
     // 사용자의 출석체크를 저장하는 메서드
     @Override
-    public void checkAttendance(Long userId) {
-        LocalDate today = LocalDate.now();
+    public void checkAttendance(Long userId, LocalDate date) {
         Attendance attendance = new Attendance();
         attendance.setUserId(userId);
-        attendance.setDate(today);
+        attendance.setDate(date);
         attendanceRepository.save(attendance);
     }
+
 
     // 사용자가 리워드를 받을 수 있는지 확인하는 메서드
     @Override
