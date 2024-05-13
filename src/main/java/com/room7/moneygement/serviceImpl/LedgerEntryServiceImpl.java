@@ -5,6 +5,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.room7.moneygement.dto.LedgerEntryDTO;
@@ -27,25 +30,23 @@ public class LedgerEntryServiceImpl implements LedgerEntryService {
 	private final CategoryRepository categoryRepository;
 
 	@Override
-	public List<LedgerEntryDTO> getEntriesByLedgerAndType(Long ledgerId, Boolean ledgerType) {
+	public Page<LedgerEntryDTO> getEntriesByLedgerAndType(Long ledgerId, Boolean ledgerType, Pageable pageable) {
 		Ledger ledger = ledgerRepository.findById(ledgerId).orElse(null);
 		if (ledger == null) {
-			return Collections.emptyList();
+			return new PageImpl<>(Collections.emptyList());
 		}
 
-		List<LedgerEntry> entries = ledgerEntryRepository.findByLedgerAndLedgerType(ledger, ledgerType);
-		return entries.stream()
-			.map(entry -> new LedgerEntryDTO(
-				entry.getEntryId(),
-				entry.getLedger().getLedgerId(),
-				entry.getCategory().getCategoryId(),
-				entry.getCategory().getCategoryName(),
-				entry.getReceiptId(),
-				entry.getCreateAt(),
-				entry.getAmount(),
-				entry.getDate(),
-				entry.getDescription()))
-			.collect(Collectors.toList());
+		Page<LedgerEntry> entries = ledgerEntryRepository.findByLedgerAndLedgerTypeOrderByDateDesc(ledger, ledgerType, pageable);
+		return entries.map(entry -> new LedgerEntryDTO(
+			entry.getEntryId(),
+			entry.getLedger().getLedgerId(),
+			entry.getCategory().getCategoryId(),
+			entry.getCategory().getCategoryName(),
+			entry.getReceiptId(),
+			entry.getCreateAt(),
+			entry.getAmount(),
+			entry.getDate(),
+			entry.getDescription()));
 	}
 
 	@Override
@@ -93,13 +94,5 @@ public class LedgerEntryServiceImpl implements LedgerEntryService {
 	@Override
 	public LedgerEntry getEntryById(Long id) {
 		return ledgerEntryRepository.findById(id).orElse(null);
-	}
-	@Override
-	public List<LedgerEntryDTO> getMonthlyIncomeSummary(Long ledgerId, int year, int month) {
-		return ledgerEntryRepository.findIncomeSummaryByMonthAndYearAndLedger(ledgerId, year, month);
-	}
-	@Override
-	public List<LedgerEntryDTO> getMonthlyExpenseSummary(Long ledgerId, int year, int month) {
-		return ledgerEntryRepository.findExpenseSummaryByMonthAndYearAndLedger(ledgerId, year, month);
 	}
 }

@@ -5,12 +5,17 @@ import com.room7.moneygement.model.Category;
 import com.room7.moneygement.model.LedgerEntry;
 import com.room7.moneygement.repository.CategoryRepository;
 import com.room7.moneygement.repository.LedgerEntryRepository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -58,10 +63,22 @@ public class LedgerEntryController {
 	}
 
 	@GetMapping("/entries")
-	public ResponseEntity<List<LedgerEntryDTO>> getEntries(
+	public ResponseEntity<Map<String, Object>> getEntries(
 		@RequestParam Long ledgerId,
-		@RequestParam(required = false, defaultValue = "false") Boolean ledgerType) {
-		return ResponseEntity.ok(ledgerEntryService.getEntriesByLedgerAndType(ledgerId, ledgerType));
+		@RequestParam(required = false, defaultValue = "false") Boolean ledgerType,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "10") int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<LedgerEntryDTO> entries = ledgerEntryService.getEntriesByLedgerAndType(ledgerId, ledgerType, pageable);
+
+		Map<String, Object> response = new HashMap<>();
+		response.put("content", entries.getContent());
+		response.put("number", entries.getNumber());
+		response.put("totalPages", entries.getTotalPages());
+		response.put("hasPrevious", entries.hasPrevious());
+		response.put("hasNext", entries.hasNext());
+
+		return ResponseEntity.ok(response);
 	}
 
 	@PostMapping("/add")
