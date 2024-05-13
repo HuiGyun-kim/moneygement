@@ -47,15 +47,20 @@ public class FollowServiceImpl implements FollowService {
         Follow follow = followRepository.findByUserIdAndFollowMemberId(follower.getUserId(), followMember.getUserId())
                 .orElseThrow(() -> new RuntimeException("Follow not found"));
 
-        followRepository.delete(follow);
+        try {
+            followRepository.delete(follow);
 
-        // 팔로잉 리스트에서 언팔로우 대상을 제거
-        List<Follow> followerFollowingList = follower.getFollowings();
-        followerFollowingList.removeIf(f -> f.getFollowMemberId().equals(followMember.getUserId()));
+            // 팔로잉 리스트에서 언팔로우 대상을 제거
+            List<Follow> followerFollowingList = follower.getFollowings();
+            followerFollowingList.removeIf(f -> f.getFollowMemberId().equals(followMember.getUserId()));
 
-        // 팔로워 리스트에서 언팔로우 대상을 제거
-        List<Follow> followMemberFollowerList = followMember.getFollowers();
-        followMemberFollowerList.removeIf(f -> f.getUserId().equals(follower.getUserId()));
+            // 팔로워 리스트에서 언팔로우 대상을 제거
+            List<Follow> followMemberFollowerList = followMember.getFollowers();
+            followMemberFollowerList.removeIf(f -> f.getUserId().equals(follower.getUserId()));
+        } catch (Exception e) {
+            // 롤백 처리
+            throw new RuntimeException("Failed to unfollow", e);
+        }
     }
 
 
