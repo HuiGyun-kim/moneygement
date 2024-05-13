@@ -3,13 +3,19 @@ package com.room7.moneygement.controller;
 import com.room7.moneygement.dto.CommentDTO;
 import com.room7.moneygement.model.User;
 import com.room7.moneygement.service.CommentService;
+import com.room7.moneygement.service.CustomUserDetails;
 import com.room7.moneygement.service.FollowService;
 import com.room7.moneygement.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 
 @Controller
@@ -72,5 +78,27 @@ public class ProfileController {
         model.addAttribute("comment", comment);
         model.addAttribute("userId", userId);
         return "main/comment-edit";
+    }
+
+//    -----------------------------------------------------
+
+    @GetMapping("/profile/detail")
+    public String getProfileDetailPage(@AuthenticationPrincipal CustomUserDetails customUserDetails, Model model) {
+        User user = customUserDetails.getUser();
+        model.addAttribute("user", user);
+        return "main/profiledetail";
+    }
+
+    @PostMapping("/profile/upload")
+    public ResponseEntity<String> uploadProfileImage(@RequestParam(value = "profileImg") MultipartFile file,
+                                                     @AuthenticationPrincipal CustomUserDetails customUserDetails) throws IOException {
+        String result = userService.uploadProfileImage(file, customUserDetails.getUser());
+        return ResponseEntity.ok(result);
+    }
+
+    @DeleteMapping("/profile/delete")
+    public ResponseEntity<String> deleteProfileImage(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        String result = userService.deleteProfileImage(customUserDetails.getUser());
+        return ResponseEntity.ok(result);
     }
 }
