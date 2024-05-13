@@ -2,18 +2,28 @@ document.getElementById('changePwdBtn').addEventListener('click', function() {
     var currentPassword = document.getElementById('currentPassword').value;
     var newPassword = document.getElementById('newPassword').value;
     var newPasswordConfirm = document.getElementById('newPasswordConfirm').value;
-
+    const header = document.querySelector('meta[name="_csrf_header"]').content;
+    const token = document.querySelector('meta[name="_csrf"]').content;
+    console.log(header)
+    console.log(token)
     // 새 비밀번호와 새 비밀번호 확인이 일치하는지 확인
     if (newPassword !== newPasswordConfirm) {
         alert('새 비밀번호와 새 비밀번호 확인이 일치하지 않습니다.');  // 비밀번호 불일치 메시지
         return;  // 함수 종료
     }
-    fetch('/api/change-pw', {
-        method: 'POST',
+    fetch("/api/change-pw", {
+        method: "Post",
         headers: {
-            'Content-Type': 'application/json'
+            'header': header,
+            'X-Requested-With': 'XMLHttpRequest',
+            "Content-Type": "application/json",
+            'X-CSRF-Token': token
         },
-        body: JSON.stringify({ currentPassword: currentPassword, newPassword: newPassword, newPasswordConfirm })
+
+        body: JSON.stringify({
+            currentPassword: currentPassword,
+            newPassword: newPassword
+        })
     })
         .then(response => response.json())
         .then(data => {
@@ -29,4 +39,3 @@ document.getElementById('changePwdBtn').addEventListener('click', function() {
             alert('네트워크 오류로 비밀번호 변경에 실패했습니다.');  // 네트워크 오류 처리
         });
 });
-
