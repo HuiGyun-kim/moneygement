@@ -3,13 +3,19 @@ package com.room7.moneygement.controller;
 import com.room7.moneygement.dto.CommentDTO;
 import com.room7.moneygement.model.User;
 import com.room7.moneygement.service.CommentService;
+import com.room7.moneygement.service.CustomUserDetails;
 import com.room7.moneygement.service.FollowService;
 import com.room7.moneygement.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 
 @Controller
@@ -73,4 +79,5 @@ public class ProfileController {
         model.addAttribute("userId", userId);
         return "main/comment-edit";
     }
+
 }

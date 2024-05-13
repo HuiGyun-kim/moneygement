@@ -1,17 +1,21 @@
 package com.room7.moneygement.controller;
 
 import com.room7.moneygement.dto.CategoryDTO;
-import com.room7.moneygement.dto.FinancialInfoDTO;
 import com.room7.moneygement.model.Category;
 import com.room7.moneygement.model.LedgerEntry;
 import com.room7.moneygement.repository.CategoryRepository;
 import com.room7.moneygement.repository.LedgerEntryRepository;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
@@ -22,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.room7.moneygement.dto.LedgerEntryDTO;
 import com.room7.moneygement.service.CategoryService;
@@ -57,10 +63,22 @@ public class LedgerEntryController {
 	}
 
 	@GetMapping("/entries")
-	public ResponseEntity<List<LedgerEntryDTO>> getEntries(
+	public ResponseEntity<Map<String, Object>> getEntries(
 		@RequestParam Long ledgerId,
-		@RequestParam(required = false, defaultValue = "false") Boolean ledgerType) {
-		return ResponseEntity.ok(ledgerEntryServiceImpl.getEntriesByLedgerAndType(ledgerId, ledgerType));
+		@RequestParam(required = false, defaultValue = "false") Boolean ledgerType,
+		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "10") int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<LedgerEntryDTO> entries = ledgerEntryService.getEntriesByLedgerAndType(ledgerId, ledgerType, pageable);
+
+		Map<String, Object> response = new HashMap<>();
+		response.put("content", entries.getContent());
+		response.put("number", entries.getNumber());
+		response.put("totalPages", entries.getTotalPages());
+		response.put("hasPrevious", entries.hasPrevious());
+		response.put("hasNext", entries.hasNext());
+
+		return ResponseEntity.ok(response);
 	}
 
 	@PostMapping("/add")
@@ -106,20 +124,33 @@ public class LedgerEntryController {
 		ledgerEntryService.addLedgerEntry(ledgerEntryDTO);
 		return ResponseEntity.ok(Map.of("message", "Expense entry added successfully"));
 	}
-	@GetMapping("/monthly-income-summary")
-	public ResponseEntity<List<LedgerEntryDTO>> getMonthlyIncomeSummary(@RequestParam Long ledgerId, @RequestParam int year, @RequestParam int month) {
-		List<LedgerEntryDTO> incomeSummary = ledgerEntryService.getMonthlyIncomeSummary(ledgerId, year, month);
-		return ResponseEntity.ok(incomeSummary);
-	}
+	@GetMapping("/entriesAll")
+	public ResponseEntity<?> getEntriesByUserAndDate(
+		@RequestParam("userId") Long userId,
+		@RequestParam("year") int year,
+		@RequestParam("month") int month
+	) {
+		try {
+			LocalDate startDate = LocalDate.of(year, month, 1);
+			LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
 
-	@GetMapping("/monthly-expense-summary")
-	public ResponseEntity<List<LedgerEntryDTO>> getMonthlyExpenseSummary(@RequestParam Long ledgerId, @RequestParam int year, @RequestParam int month) {
-		List<LedgerEntryDTO> expenseSummary = ledgerEntryService.getMonthlyExpenseSummary(ledgerId, year, month);
-		return ResponseEntity.ok(expenseSummary);
+			List<LedgerEntry> entries = ledgerEntryRepository.findByUserIdAndDateBetween(userId, startDate, endDate);
+			return ResponseEntity.ok(entries);
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving entries: " + e.getMessage());
+		}
 	}
-	@GetMapping("/financial-info")
-	public ResponseEntity<FinancialInfoDTO> getFinancialInfo(@RequestParam Long ledgerId, @RequestParam int year, @RequestParam int month) {
-		FinancialInfoDTO financialInfo = ledgerEntryService.calculateFinancialInfo(ledgerId, year, month);
-		return ResponseEntity.ok(financialInfo);
+	@GetMapping("/fortuneRequest")
+	public ResponseEntity<String> diaryRequestProxy(@RequestParam Map<String, String> allParams) {
+		RestTemplate restTemplate = new RestTemplate();
+		String baseUrl = "https://kdt-api-function.azurewebsites.net/api/v1/question";
+		String url = UriComponentsBuilder.fromHttpUrl(baseUrl)
+			.queryParam("content", allParams.get("content"))
+			.queryParam("client_id", allParams.get("client_id"))
+			.toUriString();
+		ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+		return ResponseEntity.ok()
+			.headers(response.getHeaders())
+			.body(response.getBody());
 	}
 }

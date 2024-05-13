@@ -2,23 +2,24 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Followers</title>
+    <title>나를 구독한 사람</title>
+    <link rel="stylesheet" th:href="@{/css/main/followers.css}"/>
 </head>
 <body>
-<h1>Followers</h1>
-
+<h1>나를 구독한 사람</h1>
+<button class="back-button" onclick="goBack()">뒤로 가기</button>
 <ul>
     <li th:each="follower : ${followers}">
         <span th:text="${follower.username}"></span>
-        <button class="unfollow-button"
-                data-authenticated-user-id="${#authentication.principal.id}"
-                data-user-id="${follower.userId}">
-            Unfollow
-        </button>
+        <!-- Follower.html -->
+        <button class="unfollow-button" th:attr="data-follower-id=${follower.userId}">구독 해제</button>
+        <input type="hidden" class="user-id" th:value="${follower.userId}">
     </li>
 </ul>
+<script th:src="@{/js/Follower.js}"></script>
+<script th:src="@{/js/unfollow.js}"></script>
 
-<button onclick="goBack()">Back to Profile</button>
-<script th:src="@{/js/follower.js}"></script>
+<div id="item-list"></div>
+<div id="load-more-target"></div>
 </body>
 </html>

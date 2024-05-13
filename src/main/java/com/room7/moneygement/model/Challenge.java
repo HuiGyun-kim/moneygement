@@ -22,12 +22,13 @@ public class Challenge {
 
 	private String title;
 
-
 	private String description;
 
 	@Column(name = "start_date")
 	private LocalDateTime startDate;
+
 	@Column(name = "end_date")
 	private LocalDateTime endDate;
+
 	private String reward;
 }

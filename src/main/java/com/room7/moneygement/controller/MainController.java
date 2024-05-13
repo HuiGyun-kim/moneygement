@@ -92,15 +92,29 @@ public class MainController {
 		model.addAttribute("userList", userList);
 		model.addAttribute("total", userRepository.countAllUsers());
 		return "main/admin";
+
+	@GetMapping("/poorChallenge")
+	public String monthBest(Model model, @AuthenticationPrincipal CustomUserDetails userDetails){
+		model.addAttribute("user", userDetails.getUserDTO());
+		return "main/poorChallenge";
+
 	}
 
 	@GetMapping("/history")
 	public String history(Model model,@AuthenticationPrincipal CustomUserDetails userDetails) {
-		Long userId = userDetails.getUserId();
-		List<Long> ledgerIds = ledgerService.getLedgerIdsByUser((userId));
-
-		model.addAttribute("ledgerIds", ledgerIds);
 		return "layout/history";
+	}
+
+	// 마이페이지 - 회원정보 수정 / 탈퇴 뷰
+	@GetMapping("/change-password")
+	public String changePassword() {
+		return "/myPage/change-Password";
+	}
+
+	// 마이페이지 -  탈퇴 뷰
+	@GetMapping("/delete-account")
+	public String deleteAccount() {
+		return "/myPage/deleteAccount";
 	}
 }
 

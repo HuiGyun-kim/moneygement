@@ -2,7 +2,6 @@ package com.room7.moneygement.config;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
 import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
@@ -14,12 +13,12 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -27,8 +26,6 @@ import com.room7.moneygement.dto.UserDTO;
 import com.room7.moneygement.model.User;
 import com.room7.moneygement.service.CustomUserDetails;
 import com.room7.moneygement.service.UserService;
-import com.room7.moneygement.config.RestTemplateConfig;
-
 
 @Configuration
 @EnableWebSecurity
@@ -46,13 +43,13 @@ public class SecurityConfig implements WebMvcConfigurer {
 				throw new UsernameNotFoundException("User not found");
 			}
 			UserDTO userDTO = UserDTO.builder()
-					.userId(user.getUserId())
-					.username(user.getUsername())
-					.password(user.getPassword())
-					.profileImg(user.getProfileImg())
-					.role(user.getRole())
-					.introduction(user.getIntroduction())
-					.build(); // 프로필 이미지 등 추가 데이터 설정
+				.userId(user.getUserId())
+				.username(user.getUsername())
+				.password(user.getPassword())
+				.profileImg(user.getProfileImg())
+				.role(user.getRole())
+				.introduction(user.getIntroduction())
+				.build(); // 프로필 이미지 등 추가 데이터 설정
 
 			return new CustomUserDetails(user); // CustomUserDetails 객체 반환
 		};
@@ -63,11 +60,11 @@ public class SecurityConfig implements WebMvcConfigurer {
 		http
 				.authorizeHttpRequests(auth -> auth
 						.requestMatchers("/", "/login", "/signup", "/signup-email", "/users/**", "/ledgerEntry/**",
-								"/diary/**", "/admin",
+								"/diary/**", "/level/**","/diary/saveDiary","/ledgers/edit/{ledgerId}","/admin/**",
 								"/users/send-id-verification-code", "/users/verify-id-code", "/users/verifyEmail",
-								"/sendEmail",
+								"/sendEmail","/follow/unfollow/{userId}","/follow/followers/{userId}",
 								"/users/sendEmail", "/emailVerified", "/find-id", "/users/find-id", "/find-password",
-								"/ledgers/**", "/css/**", "/js/**", "/img/**").permitAll()
+								"/ledgers/**", "/css/**", "/js/**", "/img/**", "/api/auth/image").permitAll()
 						.requestMatchers("/manager/**").hasAuthority("ADMIN")
 						.requestMatchers("/admin/**").hasAuthority("ADMIN")
 						.anyRequest().authenticated())
@@ -85,7 +82,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 				.exceptionHandling(e -> e
 						.accessDeniedPage("/access-denied"))
 				.csrf(csrf -> csrf
-						.ignoringRequestMatchers("/ledgerEntry/**", "/users/sendEmail")
+						.ignoringRequestMatchers("/ledgerEntry/**", "/users/sendEmail", "/diary/**", "/userChallenges/**", "/qna/**", "/follow/**", "/api/auth/image","/ledgers/**", "/level/**")
 				);
 		return http.build();
 	}
@@ -127,23 +124,19 @@ public class SecurityConfig implements WebMvcConfigurer {
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
+		// 테스트 환경
 		return NoOpPasswordEncoder.getInstance();
+
+		// // 실제 운영 환경
+		// return new BCryptPasswordEncoder();
 	}
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
 		registry.addMapping("/**")
-				.allowedOrigins("http://localhost:8080") // 허용할 도메인과 포트
-				.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메서드
-				.allowCredentials(true);
+			.allowedOrigins("http://localhost:8080") // 허용할 도메인과 포트
+			.allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP 메서드
+			.allowCredentials(true);
 	}
-}
 
-//  // 패스워드 인코더로 사용할 빈 등록
-// 	@Bean
-// 	public BCryptPasswordEncoder bCryptPasswordEncoder() {
-// 		return new BCryptPasswordEncoder();
-// 	}
-//
-// }
-//
+}

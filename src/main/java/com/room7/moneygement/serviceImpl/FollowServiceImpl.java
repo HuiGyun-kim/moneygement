@@ -7,6 +7,8 @@ import com.room7.moneygement.service.FollowService;
 import com.room7.moneygement.service.UserService;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 
@@ -15,56 +17,65 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class FollowServiceImpl implements FollowService {
     private final FollowRepository followRepository;
     private final UserService userService;
 
-    public FollowServiceImpl(FollowRepository followRepository, UserService userService) {
-        this.followRepository = followRepository;
-        this.userService = userService;
-    }
-
     @Override
-    public void follow(Long followMemberId, String username) {
+    public void follow(Long followingId, String username) {
         User follower = userService.findByUsername(username);
-        User followMember = userService.findById(followMemberId);
+        User following = userService.findById(followingId);
 
         Follow follow = new Follow();
-        follow.setUserId(follower.getUserId());
-        follow.setFollowMemberId(followMember.getUserId());
+        follow.setFollower(follower);
+        follow.setFollowing(following);
         followRepository.save(follow);
-
-        follower.getFollowings().add(follow);
-        followMember.getFollowers().add(follow);
     }
+
 
     @Override
-    public void unfollow(Long followMemberId, String username) {
+    public void unfollow(Long followingId, String username) {
         User follower = userService.findByUsername(username);
-        User followMember = userService.findById(followMemberId);
+        User following = userService.findById(followingId);
 
-        Follow follow = followRepository.findByUserIdAndFollowMemberId(follower.getUserId(), followMember.getUserId())
-                .orElseThrow(() -> new RuntimeException("Follow not found"));
+        Follow follow = followRepository.findByFollowerAndFollowing(follower, following)
+            .orElse(null);
 
-        followRepository.delete(follow);
-
-        follower.getFollowings().remove(follow);
-        followMember.getFollowers().remove(follow);
+        if (follow != null) {
+            followRepository.delete(follow);
+        }
     }
+
 
     @Override
     public List<User> getFollowers(Long userId) {
-        List<Follow> follows = followRepository.findByFollowMemberId(userId);
+        User user = userService.findById(userId);
+        List<Follow> follows = followRepository.findByFollowing(user);
         return follows.stream()
-                .map(f -> userService.findById(f.getUserId()))
-                .collect(Collectors.toList());
+            .map(Follow::getFollower)
+            .collect(Collectors.toList());
     }
+
 
     @Override
     public List<User> getFollowing(Long userId) {
-        List<Follow> follows = followRepository.findByUserId(userId);
+        User user = userService.findById(userId);
+        List<Follow> follows = followRepository.findByFollower(user);
         return follows.stream()
-                .map(f -> userService.findById(f.getFollowMemberId()))
-                .collect(Collectors.toList());
+            .map(Follow::getFollowing)
+            .collect(Collectors.toList());
+    }
+    @Override
+    public void unfollowMe(Long followerId, String username) {
+        User follower = userService.findById(followerId);
+        User following = userService.findByUsername(username);
+
+        Follow follow = followRepository.findByFollowerAndFollowing(follower, following)
+            .orElse(null);
+
+        if (follow != null) {
+            followRepository.delete(follow);
+        }
     }
 }
