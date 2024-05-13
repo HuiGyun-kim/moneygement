@@ -31,13 +31,18 @@ public class AdminController {
             model.addAttribute("userList", userList);
             model.addAttribute("total", userRepository.countAllUsers());
             return "main/admin";
-        } else {
+        }
+        else {
             model.addAttribute("userList", searchResult);
             model.addAttribute("total", userRepository.countAllUsers());
             return "main/admin";
         }
     }
-
-
-
+    @GetMapping("/refresh")
+    public String refresh(Model model) {
+        List<User> userList = userRepository.findAll();
+        model.addAttribute("userList", userList);
+        model.addAttribute("total", userRepository.countAllUsers());
+        return "main/admin";
+    }
 }
