@@ -33,14 +33,14 @@ public class LevelController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/complete/{challengeId}")
-    public ResponseEntity<?> completeChallenge(@PathVariable Long challengeId) {
-        try {
-            userChallengeService.updateExpOnCompleted(challengeId);
-            return ResponseEntity.ok().body(Map.of("message", "챌린지는 완료되었으며, 경험치를 50 보내드립니다!"));
-        }
-        catch (Exception e) {
-            return ResponseEntity.badRequest().body(Map.of("error", "챌린지가 완료되지 않았습니다. 다시 확인해주세요."));
-        }
-    }
+//    @PostMapping("/complete/{challengeId}")
+//    public ResponseEntity<?> completeChallenge(@PathVariable Long challengeId) {
+//        try {
+//            userChallengeService.updateExpOnCompleted(challengeId);
+//            return ResponseEntity.ok().body(Map.of("message", "챌린지는 완료되었으며, 경험치를 50 보내드립니다!"));
+//        }
+//        catch (Exception e) {
+//            return ResponseEntity.badRequest().body(Map.of("error", "챌린지가 완료되지 않았습니다. 다시 확인해주세요."));
+//        }
+//    }
 }

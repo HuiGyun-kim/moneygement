@@ -73,18 +73,18 @@ public class UserChallengeServiceImpl implements UserChallengeService {
 		}
 	}
 
-	public void updateExpOnCompleted(Long challengeId) {
-		UserChallenge challenge = userChallengeRepository.findById(challengeId).orElse(null);
-		if (challenge != null && challenge.getIsCompleted()){
-			User user = userRepository.findById(challenge.getUserId()).orElse(null);
-			if (user != null){
-				user.setExp(user.getExp() + 50);
-				userRepository.save(user);
-
-				challenge.setIsCompleted(false);
-				userChallengeRepository.save(challenge);
-			}
-		}
-	}
+//	public void updateExpOnCompleted(Long challengeId) {
+//		UserChallenge challenge = userChallengeRepository.findById(challengeId).orElse(null);
+//		if (challenge != null && challenge.getIsCompleted()){
+//			User user = userRepository.findById(challenge.getUserId()).orElse(null);
+//			if (user != null){
+//				user.setExp(user.getExp() + 50);
+//				userRepository.save(user);
+//
+//				challenge.setIsCompleted(false);
+//				userChallengeRepository.save(challenge);
+//			}
+//		}
+//	}
 }
 
