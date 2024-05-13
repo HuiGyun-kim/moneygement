@@ -1,17 +1,19 @@
 package com.room7.moneygement.controller;
 
+import com.room7.moneygement.dto.AttendanceDTO;
+import com.room7.moneygement.dto.UserChallengeDTO;
+import com.room7.moneygement.model.Attendance;
+import com.room7.moneygement.model.UserChallenge;
+import com.room7.moneygement.service.AttendanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
-import com.room7.moneygement.dto.UserChallengeDTO;
-import com.room7.moneygement.service.AttendanceService;
+import java.util.List;
+import java.util.stream.Collectors;
 
-@Controller
+@RestController
 @RequestMapping("/attendance")
 public class AttendanceController {
 
@@ -22,18 +24,42 @@ public class AttendanceController {
         this.attendanceService = attendanceService;
     }
 
+    // 출석체크 기록 API
     @PostMapping("/check")
-    public ResponseEntity<String> checkAttendance(@RequestBody UserChallengeDTO userChallengeDTO) {
-        // 출석체크 정보를 DB에 저장하는 메서드 호출
-        boolean isAttendanceSuccessful = attendanceService.checkAttendance(userChallengeDTO);
-
-        if (isAttendanceSuccessful) {
-            return ResponseEntity.ok("출석체크가 완료되었습니다!");
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("출석체크에 실패했습니다.");
-        }
+    public ResponseEntity<?> checkAttendance(Long userId) {
+        attendanceService.checkAttendance(userId);
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
+
+    // 리워드 지급 가능 여부 확인 API
+    @PostMapping("/reward/eligible")
+    public ResponseEntity<?> checkRewardEligibility(Long userId) {
+        boolean isEligible = attendanceService.isRewardEligible(userId);
+        return ResponseEntity.status(HttpStatus.OK).body(isEligible);
+    }
+
+    //모든 출석체크 정보 조회하는 API 엔드포인트
+    @GetMapping("/all")
+    public ResponseEntity<List<AttendanceDTO>> getAllAttendance() {
+        List<Attendance> attendances = attendanceService.getAllAttendance();
+        List<AttendanceDTO> attendanceDTOs = attendances.stream()
+                .map(attendance -> {
+                    AttendanceDTO attendanceDTO = new AttendanceDTO();
+                    attendanceDTO.setId(attendance.getId());
+                    attendanceDTO.setUserId(attendance.getUserId());
+                    attendanceDTO.setDate(attendance.getDate());
+                    attendanceDTO.setCompleted(attendance.isCompleted());
+                    return attendanceDTO;
+                })
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(attendanceDTOs);
+    }
+
+
+
 }
+
+
 
 
 
