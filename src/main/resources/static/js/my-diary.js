@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.log(combined);
             const urlData = {
                 detail: [{
-                    loc: [theme, 0],
+                    // loc: [theme, 0],
                     msg: `${theme}인 버전으로 돈을 ${combined}했는데, 이것에 대한 소비일기를 써주세요.`,
                     type: "string"
                 }]
@@ -83,7 +83,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 .then(data => {
                     console.log("데이터가 성공적으로 전송되었습니다.");
                     const diaryBox = document.getElementById('diaryBox');
-                    diaryBox.textContent = data.content;
+                    let textContent = data.content.replace(/<[^>]*>?/gm, '');
+                    textContent = textContent.replace(/https?:\/\/[a-zA-Z0-9./?=_-]*/gm, '');
+                    textContent = textContent.replace(/\[\(출처\d+\)\]/gm, '');
+                    textContent = textContent.replace(/\([^\)]*\)/g, '');
+                    diaryBox.textContent = textContent;
                 })
                 .catch(error => console.error('에러:', error));
         } else {
