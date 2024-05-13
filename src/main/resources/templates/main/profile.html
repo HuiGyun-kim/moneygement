@@ -6,6 +6,7 @@
     <title>profile</title>
     <link rel="stylesheet" th:href="@{/css/main/profile.css}">
     <link rel="stylesheet" th:href="@{/css/main/style.css}"/>
+    <a id="userId" style="display: none;" th:attr="data-user-id=${currentUser.userId}"></a>
 </head>
 <body>
     <div th:replace="~{layout/header.html::main-header}"></div>

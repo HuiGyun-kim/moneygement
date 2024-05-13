@@ -1,63 +1,93 @@
 <!doctype html>
-<html lang="ko" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="ko" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns="http://www.w3.org/1999/html">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>가계부</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" th:href="@{/css/main/style.css}"/>
-  <link rel="stylesheet" th:href="@{/css/main/ledger.css}">
-  <link rel="icon" type="image/png" href="/img/main/favicon.png">
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>가계부</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/main/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/main/ledger.css}">
+    <link rel="icon" type="image/png" href="/img/main/favicon.png">
 </head>
 <body>
 <div th:replace="~{layout/header.html::main-header}"></div>
-<div th:replace="~{layout/sidebar.html::main-sidebar}"></div>
+<div class="main-container">
+    <div th:replace="~{layout/sidebar.html::main-sidebar}"></div>
+    <div class="ledger-book">
+        <div class="ledger-container">
+            <!-- 로그인하지 않은 상태 -->
+            <div sec:authorize="isAnonymous()">
+                <h2>로그인이 필요합니다</h2>
+            </div>
+            <!-- 로그인한 상태 -->
+            <div sec:authorize="isAuthenticated()">
+                <div class="ledger-header">
+                    <h2>가계부</h2>
+                </div>
+                <section>
+                    <a href="/ledgers/create">
+                        <button id="create-ledger">가계부 생성</button>
+                    </a>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>번호</th>
+                            <th>가계부 이름</th>
+                            <th>생성 날짜</th>
+                            <th>수정/삭제</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="ledger, iterStat : ${ledgers}">
+                            <td th:text="${ledgers.number * ledgers.size + iterStat.count}"></td>
+                            <td th:text="${ledger.title}"></td>
+                            <td th:text="${#temporals.format(ledger.createdAt, 'yyyy-MM-dd')}"></td>
+                            <td>
+                                <button class="ledger-button edit-button">수정</button>
+                                <form th:action="@{/ledgers/delete/{id}(id=${ledger.ledgerId})}" method="post"
+                                      class="delete-form">
+                                    <button type="submit" class="ledger-button delete-button">삭제</button>
+                                </form>
+                                <button class="ledger-button save-button" style="display: none;">수정 완료</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!-- 페이징 처리 -->
+                    <div class="pagination" th:if="${ledgers.totalPages > 0}">
+                        <a th:if="${ledgers.hasPrevious()}" th:href="@{/ledgers/ledger(page=${ledgers.number - 1})}">&lt;</a>
 
-<!-- 로그인하지 않은 상태 -->
-<div sec:authorize="isAnonymous()">
-  <h2>로그인이 필요합니다</h2>
-</div>
+                        <a th:each="pageNumber : ${#numbers.sequence(T(java.lang.Math).max(0, ledgers.number - 1), T(java.lang.Math).min(ledgers.number + 1, ledgers.totalPages - 1))}"
+                           th:href="@{/ledgers/ledger(page=${pageNumber})}"
+                           th:text="${pageNumber + 1}"
+                           th:class="${pageNumber == ledgers.number} ? active"></a>
 
-<!-- 로그인한 상태 -->
-<div sec:authorize="isAuthenticated()">
-  <header>
-    <h2>가계부</h2>
-  </header>
-  <section>
-    <a href="/ledgers/create">
-      <button id="create-ledger">가계부 생성</button>
-    </a>
-    <table>
-      <thead>
-      <tr>
-        <th>번호</th>
-        <th>가계부 번호</th>
-        <th>가계부 이름</th>
-        <th>생성 날짜</th>
-        <th>수정/삭제</th>
-      </tr>
-      </thead>
-      <tbody>
-      <!-- 실제 데이터는 서버에서 타임리프를 통해 주입 -->
-      <tr th:each="ledger, iterStat : ${ledgers}">
-        <td th:text="${iterStat.count}"></td>
-        <td th:text="${ledger.ledgerId}"></td>
-        <td th:text="${ledger.title}"></td>
-        <td th:text="${ledger.createdAt}"></td>
-        <td>
-          <a th:href="@{/ledgers/edit/{id}(id=${ledger.ledgerId})}">
-            <button class="ledger-button">수정</button>
-          </a>
-          <form th:action="@{/ledgers/delete/{id}(id=${ledger.ledgerId})}" method="post">
-            <button type="submit" class="ledger-button">삭제</button>
-          </form>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </section>
+                        <a th:if="${ledgers.hasNext()}" th:href="@{/ledgers/ledger(page=${ledgers.number + 1})}">&gt;</a>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <div class="ledger-quote" id="ledgerQuote">
+            <p>"돈은 좋은 하인이지만 나쁜 주인이다." - P.T. 바넘</p>
+        </div>
+        <div class="ledger-details" id="ledgerDetails" style="display: none;">
+            <div class="details-container">
+                <div class="income-container">
+                    <h3>수입 내역</h3>
+                    <!-- 수입 내역 추가 -->
+                </div>
+                <div class="expense-container">
+                    <h3>지출 내역</h3>
+                    <!-- 지출 내역 추가 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
+<script th:src="@{/js/ledger.js}"></script>
 </body>
 </html>

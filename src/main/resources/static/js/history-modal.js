@@ -1,32 +1,4 @@
 
-// 데이터 로드 함수 통합
-function loadData(ledgerType) {
-    const ledgerId = document.getElementById('ledgerIdValue').value;
-    const dataTable = ledgerType ? document.getElementById('expenseTableBody') : document.getElementById('incomeData');
-    // ledgerType이 undefined일 경우 기본값으로 false를 설정
-    ledgerType = ledgerType !== undefined ? ledgerType : false;
-    fetch(`/ledgerEntry/entries?ledgerId=${encodeURIComponent(ledgerId)}&ledgerType=${ledgerType}`)
-        .then(response => response.json())
-        .then(data => {
-            dataTable.innerHTML = '';
-            data.forEach(entry => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${entry.date}</td>
-                    <td>${entry.amount}</td>
-                    <td>${entry.description}</td>
-                    <td>${entry.categoryName}</td>
-                    <td>
-                        <button class="edit" onclick="editEntry(${entry.entryId}, ${ledgerType})">수정</button>
-                        <button class="delete" onclick="deleteEntry(${entry.entryId}, ${ledgerType})">삭제</button>
-                    </td>
-                `;
-                dataTable.appendChild(row);
-            });
-        })
-        .catch(error => console.error('Error fetching data:', error));
-}
-
 // 탭 전환 함수 수정
 function openTab(evt, tabName, ledgerType) {
     const tabcontent = document.getElementsByClassName("tabcontent");
@@ -39,7 +11,6 @@ function openTab(evt, tabName, ledgerType) {
     }
     document.getElementById(tabName).style.display = "block";
     evt.currentTarget.className += " active";
-    loadData(ledgerType); // 탭 전환 시 데이터 로드
 }
 
 function updateYearMonth() {
@@ -58,14 +29,13 @@ document.getElementById('formAddIncome').onsubmit = function (event) {
 
 function submitFormData() {
     const categoryId = document.getElementById('edit-category').value;
-    const ledgerId = document.getElementById('ledgerId').value;
     const amount = document.getElementById('amount').value;
     const date = document.getElementById('date').value;
     const description = document.getElementById('description').value;
 
     const data = {
         categoryId: parseInt(categoryId),
-        ledgerId: parseInt(ledgerId),
+        ledgerId: selectedLedgerId,
         amount: parseInt(amount),
         date: date,
         description: description,
@@ -88,7 +58,31 @@ function submitFormData() {
             alert('오류 발생');
         });
 }
-
+function loadLedgers() {
+    const ledgerSelect = document.getElementById('ledgerSelect');
+    const userId = window.currentUserId;
+    if (userId) {
+        fetch(`/ledgers/user/${userId}`)
+            .then(response => response.json())
+            .then(ledgers => {
+                ledgerSelect.addEventListener('change', (event) => {
+                    selectedLedgerId = event.target.value;
+                    selectedUserId = event.target.options[event.target.selectedIndex].dataset.userId;
+                    renderCalendar(); // 가계부 변경 시 달력 다시 렌더링
+                });
+                ledgers.forEach(ledger => {
+                    const option = document.createElement('option');
+                    option.value = ledger.ledgerId;
+                    option.textContent = ledger.title;
+                    option.dataset.userId = userId; // dataset.userId 값 설정
+                    ledgerSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Failed to load ledgers:', error));
+    } else {
+        console.error('currentUserId element not found');
+    }
+}
 function loadCategories() {
     fetch('/ledgerEntry/categories')
         .then(response => response.json())
@@ -110,32 +104,50 @@ function loadCategories() {
 }
 
 function loadIncomeData() {
-    const ledgerId = document.getElementById('ledgerIdValue').value;
+    const ledgerId = document.getElementById('ledgerSelect').value;
+    if (!ledgerId) {
+        clearIncomeData();
+        return;
+    }
+
     fetch(`/ledgerEntry/entries?ledgerId=${encodeURIComponent(ledgerId)}`)
         .then(response => response.json())
         .then(data => {
             const incomeData = document.getElementById('incomeData');
             incomeData.innerHTML = '';
-            data.forEach(entry => {
-                const id = entry.entryId;
-                const row = document.createElement('tr');
-                row.id = `row-${id}`;
-                row.innerHTML = `
-                   <td id="date-${id}">${entry.date}</td>
-                   <td id="amount-${id}">${entry.amount}</td>
-                   <td id="description-${id}">${entry.description}</td>
-                   <td id="edit-category-${id}">${entry.categoryName}</td>
-                   <td id="button-container-${id}">
-                       <button class="edit" onclick="editEntry(${id})">수정</button>
-                       <button class="delete" onclick="deleteEntry(${id})">삭제</button>
-                   </td>
-               `;
-                incomeData.appendChild(row);
-            });
+
+            if (data.length === 0) {
+                const message = document.createElement('tr');
+                message.innerHTML = '<td colspan="5">수입 내역이 없습니다.</td>';
+                incomeData.appendChild(message);
+            } else {
+                data.forEach(entry => {
+                    const id = entry.entryId;
+                    const row = document.createElement('tr');
+                    row.id = `row-${id}`;
+                    row.innerHTML = `
+                        <td id="date-${id}">${entry.date}</td>
+                        <td id="amount-${id}">${entry.amount}</td>
+                        <td id="description-${id}">${entry.description}</td>
+                        <td id="edit-category-${id}">${entry.categoryName}</td>
+                        <td id="button-container-${id}">
+                            <button class="edit" onclick="editEntry(${id}, false)">수정</button>
+                            <button class="delete" onclick="deleteEntry(${id}, false)">삭제</button>
+                        </td>
+                    `;
+                    incomeData.appendChild(row);
+                });
+            }
         })
         .catch(error => console.error('Error fetching income data:', error));
 }
-
+function clearIncomeData() {
+    const incomeData = document.getElementById('incomeData');
+    incomeData.innerHTML = '';
+    const message = document.createElement('tr');
+    message.innerHTML = '<td colspan="5">가계부를 선택하세요.</td>';
+    incomeData.appendChild(message);
+}
 // 수정 및 삭제 관련 함수
 function submitEditEntry(id,isExpense = false) {
     if (typeof id !== 'number' || isNaN(id)) {
@@ -143,7 +155,6 @@ function submitEditEntry(id,isExpense = false) {
         return;
     }
 
-    const ledgerId = parseInt(document.getElementById('ledgerIdValue').value);
     const dateField = document.getElementById(`date-${id}`).innerText;
     const amountField = document.getElementById(`amount-${id}`).innerText;
     const descriptionField = document.getElementById(`description-${id}`).innerText;
@@ -155,7 +166,7 @@ function submitEditEntry(id,isExpense = false) {
     const categoryId = parseInt(categoryIdElement.value);
 
     const data = {
-        ledgerId: ledgerId,
+        ledgerId: selectedLedgerId,
         date: dateField,
         amount: parseInt(amountField),
         description: descriptionField,
@@ -196,7 +207,7 @@ function resetEditing(id, isExpense=false) {
     categorySelect.replaceWith(categorySelect.options[categorySelect.selectedIndex].text);
 
     buttonContainer.innerHTML = `
-       <button class="edit"onclick="editEntry(${id}, ${isExpense})">수정</button>
+       <button class="edit" onclick="editEntry(${id}, ${isExpense})">수정</button>
        <button class="delete" onclick="deleteEntry(${id}, ${isExpense})">삭제</button>
    `;
 }
@@ -211,13 +222,19 @@ function editEntry(id, isExpense = false) {
     const dateField = document.getElementById(`date-${id}`);
     const amountField = document.getElementById(`amount-${id}`);
     const descriptionField = document.getElementById(`description-${id}`);
+
+    if (!dateField || !amountField || !descriptionField) {
+        console.error("Unable to find date, amount, or description field.");
+        return;
+    }
+
     dateField.contentEditable = true;
     amountField.contentEditable = true;
     descriptionField.contentEditable = true;
 
     const categorySelect = document.createElement('select');
     categorySelect.id = `edit-category-select-${id}`;
-    categories.forEach(category => {
+    window.categories.forEach(category => {
         const option = document.createElement('option');
         option.value = category.categoryId;
         option.textContent = category.categoryName;
@@ -225,7 +242,7 @@ function editEntry(id, isExpense = false) {
     });
 
     const currentCategoryText = document.getElementById(`edit-category-${id}`).textContent;
-    const currentCategory = categories.find(cat => cat.categoryName === currentCategoryText);
+    const currentCategory = window.categories.find(cat => cat.categoryName === currentCategoryText);
     if (currentCategory) {
         categorySelect.value = currentCategory.categoryId;
     }
@@ -238,7 +255,7 @@ function editEntry(id, isExpense = false) {
     buttonContainer.innerHTML = '';
     const editButton = document.createElement('button');
     editButton.textContent = '수정 완료';
-    editButton.onclick = () => submitEditEntry(id,isExpense);
+    editButton.onclick = () => submitEditEntry(id, isExpense);
     buttonContainer.appendChild(editButton);
 }
 
@@ -252,8 +269,13 @@ function deleteEntry(id, isExpense = false) {
         fetch(`/ledgerEntry/delete/${id}`, {method: 'DELETE'})
             .then(response => {
                 if (response.ok) {
-                    document.getElementById(`row-${id}`).remove();
-                    alert(`${isExpense ? '지출' : '수입'} 내역이 성공적으로 삭제되었습니다.`);
+                    const row = document.getElementById(`row-${id}`);
+                    if (row) {
+                        row.parentNode.removeChild(row);
+                        alert(`${isExpense ? '지출' : '수입'} 내역이 성공적으로 삭제되었습니다.`);
+                    } else {
+                        alert('삭제할 항목을 찾을 수 없습니다.');
+                    }
                 } else {
                     alert('삭제에 실패했습니다.');
                 }
@@ -280,6 +302,7 @@ function openModal(tabName = 'defaultOpen') {
 function closeModal(modal) {
     modal.style.display = 'none';
     document.body.style.overflow = 'auto';
+    location.reload();
 }
 
 // 페이지 로드 시 실행
@@ -311,18 +334,18 @@ document.addEventListener('DOMContentLoaded', () => {
     updateYearMonth();
     loadIncomeData();
     loadExpenseData();
+    loadLedgers();
 });
 
 function submitExpenseData() {
     const categoryId = document.getElementById('edit-category-expense').value;
-    const ledgerId = document.getElementById('ledgerId-expense').value;
     const amount = document.getElementById('amount-expense').value;
     const date = document.getElementById('date-expense').value;
     const description = document.getElementById('description-expense').value;
 
     const data = {
         categoryId: parseInt(categoryId),
-        ledgerId: parseInt(ledgerId),
+        ledgerId: selectedLedgerId,
         amount: parseInt(amount),
         date: date,
         description: description,
@@ -346,17 +369,26 @@ function submitExpenseData() {
         });
 }
 function loadExpenseData() {
-    const ledgerId = document.getElementById('ledgerIdValue').value;
+    const ledgerId = document.getElementById('ledgerSelect').value;
+    if (!ledgerId) {
+        clearExpenseData();
+        return;
+    }
     fetch(`/ledgerEntry/entries?ledgerId=${encodeURIComponent(ledgerId)}&ledgerType=true`)
         .then(response => response.json())
         .then(data => {
             const expenseTableBody = document.getElementById('expenseTableBody');
             expenseTableBody.innerHTML = '';
-            data.forEach(entry => {
-                const id = entry.entryId;
+            if (data.length === 0) {
                 const row = document.createElement('tr');
-                row.id = `row-${id}`;
-                row.innerHTML = `
+                row.innerHTML = '<td colspan="5">지출 내역이 없습니다.</td>';
+                expenseTableBody.appendChild(row);
+            } else {
+                data.forEach(entry => {
+                    const id = entry.entryId;
+                    const row = document.createElement('tr');
+                    row.id = `row-${id}`;
+                    row.innerHTML = `
                    <td id="date-${id}">${entry.date}</td>
                    <td id="amount-${id}">${entry.amount}</td>
                    <td id="description-${id}">${entry.description}</td>
@@ -366,8 +398,16 @@ function loadExpenseData() {
                        <button class="delete" onclick="deleteEntry(${id}, true)">삭제</button>
                    </td>
                `;
-                expenseTableBody.appendChild(row);
-            });
+                    expenseTableBody.appendChild(row);
+                });
+            }
         })
         .catch(error => console.error('Error fetching expense data:', error));
+}
+function clearExpenseData() {
+    const expenseTableBody = document.getElementById('expenseTableBody');
+    expenseTableBody.innerHTML = '';
+    const row = document.createElement('tr');
+    row.innerHTML = '<td colspan="5">가계부를 선택하세요.</td>';
+    expenseTableBody.appendChild(row);
 }

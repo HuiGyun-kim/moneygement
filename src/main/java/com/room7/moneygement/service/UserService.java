@@ -16,6 +16,11 @@ public interface UserService {
 
 	User findUserById(Long userId);
 
+	boolean checkPassword(User user, String Password);
+
+	boolean changePassword(User user, String currentPassword, String newPassword);
+
+	User deleteUser(User user);
 	// boolean checkPassword(String rawpassword, String encodedPassword);
 
 //	-----------------------------------------------

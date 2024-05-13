@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import com.room7.moneygement.dto.FinancialInfoDTO;
 import com.room7.moneygement.dto.LedgerEntryDTO;
 import com.room7.moneygement.model.Category;
 import com.room7.moneygement.model.Ledger;
@@ -27,12 +26,14 @@ public class LedgerEntryServiceImpl implements LedgerEntryService {
 	private final LedgerRepository ledgerRepository;
 	private final CategoryRepository categoryRepository;
 
+	@Override
 	public List<LedgerEntryDTO> getEntriesByLedgerAndType(Long ledgerId, Boolean ledgerType) {
 		Ledger ledger = ledgerRepository.findById(ledgerId).orElse(null);
-		if (ledger == null)
+		if (ledger == null) {
 			return Collections.emptyList();
+		}
 
-		List<LedgerEntry> entries = ledgerEntryRepository.findByLedger_ledgerIdAndLedgerType(ledgerId, ledgerType);
+		List<LedgerEntry> entries = ledgerEntryRepository.findByLedgerAndLedgerType(ledger, ledgerType);
 		return entries.stream()
 			.map(entry -> new LedgerEntryDTO(
 				entry.getEntryId(),
@@ -100,42 +101,5 @@ public class LedgerEntryServiceImpl implements LedgerEntryService {
 	@Override
 	public List<LedgerEntryDTO> getMonthlyExpenseSummary(Long ledgerId, int year, int month) {
 		return ledgerEntryRepository.findExpenseSummaryByMonthAndYearAndLedger(ledgerId, year, month);
-	}
-
-	private long calculateAverageMonthlyExpense(Long ledgerId, int year) {
-		long totalExpense = 0;
-		int monthCount = 12; // 예시로 12월까지 계산
-		for (int month = 1; month <= monthCount; month++) {
-			Long monthlyExpense = ledgerEntryRepository.findTotalByLedgerAndType(ledgerId, true, year, month).longValue();
-			totalExpense += monthlyExpense;
-		}
-		return totalExpense / monthCount;
-	}
-
-	public FinancialInfoDTO calculateFinancialInfo(Long ledgerId, int year, int month) {
-		List<LedgerEntryDTO> incomes = ledgerEntryRepository.findIncomeSummaryByMonthAndYearAndLedger(ledgerId, year, month);
-		List<LedgerEntryDTO> expenses = ledgerEntryRepository.findExpenseSummaryByMonthAndYearAndLedger(ledgerId, year, month);
-
-		long totalIncome = incomes.stream()
-			.mapToLong(LedgerEntryDTO::getAmount)
-			.sum();
-		long totalExpense = expenses.stream()
-			.mapToLong(LedgerEntryDTO::getAmount)
-			.sum();
-
-		long netAssets = totalIncome - totalExpense;
-		long averageMonthlyExpense = calculateAverageMonthlyExpense(ledgerId, year);
-		Long lastMonthExpense = ledgerEntryRepository.findTotalByLedgerAndType(ledgerId, true, year, month - 1).longValue();
-		double expenseChange = lastMonthExpense != 0 ?
-			(double) (totalExpense - lastMonthExpense) / lastMonthExpense * 100 :
-			0;
-
-		return new FinancialInfoDTO(
-			BigDecimal.valueOf(totalIncome),
-			BigDecimal.valueOf(totalExpense),
-			BigDecimal.valueOf(netAssets),
-			BigDecimal.valueOf(averageMonthlyExpense),
-			BigDecimal.valueOf(expenseChange)
-		);
 	}
 }
