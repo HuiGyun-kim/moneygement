@@ -80,25 +80,4 @@ public class ProfileController {
         return "main/comment-edit";
     }
 
-//    -----------------------------------------------------
-
-    @GetMapping("/profile/detail")
-    public String getProfileDetailPage(@AuthenticationPrincipal CustomUserDetails customUserDetails, Model model) {
-        User user = customUserDetails.getUser();
-        model.addAttribute("user", user);
-        return "main/profiledetail";
-    }
-
-    @PostMapping("/profile/upload")
-    public ResponseEntity<String> uploadProfileImage(@RequestParam(value = "profileImg") MultipartFile file,
-                                                     @AuthenticationPrincipal CustomUserDetails customUserDetails) throws IOException {
-        String result = userService.uploadProfileImage(file, customUserDetails.getUser());
-        return ResponseEntity.ok(result);
-    }
-
-    @DeleteMapping("/profile/delete")
-    public ResponseEntity<String> deleteProfileImage(@AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        String result = userService.deleteProfileImage(customUserDetails.getUser());
-        return ResponseEntity.ok(result);
-    }
 }
