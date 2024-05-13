@@ -2,17 +2,18 @@ package com.room7.moneygement.serviceImpl;
 
 import com.room7.moneygement.service.S3Upload;
 import com.room7.moneygement.repository.FollowRepository;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.room7.moneygement.model.User;
 import com.room7.moneygement.repository.UserRepository;
 import com.room7.moneygement.service.UserService;
-
 import lombok.RequiredArgsConstructor;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -61,6 +62,23 @@ public class UserServiceImpl implements UserService {
 			.orElseThrow(() -> new RuntimeException("User not found"));
 	}
 
+	public List<User> searchUsers(String searchType, String searchKey){
+		if (searchType != null && searchKey != null && !searchKey.isEmpty()) {
+			List<User> result = new ArrayList<>();
+
+			if ("searchId".equals(searchType)) {
+				Optional<User> user = userRepository.findByUsername(searchKey);
+				user.ifPresent(result::add);
+			}
+
+			return result;
+		}
+		else {
+			return userRepository.findAll();
+		}
+	}
+}
+
 	// 비밀번호 확인
 	public boolean checkPassword(User user, String password) {
 		return encoder.matches(password, user.getPassword());
@@ -88,3 +106,4 @@ public class UserServiceImpl implements UserService {
 	}
 
 }
+

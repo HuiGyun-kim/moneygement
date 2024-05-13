@@ -67,9 +67,7 @@ public class User {
 			level++;
 			requiredExp = baseExpPerLevel + (level - 1) * expIncreasePerLevel;
 		}
-
 		return level;
 	}
-
 }
 
