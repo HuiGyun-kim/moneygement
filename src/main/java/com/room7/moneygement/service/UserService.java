@@ -23,6 +23,9 @@ public interface UserService {
 	User deleteUser(User user);
 	// boolean checkPassword(String rawpassword, String encodedPassword);
 
+	void updateUserProfileIntroduction(Long userId, String introduction);
+
+	String getUserProfileIntroduction(Long userId);
 }
 
 

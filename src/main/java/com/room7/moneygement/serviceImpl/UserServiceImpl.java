@@ -105,5 +105,23 @@ public class UserServiceImpl implements UserService {
 		return user;
 	}
 
+	@Override
+	@Transactional
+	public void updateUserProfileIntroduction(Long userId, String introduction) {
+		User user = userRepository.findById(userId)
+				.orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+		user.setIntroduction(introduction);
+		userRepository.save(user);
+	}
+
+	@Override
+	public String getUserProfileIntroduction(Long userId) {
+		User user = userRepository.findById(userId)
+				.orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+		return user.getIntroduction();
+	}
+
 }
 
