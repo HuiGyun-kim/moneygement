@@ -8,11 +8,23 @@
     <title>MoneyGement</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/main/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/main/index.css}"/>
     <link rel="icon" type="image/png" href="/img/main/favicon.png">
 </head>
 <body>
 <div th:replace="~{layout/header.html::main-header}"></div>
-<div th:replace="~{layout/sidebar.html::main-sidebar}"></div>
+<div class="main-container">
+    <div class="sidebar-container">
+        <div th:replace="~{layout/sidebar.html::main-sidebar}"></div>
+    </div>
+    <div class="containers">
+        <h3>나의 소비 기록을 관리하고 분석해주는 AI종합 컨설팅</h3>
+        <h4>MONYGEMENT</h4>
+        <img th:src="@{/img/main/moneyplant_img.jpg}" alt="moneyplant-img" class="moneyplant-img">
+    </div>
+
+</div>
+
 <main>
 </main>
 </body>
