@@ -15,8 +15,7 @@
     </div>
     <div class="my-profile">
         <div class="profile-img">
-            <img th:src="@{/img/main/primaryImage.png}" alt="" width="250" th:if="${user.profileImg == null}"/>
-            <img th:src="${user.profileImg}" alt="" width="250" th:if="${user.profileImg != null}"/>
+            <img class="img-width" th:src="${user.profileImg}" alt=""/>
         </div>
         <div class="more-container">
             <div class="follow-button-container" th:unless="${currentUser.userId == user.userId}">
@@ -26,7 +25,7 @@
             </div>
             <img class="more" th:src="@{/img/main/more.png}" alt=""/>
             <div class="dropdown-menu" id="myDropdown">
-                <a href="/profile/detail">프로필변경</a>
+                <a th:if="${currentUser.userId == user.userId}" href="/profile-detail">프로필변경</a>
             </div>
         </div>
 
@@ -55,9 +54,7 @@
                 </div>
             <div class="introduce">
                 <span class="text">소개</span>
-                <label>
-                    <textarea class="introduce-text">나는 거지다아아아아아ㅏ아아.</textarea>
-                </label>
+                <span class="introduce-text" th:text="${user.introduction}"></span>
             </div>
             <div class="stats">
                 <p class="text">통계</p>

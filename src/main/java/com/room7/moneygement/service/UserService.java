@@ -24,6 +24,9 @@ public interface UserService {
 	// boolean checkPassword(String rawpassword, String encodedPassword);
 	String encodePassword(String rawPassword);
 
+	void updateUserProfileIntroduction(Long userId, String introduction);
+
+	String getUserProfileIntroduction(Long userId);
 }
 
 

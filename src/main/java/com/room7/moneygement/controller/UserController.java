@@ -47,7 +47,7 @@ public class UserController {
 		user.setCreatedAt(LocalDateTime.now());
 		user.setIsDeleted(false);
 		user.setRole(UserRole.LV1);
-		user.setProfileImg("profile.png");
+		user.setProfileImg("https://moneygement.s3.ap-northeast-2.amazonaws.com/static/Group+16.png");
 		user.setUpdatedAt(LocalDateTime.now());
 
 		userService.save(user);
