@@ -22,7 +22,8 @@ document.getElementById('changePwdBtn').addEventListener('click', function() {
 
         body: JSON.stringify({
             currentPassword: currentPassword,
-            newPassword: newPassword
+            newPassword: newPassword,
+            newPasswordConfirm: newPasswordConfirm
         })
     })
         .then(response => response.json())
