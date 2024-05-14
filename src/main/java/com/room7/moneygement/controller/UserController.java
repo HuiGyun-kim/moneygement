@@ -137,4 +137,10 @@ public class UserController {
 			})
 			.orElse(Collections.emptyMap());
 	}
+
+	// 내 정보 관리 페이지 이동
+	@GetMapping("/myPage-edit")
+	public String showMyPageEdit() {
+		return "myPage/change-Password";
+	}
 }
