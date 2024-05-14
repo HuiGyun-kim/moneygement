@@ -13,6 +13,8 @@
 <body>
 <a id="userId" style="display: none;" th:attr="data-user-id=${currentUser.userId}"></a>
 <div th:replace="~{layout/header.html::main-header}"></div>
+
+<div class="containerBox">
 <div th:replace="~{layout/sidebar.html::main-sidebar}"></div>
 <div class="myDiary-container">
     <div class="containers">
@@ -86,6 +88,7 @@
             </div>
         </article>
     </div>
+</div>
 </div>
 </body>
 </html>
