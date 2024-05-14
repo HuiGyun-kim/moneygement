@@ -1,20 +1,6 @@
+/* checkChallenge.css 수정 */
 /*#1 폰트*/
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
-
-/*챌린지 css 폰트 바꾸자*/
-.challenge{
-    width: 420px;
-    height: 120px;
-    color: black;
-}
-/* 출석체크 CSS */
-.checkChallenge {
-    width: 262px;
-    height: 87px;
-    color: #1A4F32;
-}
-
-
 
 /*#2 전체 태그 초기화&초기세팅*/
 * {
@@ -35,7 +21,7 @@ button {
 }
 
 /*#4 달력 가운데정렬*/
-body {
+main {
     display: flex;
     align-items: center;
     justify-content: center;
