@@ -31,6 +31,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (isJoined) {
             document.querySelector('.goalset-group').style.display = 'none';
         }
+        else{
+            document.getElementById('noTargetAlert').style.display = 'block';
+            document.querySelector('.alert').style.display = 'none';
+            document.getElementById('targetAlert').style.display = 'none';
+        }
     });
     displayTarget(userId);
     displayExpense(userId);
