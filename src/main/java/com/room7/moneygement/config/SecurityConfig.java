@@ -123,12 +123,12 @@ public class SecurityConfig implements WebMvcConfigurer {
 	}
 
 	@Bean
-	public PasswordEncoder passwordEncoder() {
-		// 테스트 환경
-		return NoOpPasswordEncoder.getInstance();
+	public BCryptPasswordEncoder passwordEncoder() {
+//		// 테스트 환경
+//		return NoOpPasswordEncoder.getInstance();
 
-		// // 실제 운영 환경
-		// return new BCryptPasswordEncoder();
+		 // 실제 운영 환경
+		 return new BCryptPasswordEncoder();
 	}
 
 	@Override
