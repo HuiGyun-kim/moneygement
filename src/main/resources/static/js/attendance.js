@@ -124,6 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 // 출석체크 횟수 및 리워드 제공 여부 확인
                 checkRewardEligibility();
+                location.reload();
             } else {
                 // 통신 실패 시 오류 메시지 표시
                 alert('출석체크에 실패했습니다.');
