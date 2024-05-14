@@ -160,18 +160,20 @@ public class UserServiceImpl implements UserService {
         return userOptional.map(User::getUsername).orElse(null);
     }
 
-	public void sendPasswordResetLink(String username) throws Exception{
-		User user = userRepository.findByUsername(username)
-				.orElseThrow(() -> new Exception("유저를 찾을 수 없습니다."));
+//	public void sendPasswordResetLink(String username) throws Exception{
+//		User user = userRepository.findByUsername(username)
+//				.orElseThrow(() -> new Exception("유저를 찾을 수 없습니다."));
+//
+//		String email = user.getEmail();
+//		String resetLink = "http://localhost:8080/reset-password?token=moneymoney"; // 이거 나중에 링크 이름 바꿔야함.
+//
+//		SimpleMailMessage message = new SimpleMailMessage();
+//		message.setTo(email);
+//		message.setSubject("비밀번호 재설정 메일");
+//		message.setText("아래 링크로 접속하여 비밀번호를 재설정 해주세요. " + resetLink);
+//
+//		mailSender.send(message);
+//	}
 
-		String email = user.getEmail();
-		String resetLink = "http://localhost:8080/reset-password?token=moneymoney"; // 이거 나중에 링크 이름 바꿔야함.
 
-		SimpleMailMessage message = new SimpleMailMessage();
-		message.setTo(email);
-		message.setSubject("비밀번호 재설정 메일");
-		message.setText("아래 링크로 접속하여 비밀번호를 재설정 해주세요. " + resetLink);
-
-		mailSender.send(message);
-	}
 }

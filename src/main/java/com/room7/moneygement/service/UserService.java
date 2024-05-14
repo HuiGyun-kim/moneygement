@@ -33,8 +33,6 @@ public interface UserService {
 	String generateResetPasswordLink(String email);
 
 	String findUsernameByEmail(String email);
-
-	void sendPasswordResetLink(String username) throws Exception;
 }
 
 

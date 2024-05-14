@@ -176,21 +176,22 @@ public class UserController {
 		String storedCode = verificationCodes.get(email);
 		System.out.println(storedCode);
 		System.out.println(code);
-		if (storedCode != null && storedCode.equals(code)){
+		if (storedCode != null && storedCode.equals(code)) {
 			return ResponseEntity.ok("인증되었습니다.");
 		}
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("인증번호가 틀렸습니다. 다시 확인해주세요..");
 	}
 
-	@PostMapping("/send-reset-link")
-	public String sendResetLink(@RequestParam String username, Model model){
-		try {
-			userService.sendPasswordResetLink(username);
-			model.addAttribute("message", "비밀번호 초기화 링크가 이메일로 전송되었습니다.");
-		}
-		catch (Exception e) {
-			model.addAttribute("error", "비밀번호 초기화 링크를 보내는데 실패했습니다. 다시 시도해주세요.");
-		}
-		return "find-password";
-	}
+//	@PostMapping("/send-reset-link")
+//	public String sendResetLink(@RequestParam String username, Model model) {
+//		try {
+//			userService.sendPasswordResetLink(username);
+//			model.addAttribute("message", "비밀번호 초기화 링크가 이메일로 전송되었습니다.");
+//		} catch (Exception e) {
+//			model.addAttribute("error", "비밀번호 초기화 링크를 보내는데 실패했습니다. 다시 시도해주세요.");
+//		}
+//		return "find-password";
+//	}
+
+
 }
