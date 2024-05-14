@@ -5,6 +5,17 @@
 
     <!-- 사용자 정보와 상호작용 부분 -->
     <div class="user-interaction">
+        <div class="search1">
+            <form class="searching" action="/searchUser" method="get">
+                <label>
+                    <select class="choice" name="searchType">
+                        <option value="searchId">아이디</option>
+                    </select>
+                </label>
+                <label class="searchKey"><input name="username" alt=""></label>
+                <button type="submit">검색</button>
+            </form>
+        </div>
         <!-- 메시지 및 알림 아이콘 -->
         <div class="notification-icons">
             <!-- 로그인 상태일 때 메시지 및 알림 아이콘 활성화 -->
