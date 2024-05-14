@@ -12,8 +12,20 @@
 </head>
 <body>
 <div th:replace="~{layout/header.html::main-header}"></div>
-<div th:replace="~{layout/sidebar.html::main-sidebar}"></div>
 <main>
+    <div class="slider-container">
+        <div class="slide">
+            <img th:src="@{/img/main/001.png}" th:href="@{/ledgerEntry/reportBoard}" alt="">
+        </div>
+        <div class="slide">
+            <img th:src="@{/img/main/002.png}" alt="">
+        </div>
+        <div class="slide">
+            <img th:src="@{/img/main/003.png}" alt="">
+        </div>
+    </div>
 </main>
+<div th:replace="~{layout/sidebar.html::main-sidebar}"></div>
+<script th:src="@{/js/Banner.js}"></script>
 </body>
 </html>
