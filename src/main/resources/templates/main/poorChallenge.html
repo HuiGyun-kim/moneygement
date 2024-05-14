@@ -39,7 +39,7 @@
                 </div>
             </div>
 
-            <div class="goalset-notice">
+            <div class="goalset-notice" id="targetAlert">
                 <img th:src="@{/img/main/lightgreen_round.png}" alt="circle" class="circle-img">
                 <a id="target">목표 금액: </a>
             </div>
@@ -52,6 +52,10 @@
                 <a></a>
                 남았습니다!
             </div>
+            <div id="noTargetAlert" style="display: none;">
+                목표 금액을 설정하여 챌린지에 참가해보세요!
+            </div>
+
         </main>
     </div>
 </div>

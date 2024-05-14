@@ -196,6 +196,14 @@ hr{
     font-weight: 600;
     margin-right: 65px;
 }
+
+.user-info-namerole a{
+    text-decoration: none;
+    color: black;
+    font-size: 25px;
+    font-weight: 600;
+    margin-right: 65px;
+}
 .history-user-info p{
     max-width: fit-content;
     margin-left: 12px;

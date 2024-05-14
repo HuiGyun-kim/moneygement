@@ -1,6 +1,5 @@
 package com.room7.moneygement.serviceImpl;
 
-import com.room7.moneygement.dto.UserChallengeDTO;
 import com.room7.moneygement.model.LedgerEntry;
 import com.room7.moneygement.model.User;
 import com.room7.moneygement.model.UserChallenge;

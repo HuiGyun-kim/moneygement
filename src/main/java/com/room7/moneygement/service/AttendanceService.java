@@ -1,9 +1,18 @@
 package com.room7.moneygement.service;
 
-import com.room7.moneygement.dto.UserChallengeDTO;
-import com.room7.moneygement.model.User;
+import com.room7.moneygement.model.Attendance;
+
+import java.time.LocalDate;
+import java.util.List;
 
 public interface AttendanceService {
-    boolean checkAttendance(UserChallengeDTO userChallengeDTO); //출석체크 수행 메서드
+    boolean isRewardEligible(Long userId);
+    List<Attendance> getAllAttendance(Long userId);
+
+    void checkAttendance(Long userId, LocalDate date);
+
+    //출석체크 횟수 가져오는 메소드
+    int getAttendanceCount(Long userId);
 }
+
 

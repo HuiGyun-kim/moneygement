@@ -66,7 +66,8 @@ public class SecurityConfig implements WebMvcConfigurer {
 						.requestMatchers("/", "/login", "/signup", "/signup-email", "/users/**", "/ledgerEntry/**",
 								"/diary/**", "/level/**","/diary/saveDiary","/ledgers/edit/{ledgerId}","/admin/**",
 								"/users/send-id-verification-code", "/users/verify-id-code", "/users/verifyEmail",
-								"/sendEmail","/follow/unfollow/{userId}","/follow/followers/{userId}", "/searchUser",
+								"/sendEmail","/follow/unfollow/{userId}","/follow/followers/{userId}", "/attendance/**","/attendance/check",
+                                "/searchUser",
 								"/users/sendEmail", "/emailVerified", "/find-id", "/users/find-id", "/find-password",
 								"/ledgers/**", "/css/**", "/js/**", "/img/**", "/api/auth/image").permitAll()
 						.requestMatchers("/manager/**").hasAuthority("ADMIN")
@@ -86,7 +87,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 				.exceptionHandling(e -> e
 						.accessDeniedPage("/access-denied"))
 				.csrf(csrf -> csrf
-						.ignoringRequestMatchers("/ledgerEntry/**", "/users/sendEmail", "/diary/**", "/userChallenges/**", "/qna/**", "/follow/**", "/api/auth/image","/ledgers/**", "/level/**")
+						.ignoringRequestMatchers("/ledgerEntry/**", "/users/sendEmail", "/diary/**", "/userChallenges/**", "/qna/**", "/follow/**", "/api/auth/image","/ledgers/**", "/level/**", "/attendance/**")
 				);
 		return http.build();
 	}
