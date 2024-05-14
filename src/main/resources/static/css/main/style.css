@@ -90,3 +90,40 @@ header {
     color: #1A4F32;
     font-weight: bold;
 }
+
+
+.search1{
+    display: flex;
+    background: white;
+    padding: 5px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+}
+
+.searching{
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+.searching button{
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+.searchKey input {
+    outline: none;
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+.choice{
+    padding: 0;
+    margin: 0;
+    border: none;
+}
