@@ -23,7 +23,7 @@
             </figure>
             <div class="dropdown-menu" id="myDropdown">
                 <a th:href="@{/profile/{userId}(userId=${currentUser.userId})}">마이페이지</a>
-                <a th:href="@{/myPage-edit}"> 내 정보 관리</a>
+                <a th:href="@{/users/myPage-edit}"> 내 정보 관리</a>
             </div>
             <a th:text="${currentUser.username} + ' '"></a>
             <form th:action="@{/logout}" method="post">
