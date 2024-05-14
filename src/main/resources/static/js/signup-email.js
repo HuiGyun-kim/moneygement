@@ -8,6 +8,7 @@ var isEmail = false;
 var isMail = false;
 
 document.addEventListener('DOMContentLoaded', function (){
+    document.getElementById("emailcheck").style.display = "none";
     document.getElementById('password_check').addEventListener('keyup', function (event){
         var password = document.getElementById('password').value;
         var password_check = document.getElementById('password_check').value;
@@ -100,6 +101,8 @@ document.addEventListener("DOMContentLoaded", function() {
             })
                 .then(response => {
                     if(response.ok) {
+                        document.getElementById("emailOverlay").style.display = 'none';
+                        document.getElementById("emailcheck").style.display = "";
                         return response.text();
                     }
                     else {
@@ -107,15 +110,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                 })
                 .then(data => {
-                    if(data.isAvailable) {
-                        alert('사용 가능한 아이디입니다.');
-                        isUser = true;
-                    }
-                    else {
-                        alert('이미 사용중인 아이디입니다.');
-                        isUser = false;
-                    }
-                    checkSubmit();
+                    alert(data);
+                    checkSubmit()
                 })
                 .catch(error => {
                     console.error('Error:', error);
