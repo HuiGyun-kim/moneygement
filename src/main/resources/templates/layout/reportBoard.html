@@ -22,19 +22,19 @@
         <main>
             <section class="summary">
                 <div class="summary-item">
-                    <p class="amount" th:text="${#numbers.formatInteger(spendingReport.income, 3, 'COMMA')} + '원'"></p>
+                    <p class="amount" id="incomeAmount"></p>
                     <p class="label">이번 달 수입</p>
                 </div>
                 <div class="summary-item">
-                    <p class="amount" th:text="${#numbers.formatInteger(spendingReport.expense, 3, 'COMMA')} + '원'"></p>
+                    <p class="amount" id="expenseAmount"></p>
                     <p class="label">이번 달 지출</p>
                 </div>
                 <div class="summary-item">
-                    <p class="amount" th:text="${#numbers.formatInteger(spendingReport.incomeThreeMonthsAgo, 3, 'COMMA')} + '원'"></p>
+                    <p class="amount" id="incomeAmountThreeMonthsAgo"></p>
                     <p class="label">3개월 전 수입</p>
                 </div>
                 <div class="summary-item">
-                    <p class="amount" th:text="${#numbers.formatInteger(spendingReport.expenseThreeMonthsAgo, 3, 'COMMA')} + '원'"></p>
+                    <p class="amount" id="expenseAmountThreeMonthsAgo"></p>
                     <p class="label">3개월 전 지출</p>
                 </div>
             </section>
@@ -46,7 +46,7 @@
                 <div class="comparison-chart">
                     <p>한달 전보다 얼마나 지출이 적을까?</p>
                     <canvas id="incomeExpenseChart"></canvas>
-                    <p class="chart-label">전달보다 60,000원 덜 소비 하셨어요! 소비를 덜 하고싶다면 챌린지에 참여해 보세요</p>
+                    <p class="chart-label"></p>
                 </div>
             </section>
         </main>
@@ -54,7 +54,7 @@
 </div>
 <script th:inline="javascript">
     /*<![CDATA[*/
-    window.spendingData = /*[[${spendingReport.monthlyData}]]*/ null;
+    window.spendingData = null;
     /*]]>*/
 </script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

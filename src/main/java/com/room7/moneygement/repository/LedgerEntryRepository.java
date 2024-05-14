@@ -30,5 +30,8 @@ public interface LedgerEntryRepository extends JpaRepository<LedgerEntry, Long> 
 
     @Query("SELECT e FROM LedgerEntry e WHERE e.ledger.userId.userId = :userId AND e.date BETWEEN :startDate AND :endDate AND e.ledgerType = :ledgerType")
     List<LedgerEntry> findByUserIdAndDateBetweenAndLedgerType(Long userId, LocalDate startDate, LocalDate endDate, Boolean ledgerType);
+
+    @Query("SELECT SUM(e.amount) FROM LedgerEntry e WHERE e.ledger.userId.userId = :userId AND e.ledgerType = :ledgerType AND e.date BETWEEN :startDate AND :endDate")
+    Long findTotalByLedgerAndTypeBetweenDates(@Param("userId") Long userId, @Param("ledgerType") Boolean ledgerType, @Param("startDate") LocalDate startDate, @Param("endDate") LocalDate endDate);
 }
 
