@@ -39,7 +39,10 @@ public class UserController {
 	public String signup(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("email") String email) {
 		User user = new User();
 		user.setUsername(username);
-		user.setPassword(password);
+
+		// 비밀번호 해싱
+		String hashedPassword = userService.encodePassword(password);
+		user.setPassword(hashedPassword);
 		user.setEmail(email);
 		user.setCreatedAt(LocalDateTime.now());
 		user.setIsDeleted(false);

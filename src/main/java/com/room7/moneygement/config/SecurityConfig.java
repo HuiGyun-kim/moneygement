@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -33,10 +34,13 @@ import com.room7.moneygement.service.UserService;
 @ComponentScan(basePackages = {"com.room7.moneygement.service"})
 public class SecurityConfig implements WebMvcConfigurer {
 
-	private final UserService userService;
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return PasswordEncoderFactories.createDelegatingPasswordEncoder();
+	}
 
 	@Bean
-	public UserDetailsService userDetailsService() {
+	public UserDetailsService userDetailsService(UserService userService) {
 		return username -> {
 			User user = userService.findByUsername(username);
 			if (user == null) {
@@ -49,9 +53,9 @@ public class SecurityConfig implements WebMvcConfigurer {
 				.profileImg(user.getProfileImg())
 				.role(user.getRole())
 				.introduction(user.getIntroduction())
-				.build(); // 프로필 이미지 등 추가 데이터 설정
+				.build();
 
-			return new CustomUserDetails(user); // CustomUserDetails 객체 반환
+			return new CustomUserDetails(user);
 		};
 	}
 
@@ -122,14 +126,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 		};
 	}
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
-		// 테스트 환경
-		return NoOpPasswordEncoder.getInstance();
 
-		// // 실제 운영 환경
-		// return new BCryptPasswordEncoder();
-	}
 
 	@Override
 	public void addCorsMappings(CorsRegistry registry) {
