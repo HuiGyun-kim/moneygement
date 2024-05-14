@@ -29,6 +29,12 @@ public interface UserService {
 	String getUserProfileIntroduction(Long userId);
 
 	boolean existsByEmail(String email);
+
+	String generateResetPasswordLink(String email);
+
+	String findUsernameByEmail(String email);
+
+	void sendPasswordResetLink(String username) throws Exception;
 }
 
 

@@ -89,7 +89,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 				.csrf(csrf -> csrf
 						.ignoringRequestMatchers("/ledgerEntry/**", "/users/sendEmail", "/diary/**", "/userChallenges/**", "/qna/**",
                                      "/follow/**", "/profileDetail/upload", "/profile-detail", "/updateProfileImage","{userId}/profile/introduction",
-                                     "/ledgers/**", "/level/**","/api/auth/image", "/attendance/**")
+                                     "/ledgers/**", "/level/**","/api/auth/image", "/attendance/**", "/users/**")
 				);
 		return http.build();
 	}
