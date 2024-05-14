@@ -9,11 +9,7 @@ h1 {
 .main-content {
     flex: 1;
     padding: 20px;
-    margin-left: -250px;
-}
-.main-content {
-    flex: 1;
-    padding: 20px;
+    margin-left: 10px;
 }
 
 .welcome-message {
@@ -92,8 +88,11 @@ h1 {
     }
 }
 main{
-    width: 107%;
+    width: 100%;
 }
 #spendingChart{
+    display: block;
+    box-sizing: border-box;
+    height: 475px;
     width: 950px;
 }
