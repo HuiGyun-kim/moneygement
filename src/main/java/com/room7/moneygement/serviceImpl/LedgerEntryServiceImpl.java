@@ -1,8 +1,12 @@
 package com.room7.moneygement.serviceImpl;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
@@ -94,5 +98,46 @@ public class LedgerEntryServiceImpl implements LedgerEntryService {
 	@Override
 	public LedgerEntry getEntryById(Long id) {
 		return ledgerEntryRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	public Map<String, Object> getSpendingReport(Long userId) {
+		LocalDate now = LocalDate.now();
+		int currentYear = now.getYear();
+		int currentMonth = now.getMonthValue();
+
+		Long income = ledgerEntryRepository.findTotalByLedgerAndType(userId, false, currentYear, currentMonth);
+		Long expense = ledgerEntryRepository.findTotalByLedgerAndType(userId, true, currentYear, currentMonth);
+
+		LocalDate threeMonthsAgo = now.minusMonths(3);
+		int year3 = threeMonthsAgo.getYear();
+		int month3 = threeMonthsAgo.getMonthValue();
+		Long incomeThreeMonthsAgo = ledgerEntryRepository.findTotalByLedgerAndType(userId, false, year3, month3);
+		Long expenseThreeMonthsAgo = ledgerEntryRepository.findTotalByLedgerAndType(userId, true, year3, month3);
+
+		List<Map<String, Object>> monthlyData = new ArrayList<>();
+		for (int i = 11; i >= 0; i--) {
+			LocalDate targetDate = now.minusMonths(i);
+			int year = targetDate.getYear();
+			int month = targetDate.getMonthValue();
+			Long monthlyIncome = ledgerEntryRepository.findTotalByLedgerAndType(userId, false, year, month);
+			Long monthlyExpense = ledgerEntryRepository.findTotalByLedgerAndType(userId, true, year, month);
+
+			Map<String, Object> data = new HashMap<>();
+			data.put("year", year);
+			data.put("month", month);
+			data.put("income", monthlyIncome != null ? monthlyIncome : 0L);
+			data.put("expense", monthlyExpense != null ? monthlyExpense : 0L);
+			monthlyData.add(data);
+		}
+
+		Map<String, Object> report = new HashMap<>();
+		report.put("income", income != null ? income : 0L);
+		report.put("expense", expense != null ? expense : 0L);
+		report.put("incomeThreeMonthsAgo", incomeThreeMonthsAgo != null ? incomeThreeMonthsAgo : 0L);
+		report.put("expenseThreeMonthsAgo", expenseThreeMonthsAgo != null ? expenseThreeMonthsAgo : 0L);
+		report.put("monthlyData", monthlyData);
+
+		return report;
 	}
 }

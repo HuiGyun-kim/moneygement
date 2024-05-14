@@ -1,0 +1,99 @@
+h1 {
+    font-weight: bold;
+}
+
+.report-container {
+    display: flex;
+    max-width: max-content;
+}
+.main-content {
+    flex: 1;
+    padding: 20px;
+    margin-left: -250px;
+}
+.main-content {
+    flex: 1;
+    padding: 20px;
+}
+
+.welcome-message {
+    margin-bottom: 60px;
+}
+
+.summary {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+    height: 187px;
+}
+
+.summary-item {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    width: 24%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.amount {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.label {
+    color: #6c757d;
+}
+
+.spending-report {
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: -3px 3px 14px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    height: 550px;
+}
+
+.chart-container, .comparison-chart {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.chart-container {
+    display: flex;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 20px;
+    height: initial;
+    flex: 1;
+}
+
+.comparison-chart {
+    text-align: center;
+}
+
+.chart-label {
+    margin-top: 10px;
+    color: #6c757d;
+}
+
+@media (min-width: 768px) {
+    .spending-report {
+        flex-direction: row;
+    }
+
+    .chart-container, .comparison-chart {
+        margin: 0 10px;
+    }
+}
+main{
+    width: 107%;
+}
+#spendingChart{
+    width: 950px;
+}
