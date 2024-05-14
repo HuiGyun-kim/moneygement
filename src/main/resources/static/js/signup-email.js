@@ -1,10 +1,11 @@
 function checkSubmit() {
     var submitButton = document.querySelector('.btn-submit button');
-    submitButton.disabled = !(isUser && isEmail);
+    submitButton.disabled = !(isUser && isEmail && isMail);
 }
 
 var isUser = false;
 var isEmail = false;
+var isMail = false;
 
 document.addEventListener('DOMContentLoaded', function (){
     document.getElementById('password_check').addEventListener('keyup', function (event){
@@ -65,7 +66,13 @@ document.addEventListener('DOMContentLoaded', function () {
             alert('아이디가 이미 사용중입니다.');
             event.preventDefault();
         }
+
         if(!isEmail) {
+            alert('이메일 인증이 되지 않았습니다.')
+            event.preventDefault();
+        }
+
+        if(!isMail){
             alert('이메일 인증이 되지 않았습니다.')
             event.preventDefault();
         }
@@ -77,6 +84,11 @@ document.addEventListener('DOMContentLoaded', function () {
 document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("emailOverlay").addEventListener("click", function() {
         var email = document.getElementById("email").value;
+
+        if(!isMail) {
+            alert("이메일 중복 체크를 먼저 해주세요.");
+            return;
+        }
 
         if(email){
             fetch('/users/sendEmail', {
@@ -95,7 +107,15 @@ document.addEventListener("DOMContentLoaded", function() {
                     }
                 })
                 .then(data => {
-                    alert(data);
+                    if(data.isAvailable) {
+                        alert('사용 가능한 아이디입니다.');
+                        isUser = true;
+                    }
+                    else {
+                        alert('이미 사용중인 아이디입니다.');
+                        isUser = false;
+                    }
+                    checkSubmit();
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -123,4 +143,29 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("mailOverlay").addEventListener("click", function() {
+        var email = document.getElementById("email").value;
+        if(email){
+            fetch('/users/checkEmail?email=' + email)
+                .then(response => response.json())
+                .then(data => {
+                    if(data.isAvailable) {
+                        alert('사용 가능한 이메일입니다.');
+                        isMail = true;
+                    }
+                    else {
+                        alert('이미 사용중인 이메일입니다.');
+                        isMail = false;
+                    }
+                    checkSubmit();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+        else {
+            alert("이메일을 입력해주세요.");
+        }
+    });
+});

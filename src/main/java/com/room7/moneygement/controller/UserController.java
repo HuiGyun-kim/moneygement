@@ -64,6 +64,15 @@ public class UserController {
 		return response;
 	}
 
+	@GetMapping("/checkEmail")
+	@ResponseBody
+	public Map<String, Boolean> checkEmail(@RequestParam("email") String email) {
+		boolean isAvailable = !userService.existsByEmail(email);
+		Map<String, Boolean> response = new HashMap<>();
+		response.put("isAvailable", isAvailable);
+		return response;
+	}
+
 	@GetMapping("/verifyEmail")
 	@ResponseBody
 	public RedirectView verifyEmail(@RequestParam String token){
