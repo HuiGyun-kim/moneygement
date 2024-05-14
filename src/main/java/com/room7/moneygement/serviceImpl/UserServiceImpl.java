@@ -18,7 +18,6 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
-
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
     private final S3Upload s3Uploader;
@@ -52,10 +51,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(userId).orElse(null);
     }
 
-    // public boolean checkPassword(String rawPassword, String encodedPassword) {
-    // 	return passwordEncoder.matches(rawPassword, encodedPassword);
-    // }
-
     @Override
     public User findById(Long id) { // findById 메서드 구현
         return userRepository.findById(id)
@@ -76,9 +71,8 @@ public class UserServiceImpl implements UserService {
             return userRepository.findAll();
         }
     }
+	// 비밀번호 확인
 
-
-    // 비밀번호 확인
 	public boolean checkPassword(User user, String password) {
 		return encoder.matches(password, user.getPassword());
 	}
