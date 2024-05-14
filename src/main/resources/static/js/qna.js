@@ -36,6 +36,11 @@ document.getElementById('messageForm').addEventListener('submit', function(event
 function displayMessage(sender, message) {
     var chatBox = document.getElementById('chatBox');
     var newMessage = document.createElement('div');
+    if (sender === 'User') {
+        newMessage.innerHTML = `<div class="user-message"><img src="user-profile.jpg" alt="User Profile"><strong>${sender}:</strong> ${message}</div>`;
+    } else {
+        newMessage.innerHTML = `<div class="alan-message"><img src="/img/main/logo.png" alt="Alan Profile"><strong>${sender}:</strong> ${message}</div>`;
+    }
     newMessage.innerHTML = `<strong>${sender}:</strong> ${message}`;
     chatBox.appendChild(newMessage);
     // 자동으로 스크롤을 아래로 이동합니다.
