@@ -23,8 +23,8 @@
                     <button class="follow-button" id="followButton" type="submit"  th:data-userId="${user.userId}">Follow</button>
                 </form>
             </div>
-            <img class="more" th:src="@{/img/main/more.png}" alt=""/>
-            <div class="dropdown-menu" id="myDropdown">
+            <img class="more2" th:src="@{/img/main/more.png}" alt=""/>
+            <div class="dropdown-menu" id="myDropdown2">
                 <a th:if="${currentUser.userId == user.userId}" href="/profile-detail">프로필변경</a>
             </div>
         </div>
