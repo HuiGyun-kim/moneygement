@@ -8,6 +8,7 @@ import com.room7.moneygement.serviceImpl.EmailServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import com.room7.moneygement.model.User;
@@ -64,10 +65,19 @@ public class UserController {
 		return response;
 	}
 
+	@GetMapping("/checkEmail")
+	@ResponseBody
+	public Map<String, Boolean> checkEmail(@RequestParam("email") String email) {
+		boolean isAvailable = !userService.existsByEmail(email);
+		Map<String, Boolean> response = new HashMap<>();
+		response.put("isAvailable", isAvailable);
+		return response;
+	}
+
 	@GetMapping("/verifyEmail")
 	@ResponseBody
-	public RedirectView verifyEmail(@RequestParam String token){
-		try{
+	public RedirectView verifyEmail(@RequestParam String token) {
+		try {
 			String userEmail = JWT.require(Algorithm.HMAC512("moneymoney".getBytes()))
 					.build()
 					.verify(token)
@@ -122,19 +132,66 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("인증번호가 올바르지 않습니다.");
 	}
 
-	private String generateVerificationCode() {
+	public String generateVerificationCode() {
 		return String.format("%06d", new Random().nextInt(999999));
 	}
+
 	@PostMapping("/find-id")
 	@ResponseBody
 	public Map<String, String> findEmail(@RequestParam String email) {
 		return userRepository.findByEmail(email)
-			.map(user -> {
-				Map<String, String> result = new HashMap<>();
-				result.put("username", user.getUsername());
-				result.put("signupDate", user.getCreatedAt().toLocalDate().toString());
-				return result;
-			})
-			.orElse(Collections.emptyMap());
+				.map(user -> {
+					Map<String, String> result = new HashMap<>();
+					result.put("username", user.getUsername());
+					result.put("signupDate", user.getCreatedAt().toLocalDate().toString());
+					return result;
+				})
+				.orElse(Collections.emptyMap());
 	}
+
+	@PostMapping("/send-password-verification-code")
+	public ResponseEntity<String> sendPasswordVerificationCode(@RequestParam String username){
+		User user = userService.findByUsername(username);
+		if (user == null){
+			return ResponseEntity.badRequest().body("해당 아이디로 등록된 사용자가 없습니다.");
+		}
+
+		String email = user.getEmail();
+		String code = generateVerificationCode();
+		verificationCodes.put(email, code);
+		System.out.println(verificationCodes);
+
+		emailService.sendPasswordVerificationEmail(email, code);
+
+		return ResponseEntity.ok("인증 이메일을 전송했습니다.");
+	}
+
+	@PostMapping("/verify-password-code")
+	public ResponseEntity<String> verifyPasswordCode(@RequestParam String username, @RequestParam String code){
+		User user = userService.findByUsername(username);
+		if (user == null){
+			return ResponseEntity.badRequest().body("해당 아이디로 등록된 사용자가 없습니다.");
+		}
+		String email = user.getEmail();
+		String storedCode = verificationCodes.get(email);
+		System.out.println(storedCode);
+		System.out.println(code);
+		if (storedCode != null && storedCode.equals(code)) {
+			return ResponseEntity.ok("인증되었습니다.");
+		}
+		return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("인증번호가 틀렸습니다. 다시 확인해주세요..");
+	}
+
+//	@PostMapping("/send-reset-link")
+//	public String sendResetLink(@RequestParam String username, Model model) {
+//		try {
+//			userService.sendPasswordResetLink(username);
+//			model.addAttribute("message", "비밀번호 초기화 링크가 이메일로 전송되었습니다.");
+//		} catch (Exception e) {
+//			model.addAttribute("error", "비밀번호 초기화 링크를 보내는데 실패했습니다. 다시 시도해주세요.");
+//		}
+//		return "find-password";
+//	}
+
+
 }
