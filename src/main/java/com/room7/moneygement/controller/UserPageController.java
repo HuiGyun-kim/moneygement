@@ -13,20 +13,18 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 import java.util.Optional;
 
 @RestController
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class UserPageController {
     private final UserService userService;
 
-    @PostMapping("/api/change-pw")
+    @PostMapping("/change-pw")
     public ResponseEntity<?> changePassword(HttpServletRequest request, HttpServletResponse response,
                                             @RequestBody PasswordChangeDTO passwordChangeDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -47,7 +45,7 @@ public class UserPageController {
     }
 
     // 회원 탈퇴 api
-    @PostMapping("/api/delete-account")
+    @PostMapping("/delete-account")
     public ResponseEntity<?> deleteAccount(@RequestBody Map<String, String> credentials,
                                            HttpServletRequest request, HttpServletResponse response) {
 

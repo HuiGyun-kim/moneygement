@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
 	private final S3Upload s3Uploader;
 
 	// BCryptPasswordEncoder를 PasswordEncoder 인터페이스로 사용
-	private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+	private final PasswordEncoder encoder = new BCryptPasswordEncoder();
 
 	// private final PasswordEncoder passwordEncoder;
 	@Override
