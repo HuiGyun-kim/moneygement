@@ -34,8 +34,8 @@ time, mark, audio, video {
     justify-content: flex-end;
     margin-top: -100px;
     margin-bottom: 70px;
-    gap: 750px;
     align-items: center;
+    position: relative;
 }
 .more{
     width: 50px;
@@ -127,9 +127,6 @@ time, mark, audio, video {
 .write{
     height: 30px;
     margin-right: 20px;
-}
-.more-container {
-    position: relative;
 }
 
 .dropdown-menu {

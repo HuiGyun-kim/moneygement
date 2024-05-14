@@ -109,9 +109,43 @@ function dataURLtoFile(dataUrl, filename) {
     return new File([u8arr], filename, { type: mime });
 }
 
-//------------------------------------------------------------------------
+//----------------------취소 버튼 클릭 이벤트 핸들러--------------------------------------------------
 
-// 취소 버튼 클릭 이벤트 핸들러
 document.querySelector('.cancel-button').addEventListener('click', function() {
     history.back();
+});
+
+
+//-------------------------------------------------------------------------------
+
+document.addEventListener('DOMContentLoaded', function () {
+    const introductionTextarea = document.getElementById('introductionTextarea'); // 소개글 입력란 선택
+    const submitButton = document.getElementById('submitButton'); // 등록 버튼 선택
+    const userId = document.getElementById('userId').value; // 사용자 ID 가져오기
+
+    // 등록 버튼 클릭 이벤트 핸들러
+    submitButton.addEventListener('click', () => {
+        const introduction = introductionTextarea.value; // 입력된 소개글 가져오기
+
+        // 서버로 소개글 업데이트 요청 보내기
+        fetch(`${userId}/profile/introduction`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(introduction)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(result => {
+                console.log('Introduction updated successfully:', result);
+            })
+            .catch(error => {
+                console.error('Error updating introduction:', error);
+            });
+    });
 });

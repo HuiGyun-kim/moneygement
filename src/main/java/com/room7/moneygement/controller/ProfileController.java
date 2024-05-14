@@ -4,7 +4,6 @@ import com.room7.moneygement.dto.CommentDTO;
 import com.room7.moneygement.dto.ResponseDto;
 import com.room7.moneygement.model.User;
 import com.room7.moneygement.service.*;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -12,14 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.security.Principal;
 import java.util.Map;
 
 
@@ -60,7 +55,7 @@ public class ProfileController {
         }
     }
 
-    //-------------------------------------------------------------------------------------------------
+    //---------------------방명록 부분----------------------------------------------------------------------------
 
     @PostMapping("/profile/{userId}/comments")
     public String createComment(@PathVariable Long userId, @ModelAttribute CommentDTO commentDTO) {
@@ -89,8 +84,7 @@ public class ProfileController {
         return "main/comment-edit";
     }
 
-    //------------------------------------------------------------------------------------------------------
-
+    //----------------------------------프로필 수정 부분--------------------------------------------------------------------
 
     @GetMapping("/profile-detail")
     public String getProfileDetailPage(@AuthenticationPrincipal CustomUserDetails customUserDetails, Model model) {
@@ -102,19 +96,18 @@ public class ProfileController {
     @PostMapping("/profileDetail/upload")
     public ResponseEntity<ResponseDto> imageUpload(@RequestPart(name = "profileImg", required = false) MultipartFile multipartFile) {
         if (multipartFile == null || multipartFile.isEmpty()) {
-            return ResponseEntity.badRequest().body(new ResponseDto("Invalid file. Please select a file to upload.", null));
+            return ResponseEntity.badRequest().body(new ResponseDto("잘못된 파일입니다. 업로드할 파일을 선택하세요.", null));
         }
         try {
             String imageUrl = s3Upload.uploadFiles(multipartFile, "static");
-            return ResponseEntity.ok(new ResponseDto("File uploaded successfully.", imageUrl));
+            return ResponseEntity.ok(new ResponseDto("파일이 성공적으로 업로드되었습니다.", imageUrl));
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("Failed to upload file.", null));
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ResponseDto("파일을 업로드하지 못했습니다.", null));
         }
     }
 
-    //------------------------------------------------------------------------------------------
-    //프로필 이미지 업데이트
+    //------------------------------------프로필 이미지 업데이트------------------------------------------------------
 
     @PostMapping("/updateProfileImage")
     public ResponseEntity<String> updateProfileImage(@RequestBody Map<String, String> request) {
@@ -130,9 +123,33 @@ public class ProfileController {
             user.setProfileImg(imageUrl);
             userService.save(user); // 데이터베이스에 저장
 
-            return ResponseEntity.ok("Profile image updated successfully");
+            return ResponseEntity.ok("프로필 이미지가 성공적으로 업데이트되었습니다.");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
+        }
+    }
+
+    //--------------------------------------------------------------------------------------------
+
+    @PostMapping("/{userId}/profile/introduction")
+    public ResponseEntity<String> updateUserProfileIntroduction(
+            @PathVariable Long userId,
+            @RequestBody String introduction) {
+        try {
+            userService.updateUserProfileIntroduction(userId, introduction);
+            return ResponseEntity.ok("프로필 소개가 성공적으로 업데이트되었습니다.");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
+        }
+    }
+
+    @GetMapping("/{userId}/profile/introduction")
+    public ResponseEntity<String> getUserProfileIntroduction(@PathVariable Long userId) {
+        try {
+            String introduction = userService.getUserProfileIntroduction(userId);
+            return ResponseEntity.ok(introduction);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
         }
     }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>profileDetail</title>
@@ -18,11 +18,11 @@
             </figure>
             <span th:text="${user.username}">ID</span>
         </div>
-        <textarea class="profile-introduction" placeholder="소개글을 입력해주세요"></textarea>
+        <textarea id="introductionTextarea" class="profile-introduction" placeholder="소개글을 입력해주세요"></textarea>
         <section class="button-container">
             <button class="cancel-button" type="button">취소</button>
             <input type="hidden" id="userId" th:value="${user.userId}"/>
-            <button class="submit-button" type="submit">등록</button>
+            <button id="submitButton" class="submit-button" type="button">등록</button>
         </section>
         <input type="file" id="imageInput" name="profileImg" class="profile-image-input" style="display: none;">
     </form>
