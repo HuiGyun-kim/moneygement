@@ -16,20 +16,29 @@ import java.util.Optional;
 
 
 @Service
-@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
 	private final UserRepository userRepository;
 	private final FollowRepository followRepository;
 	private final S3Upload s3Uploader;
 
-	// BCryptPasswordEncoder를 PasswordEncoder 인터페이스로 사용
-	private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+	// PasswordEncoder 빈 주입받기
+	private final PasswordEncoder passwordEncoder;
 
-	// private final PasswordEncoder passwordEncoder;
+	public UserServiceImpl(UserRepository userRepository, FollowRepository followRepository, S3Upload s3Uploader, PasswordEncoder passwordEncoder) {
+		this.userRepository = userRepository;
+		this.followRepository = followRepository;
+		this.s3Uploader = s3Uploader;
+		this.passwordEncoder = passwordEncoder;
+	}
+
 	@Override
 	public User findByUsername(String username) {
 		return userRepository.findByUsername(username).orElse(null);
+	}
+	@Override
+	public String encodePassword(String rawPassword) {
+		return passwordEncoder.encode(rawPassword);
 	}
 
 	@Override
@@ -80,15 +89,15 @@ public class UserServiceImpl implements UserService {
 
 	// 비밀번호 확인
 	public boolean checkPassword(User user, String password) {
-		return encoder.matches(password, user.getPassword());
+		return passwordEncoder.matches(password, user.getPassword());
 	}
 
 	// 비밀번호 변경
 	@Transactional
 	public boolean changePassword(User user, String currentPassword, String newPassword) {
-		if (user != null && encoder.matches(currentPassword, user.getPassword())) {
+		if (user != null && passwordEncoder.matches(currentPassword, user.getPassword())) {
 			// 현재 비밀번호가 일치하는 경우 새 비밀번호로 변경
-			user.setPassword(encoder.encode(newPassword));
+			user.setPassword(passwordEncoder.encode(newPassword));
 			userRepository.save(user);
 			return true;
 		}
