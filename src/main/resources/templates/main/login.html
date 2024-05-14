@@ -24,7 +24,7 @@
 
         <div class="form-group">
             <label for="user-password" class="visually-hidden">비밀번호</label>
-            <input type="password" id="user-password" name="password" placeholder="비밀번호번호를 입력해주세요">
+            <input type="password" id="user-password" name="password" placeholder="비밀번호를 입력해주세요">
         </div>
 
         <button type="submit" class="btn-login">로그인</button>
@@ -35,16 +35,10 @@
                 <label for="remember-id">아이디 저장</label>
             </div>
             <div class="login-links">
-                <a th:href="@{/signup}">회원가입</a>
+                <a th:href="@{/signup-email}">회원가입</a>
                 <a th:href="@{/find-id}">ID찾기</a>
                 <a th:href="@{/find-password}">비밀번호 찾기</a>
             </div>
-        </div>
-
-        <div class="social-login">
-            <button type="button" class="btn-social btn-google">Google 계정으로 로그인</button>
-            <button type="button" class="btn-social btn-kakao">Kakao 계정으로 로그인</button>
-            <button type="button" class="btn-social btn-naver">Naver 계정으로 로그인</button>
         </div>
     </form>
 </section>

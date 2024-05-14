@@ -5,6 +5,7 @@ import java.util.List;
 import com.room7.moneygement.model.User;
 import com.room7.moneygement.repository.UserRepository;
 
+import com.room7.moneygement.serviceImpl.UserServiceImpl;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +26,7 @@ public class MainController {
 	private final CategoryService categoryService;
 	private final LedgerService ledgerService;
 	private final UserRepository userRepository;
+	private final UserServiceImpl userService;
 
 	// 기본 홈 페이지를 반환하는 메서드
 	@GetMapping("/")
@@ -118,6 +120,18 @@ public class MainController {
 	@GetMapping("/delete-account")
 	public String deleteAccount() {
 		return "/myPage/deleteAccount";
+	}
+
+	//헤더 검색 기능
+	@GetMapping("/searchUser")
+	public String searchUser(@RequestParam String username){
+		User user = userService.findByUsername(username);
+		if (user != null){
+			return "redirect:/profile/" + user.getUserId();
+		}
+		else{
+			return "redirect:/";
+		}
 	}
 }
 

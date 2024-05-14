@@ -57,7 +57,9 @@
                 <div>
                     <div class="user-info-namerole">
                         <span th:text="${currentUser.username}"></span>
-                        <span th:text="${currentUser.role}"></span>
+                        <a th:if="${currentUser.role.toString() == 'ADMIN'}" href="/admin" th:text="'ADMIN'"></a>
+                        <!--                        currentUser.role은 enum 타입임으로 toString() 붙여서 작업해야함. -->
+                        <span th:unless="${currentUser.role.toString() == 'ADMIN'}" th:text="'Lv' + ${currentUser.getCurrentLevel()}"></span>
                     </div>
                     <p th:text="${currentUser.introduction}"></p>
                 </div>

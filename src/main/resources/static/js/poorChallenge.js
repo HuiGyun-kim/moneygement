@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 alert('성공적으로 저장되었습니다.');
+                location.reload();
             })
             .catch((error) => {
                 alert('저장에 실패했습니다.');
@@ -29,6 +30,11 @@ document.addEventListener('DOMContentLoaded', function() {
     checkParticipationThisMonth(userId).then(isJoined => {
         if (isJoined) {
             document.querySelector('.goalset-group').style.display = 'none';
+        }
+        else{
+            document.getElementById('noTargetAlert').style.display = 'block';
+            document.querySelector('.alert').style.display = 'none';
+            document.getElementById('targetAlert').style.display = 'none';
         }
     });
     displayTarget(userId);

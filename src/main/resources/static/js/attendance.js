@@ -81,36 +81,94 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    /* AJAX 통신 */
-    document.addEventListener('DOMContentLoaded', function () {
-        // 출석체크 버튼 클릭 이벤트 처리
-        document.getElementById('attendanceButton').addEventListener('click', function () {
-            const xhr = new XMLHttpRequest();
-            xhr.open('POST', '/attendance/check');
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.onload = function () {
-                if (xhr.status === 200) {
-                    // 통신 성공 시 출석체크 완료 메시지 표시
-                    alert('출석체크가 완료되었습니다!');
-                    // 출석체크 횟수 증가
-                    attendanceCount++;
-                    // 출석체크 횟수가 25일 이상인 경우 리워드 제공
-                    if (attendanceCount >= 25){
-                        provideReward();
-                    }
-                } else {
-                    // 통신 실패 시 오류 메시지 표시
-                    alert('출석체크에 실패했습니다.');
-                }
-            };
-            xhr.send(JSON.stringify({ date: new Date().toISOString().split('T')[0] }));
-        });
-    });
+    //리워드 확인 함수
+    // 리워드 확인 함수
+    function checkRewardEligibility() {
+        // AJAX를 사용하여 백엔드로 리워드 확인 요청 보내기
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', '/attendance/reward/eligible');
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                // 리워드 지급 가능한 경우 메시지 출력
+                alert('축하합니다! 리워드를 받을 수 있습니다.');
+            } else {
+                // 리워드 지급 불가능한 경우 메시지 출력
+                alert('리워드 지급 대상이 아닙니다.');
+            }
+        };
+        xhr.send();
+    }
+
 });
 
+/* AJAX 통신 */
+document.addEventListener('DOMContentLoaded', function () {
+    // 출석체크 버튼 클릭 이벤트 처리
+    document.getElementById('attendanceButton').addEventListener('click', async function () {
+        try {
+            const response = await fetch('/attendance/check', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                // body: JSON.stringify({ date: new Date().toISOString().split('T')[0] }) UTC기준임.
+                body: JSON.stringify({ date: new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().split('T')[0]}) // 한국시간대.
+            });
 
+            if (response.ok) {
+                // 통신 성공 시 출석체크 완료 메시지 표시
+                alert('출석체크가 완료되었습니다!');
+                //화면 업데이트 로직 추가
+                updateAttendanceUI();
 
+                // 출석체크 횟수 및 리워드 제공 여부 확인
+                checkRewardEligibility();
+                location.reload();
+            } else {
+                // 통신 실패 시 오류 메시지 표시
+                alert('출석체크에 실패했습니다.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('출석체크에 실패했습니다.');
+        }
+    });
 
+    async function checkRewardEligibility() {
+        try {
+            const userId = document.getElementById('userId').getAttribute('data-user-id');
+            const response = await fetch('/attendance/reward/eligible', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId: userId })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                if (data.isEligible) {
+                    provideReward();
+                }
+            } else {
+                console.log('리워드 지급 가능 여부 확인 실패');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    //화면 업데이트 함수
+    function updateAttendanceUI(){
+
+    }
+
+    //리워드 제공 함수
+    function provideReward(){
+
+    }
+});
 
 
 
@@ -146,4 +204,49 @@ function provideReward() {
     alert('리워드 50p를 제공합니다!');
 }
 
+document.addEventListener('DOMContentLoaded', function() {
+    // 사용자 ID를 설정
+    const userId = document.getElementById('userId').getAttribute('data-user-id');
 
+    // 서버에서 출석체크 정보를 가져오는 함수
+    function fetchAttendanceData() {
+        fetch(`/attendance/all?userId=${userId}`)
+            .then(response => response.json())
+            .then(data => {
+                // 출석체크 데이터를 사용하여 UI 업데이트
+                updateUIWithAttendanceData(data);
+            })
+            .catch(error => console.error('Error fetching attendance data:', error));
+    }
+
+    // 출석체크 데이터를 사용하여 UI 업데이트하는 함수
+    function updateUIWithAttendanceData(attendanceData) {
+        const daysTag = document.querySelector('.days');
+
+        attendanceData.forEach(attendance => {
+            const date = new Date(attendance.date);
+            const day = date.getDate(); // 이 부분은 유지
+
+            const dayElement = daysTag.querySelector(`.day-${day}`);
+            if(dayElement) {
+                dayElement.classList.add('completed');
+            }
+        });
+    }
+
+    
+    fetchAttendanceData();
+    checkParticipation(userId).then(hasattend => {
+        if (hasattend) {
+            document.querySelector('.attendanceButton').style.display = 'none';
+        }
+    });
+});
+
+function checkParticipation(userId) {
+    return fetch(`/attendance/isAttend/${userId}`)
+        .then(response => response.json())
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+}

@@ -5,18 +5,16 @@
 
     <!-- 사용자 정보와 상호작용 부분 -->
     <div class="user-interaction">
-        <!-- 메시지 및 알림 아이콘 -->
-        <div class="notification-icons">
-            <!-- 로그인 상태일 때 메시지 및 알림 아이콘 활성화 -->
-            <div sec:authorize="isAuthenticated()">
-                <img class="mail_icon" th:src="@{/img/main/mail_icon.png}" alt="메시지" onclick="openMessages()">
-                <img class="alert_icon" th:src="@{/img/main/alert_icon.png}" alt="알림" onclick="openAlerts()">
-            </div>
-            <!-- 로그인하지 않은 상태일 때 로그인 페이지로 이동 -->
-            <div sec:authorize="isAnonymous()">
-                <img class="mail_icon" th:src="@{/img/main/mail_icon.png}" alt="메시지" onclick="location.href='@{/login}'">
-                <img class="alert_icon" th:src="@{/img/main/alert_icon.png}" alt="알림" onclick="location.href='@{/login}'">
-            </div>
+        <div class="search1">
+            <form class="searching" action="/searchUser" method="get">
+                <label>
+                    <select class="choice" name="searchType">
+                        <option value="searchId">아이디</option>
+                    </select>
+                </label>
+                <label class="searchKey"><input name="username" alt=""></label>
+                <button type="submit">검색</button>
+            </form>
         </div>
         <!-- 프로필 사진 -->
         <div sec:authorize="isAuthenticated()" class="user-info">

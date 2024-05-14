@@ -22,6 +22,7 @@ public interface UserService {
 
 	User deleteUser(User user);
 	// boolean checkPassword(String rawpassword, String encodedPassword);
+	String encodePassword(String rawPassword);
 
 	void updateUserProfileIntroduction(Long userId, String introduction);
 
