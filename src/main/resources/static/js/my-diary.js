@@ -45,7 +45,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.querySelector('.write').addEventListener('click', function () {
         if (select) {
-            console.log(select.querySelector('.circleText').textContent);
             const theme = select.querySelector('.circleText').textContent;
             const expenseList = [];
 
@@ -54,42 +53,51 @@ document.addEventListener('DOMContentLoaded', function () {
                 const description = box.querySelector('p').textContent.trim().split(' ').slice(1).join(' ');
                 expenseList.push({amount, description});
             })
-
-            const combined = expenseList.map(item => `${item.amount}원을 ${item.description}에다가 사용`).join(', ');
-
-            console.log(combined);
+            const combined = expenseList.map(item => `${item.amount}원,${item.description},${theme}`).join(', ');
+            console.log(combined)
+            const diaryQuery = `${combined}을(를) 기준으로 200자 안넘게 너가 직접 창의력을 발휘해 ${theme}적인 상황과 느낌으로 10줄정도 나오게 편지써줘.`;
             const urlData = {
                 detail: [{
-                    // loc: [theme, 0],
-                    msg: `${theme}인 버전으로 돈을 ${combined}했는데, 이것에 대한 소비일기를 써주세요.`,
+                    msg: diaryQuery,
                     type: "string"
                 }]
             };
-            console.log("urlData : ")
-            console.log(urlData);
+
+
 
             const urlContent = new URLSearchParams({
                 content: JSON.stringify(urlData),
                 client_id: "65cef0e5-ce7a-4655-a5a8-5f6414f55d03"
             }).toString();
 
-            console.log("urlContent : ")
-            console.log(urlContent);
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const diaryBox = document.getElementById('diaryBox');
+            const writeButton = document.querySelector('.write');
+            const saveButton = document.getElementById('saveDiary');
+
+            writeButton.style.display = 'none';
+            saveButton.style.display = 'none';
+            loadingSpinner.style.display = 'block';
+            diaryBox.textContent = '';
 
             fetch(`/diary/diaryRequest?${urlContent}`, {
                 method: 'GET',
             })
                 .then(response => response.json())
                 .then(data => {
-                    console.log("데이터가 성공적으로 전송되었습니다.");
-                    const diaryBox = document.getElementById('diaryBox');
                     let textContent = data.content.replace(/<[^>]*>?/gm, '');
                     textContent = textContent.replace(/https?:\/\/[a-zA-Z0-9./?=_-]*/gm, '');
                     textContent = textContent.replace(/\[\(출처\d+\)\]/gm, '');
                     textContent = textContent.replace(/\([^\)]*\)/g, '');
                     diaryBox.textContent = textContent;
+                    loadingSpinner.style.display = 'none';
+                    saveButton.style.display = 'block';
                 })
-                .catch(error => console.error('에러:', error));
+                .catch(error => {
+                    console.error('에러:', error);
+                    loadingSpinner.style.display = 'none';
+                    writeButton.style.display = 'block';
+                });
         } else {
             alert('테마를 선택해주세요!')
         }
@@ -116,7 +124,6 @@ document.addEventListener('DOMContentLoaded', function () {
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data);
                 alert('저장되었습니다.');
             })
             .catch(error => console.error('에러:', error));
@@ -165,8 +172,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .then(response => response.json())
             .then(data => {
                 if (Array.isArray(data)) {
-                    const filteredData = data.filter(entry => entry.ledgerType === true);
-                    displayExpenses(filteredData, date);
+                    displayExpenses(data, date);
                 }
                 else {
                     console.error('Expected an array but got:', data);
@@ -190,7 +196,6 @@ document.addEventListener('DOMContentLoaded', function () {
             expendsList.innerHTML += '해당 날짜에 대한 지출 내역이 없습니다.';
             return;
         }
-
 
         expensesData.forEach(item => {
             const time = document.createElement('div');
@@ -245,68 +250,3 @@ document.addEventListener('DOMContentLoaded', function () {
     generateDateButtons();
     showExpend(new Date(), userId);
 });
-
-//     function showExpend(date) {
-//         const expendData = [
-//             {date: new Date(today.getFullYear(), today.getMonth(), today.getDate() - 1), time:'12:00', category: '식사', amount: '12000원', description: '점심 식사'},
-//             {date: new Date(today.getFullYear(), today.getMonth(), today.getDate()), time:'13:00', category: '교통', amount: '3500원', description: '지하철 카드 충전'},
-//             {date: new Date(today.getFullYear(), today.getMonth(), today.getDate()), time:'18:30', category: '쇼핑', amount: '59000원', description: '옷 구매'},
-//             {date: new Date(2024, 4, 4), time:'13:00', category: '교통', amount: '3500원', description: '점심먹기'},
-//             // monthidx는 0부터 시작해서 4.4해야 5월4일임
-//             {date: new Date(2024, 4, 4), time:'18:30', category: '쇼핑', amount: '59000원', description: '노래방가기'},
-//             {date: new Date(2024, 4, 7), time:'18:30', category: '쇼핑', amount: '59000원', description: '노래방가기'}
-//         ];
-//
-//         const filterData = expendData.filter(item =>
-//             item.date.getFullYear() === date.getFullYear() &&
-//             item.date.getMonth() === date.getMonth() &&
-//             item.date.getDate() === date.getDate()
-//         );
-//
-//         expendsList.innerHTML = '';
-//
-//         const dateInfo = document.createElement('h4');
-//         dateInfo.textContent = `${date.getMonth() + 1}월 ${date.getDate()}일의 지출 내역`;
-//         expendsList.appendChild(dateInfo);
-//
-//
-//         if (filterData.length === 0) {
-//             expendsList.innerHTML += '해당 날짜에 대한 지출 내역이 없습니다.';
-//             return;
-//         }
-//
-//
-//         filterData.forEach(item => {
-//             const time = document.createElement('div');
-//             time.className = 'time';
-//             time.textContent = item.time;
-//             expendsList.appendChild(time);
-//
-//             const expendBox = document.createElement('div');
-//             expendBox.className = 'expendBox';
-//             expendBox.innerHTML = `
-//             <p>${item.amount} ${item.description}</p>
-//             `;
-//
-//             expendsList.appendChild(expendBox);
-//
-//         });
-//
-//         adjustHeight();
-//     }
-//
-//     function adjustHeight() {
-//         const timelineBox = document.querySelector('.timelineBox');
-//         const lastExpendBox = document.querySelector('.expendBox:last-child');
-//
-//         if (lastExpendBox) {
-//             const dividerHeight = lastExpendBox.offsetTop + lastExpendBox.offsetHeight - timelineBox.offsetTop;
-//             // 마지막 비용의 상단과 높이를 더해서 부모요소부터 박스까지의 상단 간격을 빼서 마지막 비용 항목의 아랫쪽 위치를 구할 수 있음.
-//
-//             const divider = document.querySelector('.deco-flex .divider');
-//             divider.style.height = `${dividerHeight}px`;
-//         }
-//     }
-//     generateDateButtons();
-//     showExpend(new Date(today.getFullYear(), today.getMonth(), today.getDate()));
-// });

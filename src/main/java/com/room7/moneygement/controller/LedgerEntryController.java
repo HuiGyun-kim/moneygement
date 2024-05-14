@@ -55,9 +55,12 @@ public class LedgerEntryController {
 	private final CategoryRepository categoryRepository;
 
 	@GetMapping("/expenses")
-	public ResponseEntity<?> getExpense(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @RequestParam("userId") Long userId){
+	public ResponseEntity<?> getExpensesByUserAndDate(
+		@RequestParam("userId") Long userId,
+		@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
+	) {
 		try {
-			List<LedgerEntry> entries = ledgerEntryRepository.findByDateAndUserId(date, userId);
+			List<LedgerEntry> entries = ledgerEntryRepository.findByUserIdAndDateAndLedgerType(userId, date, true);
 			return ResponseEntity.ok(entries);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving expenses: " + e.getMessage());
