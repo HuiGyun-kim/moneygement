@@ -60,11 +60,7 @@ public class UserServiceImpl implements UserService {
 	public User findUserById(Long userId) {
 		return userRepository.findById(userId).orElse(null);
 	}
-
-	// public boolean checkPassword(String rawPassword, String encodedPassword) {
-	// 	return passwordEncoder.matches(rawPassword, encodedPassword);
-	// }
-
+  
 	@Override
 	public User findById(Long id) { // findById 메서드 구현
 		return userRepository.findById(id)
@@ -88,6 +84,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	// 비밀번호 확인
+
 	public boolean checkPassword(User user, String password) {
 		return passwordEncoder.matches(password, user.getPassword());
 	}

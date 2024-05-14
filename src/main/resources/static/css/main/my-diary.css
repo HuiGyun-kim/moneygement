@@ -20,8 +20,18 @@ html, body{
     width: 250px;
 }
 
-.containers{
+.mt-4 {
+    margin: 0;
+    width: 250px;
+}
+.myDiary-container{
+    width: 70%;
+    margin: 0 auto;
+}
+
+.containerBox{
     font-family: 'Interop';
+    display: flex;
 }
 
 nav{
@@ -157,6 +167,7 @@ article h3{
 .timelineBox{
     display: flex;
     flex-direction: row;
+    background-color: #EFEFEF;
 }
 
 .deco{
