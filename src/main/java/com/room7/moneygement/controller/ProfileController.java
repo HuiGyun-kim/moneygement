@@ -49,7 +49,7 @@ public class ProfileController {
             // 새로운 방명록 작성을 위한 DTO 객체 추가
             model.addAttribute("newComment", new CommentDTO());
 
-            return "main/profile";
+            return "myPage/profile";
         } else {
             return "redirect:/";
         }
@@ -81,7 +81,7 @@ public class ProfileController {
         CommentDTO comment = commentService.getCommentById(commentId);
         model.addAttribute("comment", comment);
         model.addAttribute("userId", userId);
-        return "main/comment-edit";
+        return "myPage/comment-edit";
     }
 
     //----------------------------------프로필 수정 부분--------------------------------------------------------------------
@@ -90,7 +90,7 @@ public class ProfileController {
     public String getProfileDetailPage(@AuthenticationPrincipal CustomUserDetails customUserDetails, Model model) {
         User user = customUserDetails.getUser();
         model.addAttribute("user", user);
-        return "main/profileDetail";
+        return "myPage/profileDetail";
     }
 
     @PostMapping("/profileDetail/upload")
