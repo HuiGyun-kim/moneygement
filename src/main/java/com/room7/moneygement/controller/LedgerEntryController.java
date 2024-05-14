@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.room7.moneygement.dto.LedgerEntryDTO;
 import com.room7.moneygement.service.CategoryService;
+import com.room7.moneygement.service.CustomUserDetails;
 import com.room7.moneygement.service.LedgerEntryService;
 import com.room7.moneygement.serviceImpl.LedgerEntryServiceImpl;
 
@@ -50,7 +52,6 @@ public class LedgerEntryController {
 	private final LedgerEntryService ledgerEntryService;
 	private final CategoryService categoryService;
 	private final CategoryRepository categoryRepository;
-	private final LedgerEntryServiceImpl ledgerEntryServiceImpl;
 
 	@GetMapping("/expenses")
 	public ResponseEntity<?> getExpense(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @RequestParam("userId") Long userId){
@@ -152,5 +153,15 @@ public class LedgerEntryController {
 		return ResponseEntity.ok()
 			.headers(response.getHeaders())
 			.body(response.getBody());
+	}
+	@GetMapping("/spendingReport")
+	public ResponseEntity<Map<String, Object>> getSpendingReport(@AuthenticationPrincipal CustomUserDetails currentUser) {
+		if (currentUser != null) {
+			Long userId = currentUser.getUser().getUserId();
+			Map<String, Object> report = ledgerEntryService.getSpendingReport(userId);
+			return ResponseEntity.ok(report);
+		} else {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+		}
 	}
 }

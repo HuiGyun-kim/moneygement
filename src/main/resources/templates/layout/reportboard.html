@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>소비 리포트</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/main/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/main/reportboard.css}"/>
+    <link rel="icon" type="image/png" href="/img/main/favicon.png">
+</head>
+<body>
+<div th:replace="~{layout/header.html::main-header}"></div>
+<div class="report-container">
+    <div th:replace="~{layout/sidebar.html::main-sidebar}"></div>
+    <div class="main-content">
+        <h1>소비리포트</h1>
+        <p class="welcome-message"><span th:text="${currentUser.username}"></span>님, 환영합니다.</p>
+        <main>
+            <section class="summary">
+                <div class="summary-item">
+                    <p class="amount" th:text="${#numbers.formatInteger(spendingReport.income, 3, 'COMMA')} + '원'"></p>
+                    <p class="label">이번 달 수입</p>
+                </div>
+                <div class="summary-item">
+                    <p class="amount" th:text="${#numbers.formatInteger(spendingReport.expense, 3, 'COMMA')} + '원'"></p>
+                    <p class="label">이번 달 지출</p>
+                </div>
+                <div class="summary-item">
+                    <p class="amount" th:text="${#numbers.formatInteger(spendingReport.incomeThreeMonthsAgo, 3, 'COMMA')} + '원'"></p>
+                    <p class="label">3개월 전 수입</p>
+                </div>
+                <div class="summary-item">
+                    <p class="amount" th:text="${#numbers.formatInteger(spendingReport.expenseThreeMonthsAgo, 3, 'COMMA')} + '원'"></p>
+                    <p class="label">3개월 전 지출</p>
+                </div>
+            </section>
+
+            <section class="spending-report">
+                <div class="chart-container">
+                    <canvas id="spendingChart"></canvas>
+                </div>
+                <div class="comparison-chart">
+                    <p>한달 전보다 얼마나 지출이 적을까?</p>
+                    <canvas id="incomeExpenseChart"></canvas>
+                    <p class="chart-label">전달보다 60,000원 덜 소비 하셨어요! 소비를 덜 하고싶다면 챌린지에 참여해 보세요</p>
+                </div>
+            </section>
+        </main>
+    </div>
+</div>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    window.spendingData = /*[[${spendingReport.monthlyData}]]*/ null;
+    /*]]>*/
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script th:src="@{/js/reportboard.js}"></script>
+</body>
+</html>
