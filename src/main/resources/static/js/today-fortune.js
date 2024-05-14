@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         console.log(formattedDate)
         const lastTwoDigits = birthYear.slice(-2);
-        const fortuneQuery = lastTwoDigits + `년생에 ${formattedDate} 의 금전운을 검색해서 알려주되, 텍스트는 150자 이내로 해서 답변을 줘. 만약 150자가 넘어가면 요약해서 답해줘.`;
+        const fortuneQuery = lastTwoDigits + `년생에 ${formattedDate} 의 금전운을 검색해서 알려주되, 최대한 쓸모있는 내용으로 길게 써주고, 대신 텍스트가 150자를 넘어가지 않게 답해줘.`;
 
         const urlData = {
             detail: [{

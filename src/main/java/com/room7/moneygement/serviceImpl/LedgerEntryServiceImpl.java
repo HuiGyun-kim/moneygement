@@ -106,22 +106,37 @@ public class LedgerEntryServiceImpl implements LedgerEntryService {
 		int currentYear = now.getYear();
 		int currentMonth = now.getMonthValue();
 
-		Long income = ledgerEntryRepository.findTotalByLedgerAndType(userId, false, currentYear, currentMonth);
-		Long expense = ledgerEntryRepository.findTotalByLedgerAndType(userId, true, currentYear, currentMonth);
+		Long income = ledgerEntryRepository.findTotalByUserIdAndType(userId, false, currentYear, currentMonth);
+		Long expense = ledgerEntryRepository.findTotalByUserIdAndType(userId, true, currentYear, currentMonth);
 
 		LocalDate threeMonthsAgo = now.minusMonths(3);
 		int year3 = threeMonthsAgo.getYear();
 		int month3 = threeMonthsAgo.getMonthValue();
-		Long incomeThreeMonthsAgo = ledgerEntryRepository.findTotalByLedgerAndType(userId, false, year3, month3);
-		Long expenseThreeMonthsAgo = ledgerEntryRepository.findTotalByLedgerAndType(userId, true, year3, month3);
+		Long incomeThreeMonthsAgo = ledgerEntryRepository.findTotalByUserIdAndType(userId, false, year3, month3);
+		Long expenseThreeMonthsAgo = ledgerEntryRepository.findTotalByUserIdAndType(userId, true, year3, month3);
+
+		// 전달 지출 계산
+		LocalDate lastMonth = now.minusMonths(1);
+		int lastMonthYear = lastMonth.getYear();
+		int lastMonthValue = lastMonth.getMonthValue();
+		Long lastMonthExpense = ledgerEntryRepository.findTotalByUserIdAndType(userId, true, lastMonthYear, lastMonthValue);
+		// 전달 수입 계산
+		Long lastMonthIncome = ledgerEntryRepository.findTotalByUserIdAndType(userId, false, lastMonthYear, lastMonthValue);
+
+		// 이번 달 현재까지의 지출 계산
+		LocalDate startOfMonth = LocalDate.of(currentYear, currentMonth, 1);
+		Long expenseThisMonth = ledgerEntryRepository.findTotalByUserIdAndTypeBetweenDates(userId, true, startOfMonth, now);
+
+		// 전달 대비 이번 달의 지출 비교
+		Long expenseDifference = (lastMonthExpense != null ? lastMonthExpense : 0L) - (expenseThisMonth != null ? expenseThisMonth : 0L);
 
 		List<Map<String, Object>> monthlyData = new ArrayList<>();
 		for (int i = 11; i >= 0; i--) {
 			LocalDate targetDate = now.minusMonths(i);
 			int year = targetDate.getYear();
 			int month = targetDate.getMonthValue();
-			Long monthlyIncome = ledgerEntryRepository.findTotalByLedgerAndType(userId, false, year, month);
-			Long monthlyExpense = ledgerEntryRepository.findTotalByLedgerAndType(userId, true, year, month);
+			Long monthlyIncome = ledgerEntryRepository.findTotalByUserIdAndType(userId, false, year, month);
+			Long monthlyExpense = ledgerEntryRepository.findTotalByUserIdAndType(userId, true, year, month);
 
 			Map<String, Object> data = new HashMap<>();
 			data.put("year", year);
@@ -137,6 +152,9 @@ public class LedgerEntryServiceImpl implements LedgerEntryService {
 		report.put("incomeThreeMonthsAgo", incomeThreeMonthsAgo != null ? incomeThreeMonthsAgo : 0L);
 		report.put("expenseThreeMonthsAgo", expenseThreeMonthsAgo != null ? expenseThreeMonthsAgo : 0L);
 		report.put("monthlyData", monthlyData);
+		report.put("expenseDifference", expenseDifference);
+		report.put("lastMonthIncome", lastMonthIncome != null ? lastMonthIncome : 0L);
+		report.put("lastMonthExpense", lastMonthExpense != null ? lastMonthExpense : 0L);
 
 		return report;
 	}
