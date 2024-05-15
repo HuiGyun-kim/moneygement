@@ -16,15 +16,17 @@
 <div th:replace="~{layout/header.html::main-header}"></div>
 
 <div class="containerBox">
-    <div class="container-fluid row justify-content-center align-content-center">
+    <div class="container-fluid row">
         <!--사이드바-->
-        <div class="col-md-4 mt-4">
-            <div class="list-group">
-                <a th:href="@{/change-password}" class="list-group-item">비밀번호 변경</a>
-                <a th:href="@{/delete-account}" class="list-group-item">회원 탈퇴</a>
+        <div class="sidebar">
+            <div class="col-md-4 mt-4">
+                <div class="list-group">
+                    <a th:href="@{/change-password}" class="list-group-item">비밀번호 변경</a>
+                    <a th:href="@{/delete-account}" class="list-group-item">회원 탈퇴</a>
+                </div>
             </div>
         </div>
-        <div class="container mt-4 col-md-8 off-md-8"> <!-- 우측 컨텐츠 -->
+        <div class="container mt-5 col-md-7 off-md-10"> <!-- 우측 컨텐츠 -->
             <div class="card h-100" th:style="'border-radius: 1rem;'">
                 <div class="card-body p-5 text-center">
                     <h2 class="text-black">내 정보 관리</h2>
