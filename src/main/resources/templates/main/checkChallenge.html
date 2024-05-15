@@ -15,23 +15,20 @@
 <div>
     <div th:replace="~{layout/header.html::main-header}"></div>
     <div th:replace="~{layout/sidebar.html::main-sidebar}"></div>
-
-    <header>
-<!--        <h1 class="checkChallenge">출석 체크</h1>-->
-    </header>
     <main>
+        <h2>출석체크</h2>
         <a id="userId" style="display: none;" th:attr="data-user-id=${currentUser.userId}"></a>
         <!--캘린더 표시 div-->
         <div id="calendar">
             <div class="wrapper">
 
-                <header>
+                <div>
                     <div class="nav">
                         <button class="prev"> < </button>
                         <p class="current-date"></p>
                         <button class="next"> > </button>
                     </div>
-                </header>
+                </div>
                 <div class="calendar">
                     <ul class="weeks">
                         <li>Sun</li>
@@ -50,12 +47,8 @@
         </div>
     </main>
 
-
-
     <!--출석체크 버튼-->
-    <button id="attendanceButton" class="attendanceButton">출석체크
-        <img src="/img/main/attendace_icon.png">
-    </button>
+    <button id="attendanceButton" class="attendanceButton">출석체크</button>
 
 
 </div>
