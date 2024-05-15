@@ -13,23 +13,29 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18.x"
+          node-version: "20.x"
 
       - name: Check Node v # Node v 확인
         run: node -v
 
       - name: Install Dependencies # 의존 파일 설치
-        run: npm install --legacy-peer-deps --frozen-lockfile
+        run: |
+          cd /home/ec2-user/app/step1/moneygement
+          npm install --legacy-peer-deps --frozen-lockfile
 
       - name: Build # React Build
-        run: yarn build
+        run: |
+          cd /home/ec2-user/app/step1/moneygement
+          yarn build
         env:
           CI: ""
 
       - name: zip create
         # zip 파일을 만듭니다(파일명은 자유, 대신 아래 workflow에 적을 파일명과 동일하게 맞춰주세요).
         # 여기서는 build-app.zip
-        run: zip -qq -r ./build-app.zip .
+        run: |
+          cd /home/ec2-user/app/step1/moneygement
+          zip -qq -r ./build-app.zip .
         shell: bash
 
       - name: Configure AWS credentials
