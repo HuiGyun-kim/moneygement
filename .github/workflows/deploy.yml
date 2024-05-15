@@ -1,60 +1,20 @@
-name: Deploy # Workflow 이름
-on: # Event 감지
-  push:
-    branches:
-      - develop # 해당 브랜치의 푸쉬가 일어날 때 CI/CD를 진행하겠다는 뜻
+name: GitHub Actions Demo
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+
+on: [push]
+
 jobs:
-  build:
-    runs-on: ubuntu-20.04
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest    # 해당job을 어떤 OS에서 실행할 것인지
     steps:
-      # - name: Checkout source code. # Repo checkout
-      #   uses: actions/checkout@v2
-      - uses: actions/checkout@v4
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: "20.x"
-
-      - name: Check Node v # Node v 확인
-        run: node -v
-
-      - name: Install Dependencies # 의존 파일 설치
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
         run: |
-          cd $GITHUB_WORKSPACE/moneygement
-          npm install --legacy-peer-deps --frozen-lockfile
-
-      - name: Build # React Build
-        run: |
-          cd $GITHUB_WORKSPACE/moneygement
-          yarn build
-        env:
-          CI: ""
-
-      - name: zip create
-        # zip 파일을 만듭니다(파일명은 자유, 대신 아래 workflow에 적을 파일명과 동일하게 맞춰주세요).
-        # 여기서는 build-app.zip
-        run: |
-          cd $GITHUB_WORKSPACE/moneygement
-          zip -qq -r ./build-app.zip .
-        shell: bash
-
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
-
-      - name: Upload to S3 # Upload build file to S3
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: |
-          aws s3 cp --region ap-northeast-2 ./build-app.zip s3://${{secrets.AWS_S3_BUCKET}}/build-app.zip
-
-      - name: Deploy # Deploy to EC2
-        run: aws deploy create-deployment
-          --application-name money-deploy
-          --deployment-config-name CodeDeployDefault.AllAtOnce
-          --deployment-group-name money-deploy-group
-          --s3-location bucket=${{secrets.AWS_S3_BUCKET}},key=build-app.zip,bundleType=zip
+          ls ${{ github.workspace }}
+      - run: echo "🍏 This job's status is ${{ job.status }}."
