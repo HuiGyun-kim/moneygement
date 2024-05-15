@@ -49,24 +49,53 @@ body {
     text-align: center;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
-
+#create-ledger-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
 #create-ledger {
-    padding: 12px 24px;
-    font-size: 18px;
-    background-color: #ff6b6b;
-    color: #fff;
+    background-color: #4CAF50;
+    color: white;
     border: none;
-    border-radius: 4px;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-right: 10px;
     cursor: pointer;
-    margin-bottom: 22px;
-    transition: background-color 0.3s ease-in-out;
-    float: right;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+#ledger-form-container {
+    display: flex;
+    align-items: center;
 }
 
-#create-ledger:hover {
-    background-color: #ff4f4f;
+#ledger-title {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
 }
 
+#save-ledger, #cancel-ledger {
+    background-color: #1A4F32;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+#cancel-ledger:hover, #save-ledger:hover {
+    transform: scale(1.05);
+}
 table {
     width: 100%;
     border-collapse: collapse;
@@ -93,7 +122,7 @@ th, td {
 }
 
 th {
-    background-color: #4ecdc4;
+    background-color: #1A4F32;
     font-weight: bold;
     color: #fff;
     text-transform: uppercase;
@@ -106,7 +135,7 @@ tr:nth-child(even) {
 .ledger-button {
     padding: 8px 16px;
     font-size: 16px;
-    background-color: #ff6b6b;
+    background-color: #006400;
     color: #fff;
     border: none;
     border-radius: 4px;
@@ -116,7 +145,6 @@ tr:nth-child(even) {
 }
 
 .ledger-button:hover {
-    background-color: #ff4f4f;
     transform: scale(1.05);
 }
 
@@ -127,7 +155,7 @@ tr:nth-child(even) {
 .ledger-quote {
     flex: 1;
     padding: 40px;
-    background-color: #4ecdc4;
+    background-color: #1A4F32;
     color: #fff;
     font-size: 24px;
     text-align: center;

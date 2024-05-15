@@ -28,9 +28,12 @@
                     <h2>가계부</h2>
                 </div>
                 <section>
-                    <a href="/ledgers/create">
-                        <button id="create-ledger">가계부 생성</button>
-                    </a>
+                    <button id="create-ledger">가계부 생성</button>
+                    <div id="ledger-form-container" style="display: none;">
+                        <input type="text" id="ledger-title" placeholder="가계부 이름">
+                        <button id="save-ledger">생성</button>
+                        <button id="cancel-ledger">취소</button>
+                    </div>
                     <table>
                         <thead>
                         <tr>
@@ -44,16 +47,23 @@
                         <tr th:each="ledger, iterStat : ${ledgers}">
                             <td th:text="${ledgers.number * ledgers.size + iterStat.count}"></td>
                             <td>
-                                <span th:text="${ledger.title}" th:id="'title-' + ${ledger.ledgerId}" onclick="showLedgerDetails(this.id)"></span>
-                                <input type="text" th:value="${ledger.title}" th:id="'edit-' + ${ledger.ledgerId}" style="display:none;">
+                                <span th:text="${ledger.title}" th:id="'title-' + ${ledger.ledgerId}"
+                                      onclick="showLedgerDetails(this.id)"></span>
+                                <input type="text" th:value="${ledger.title}" th:id="'edit-' + ${ledger.ledgerId}"
+                                       style="display:none;">
                             </td>
                             <td th:text="${#temporals.format(ledger.createdAt, 'yyyy-MM-dd')}"></td>
                             <td>
-                                <button class="ledger-button edit-button" th:onclick="'toggleEditMode(this, ' + ${ledger.ledgerId} + ')'">수정</button>
-                                <form th:action="@{/ledgers/delete/{id}(id=${ledger.ledgerId})}" method="post" class="delete-form" onsubmit="return confirmDelete()">
+                                <button class="ledger-button edit-button"
+                                        th:onclick="'toggleEditMode(this, ' + ${ledger.ledgerId} + ')'">수정
+                                </button>
+                                <form th:action="@{/ledgers/delete/{id}(id=${ledger.ledgerId})}" method="post"
+                                      class="delete-form" onsubmit="return confirmDelete()">
                                     <button type="submit" class="ledger-button delete-button">삭제</button>
                                 </form>
-                                <button class="ledger-button save-button" style="display: none;" th:onclick="'saveEdit(this, ' + ${ledger.ledgerId} + ')'">수정 완료</button>
+                                <button class="ledger-button save-button" style="display: none;"
+                                        th:onclick="'saveEdit(this, ' + ${ledger.ledgerId} + ')'">수정 완료
+                                </button>
                             </td>
                         </tr>
                         </tbody>
@@ -67,7 +77,8 @@
                            th:text="${pageNumber + 1}"
                            th:class="${pageNumber == ledgers.number} ? active"></a>
 
-                        <a th:if="${ledgers.hasNext()}" th:href="@{/ledgers/ledger(page=${ledgers.number + 1})}">&gt;</a>
+                        <a th:if="${ledgers.hasNext()}"
+                           th:href="@{/ledgers/ledger(page=${ledgers.number + 1})}">&gt;</a>
                     </div>
                 </section>
             </div>

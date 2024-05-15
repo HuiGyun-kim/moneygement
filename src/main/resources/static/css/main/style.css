@@ -9,6 +9,13 @@ body {
 .main-logo-img{
     width: 55%;
 }
+.text-right img{
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    margin-right: 40px;
+    margin-bottom: 30px;
+}
 header {
     display: flex;
     align-items: center;
