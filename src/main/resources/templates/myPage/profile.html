@@ -43,6 +43,8 @@
             </div>
         </div>
         <div class="side-view">
+            <div class="main_img">
+            <div>
                 <div class="level-bar">
                     <div class="progress-bar-container">
                         <div class="progress-bar" id="progress-bar"></div>
@@ -52,17 +54,24 @@
                         <span id="filled-exp"></span> / <span id="required-exp"></span>
                     </div>
                 </div>
-            <div class="introduce">
+                <div class="introduce">
                 <span class="text">소개</span>
                 <span class="introduce-text" th:text="${user.introduction}"></span>
             </div>
-            <div class="stats">
+                <div class="stats">
                 <p class="text">통계</p>
                 <div>
                     <label>
                         <textarea class="introduce-text">더미더미더미</textarea>
                     </label>
                 </div>
+            </div>
+            </div>
+            <div class="containers">
+                <h3>나의 소비 기록을 관리하고 분석해주는 AI종합 컨설팅</h3>
+                <h4>MONYGEMENT</h4>
+                <img th:src="@{/img/main/moneyplant_img.jpg}" alt="moneyplant-img" class="moneyplant-img">
+            </div>
             </div>
             <div class="comments-section">
                 <span class="text">방명록</span>
