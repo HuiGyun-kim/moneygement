@@ -46,7 +46,6 @@ public class LedgerEntryServiceImpl implements LedgerEntryService {
 			entry.getLedger().getLedgerId(),
 			entry.getCategory().getCategoryId(),
 			entry.getCategory().getCategoryName(),
-			entry.getReceiptId(),
 			entry.getCreateAt(),
 			entry.getAmount(),
 			entry.getDate(),

@@ -16,7 +16,6 @@ public class LedgerEntryDTO {
 	private User userId;
 	private Long categoryId;
 	private String categoryName;
-	private Long receiptId;
 	private Long amount;
 	private String description;
 	private LocalDate date;
@@ -24,12 +23,11 @@ public class LedgerEntryDTO {
 	private boolean ledgerType;
 
 
-	public LedgerEntryDTO(Long entryId, Long ledgerId, Long categoryId, String categoryName, Long receiptId, LocalDateTime createAt, Long amount, LocalDate date, String description) {
+	public LedgerEntryDTO(Long entryId, Long ledgerId, Long categoryId, String categoryName, LocalDateTime createAt, Long amount, LocalDate date, String description) {
 		this.entryId = entryId;
 		this.ledgerId = ledgerId;
 		this.categoryId = categoryId;
 		this.categoryName = categoryName;
-		this.receiptId = receiptId;
 		this.createAt = createAt;
 		this.amount = amount;
 		this.date = date;
@@ -50,7 +48,6 @@ public class LedgerEntryDTO {
 		@JsonProperty("ledgerId") Long ledgerId,
 		@JsonProperty("categoryId") Long categoryId,
 		@JsonProperty("categoryName") String categoryName,
-		@JsonProperty("receiptId") Long receiptId,
 		@JsonProperty("createAt") LocalDateTime createAt,
 		@JsonProperty("amount") Long amount,
 		@JsonProperty("date") LocalDate date,
@@ -60,7 +57,6 @@ public class LedgerEntryDTO {
 		this.ledgerId = ledgerId;
 		this.categoryId = categoryId;
 		this.categoryName = categoryName;
-		this.receiptId = receiptId;
 		this.createAt = createAt;
 		this.amount = amount;
 		this.date = date;

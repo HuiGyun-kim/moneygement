@@ -1,44 +1,24 @@
 package com.room7.moneygement.serviceImpl;
 
-import com.room7.moneygement.dto.QnADTO;
-import com.room7.moneygement.model.LedgerEntry;
-import com.room7.moneygement.model.QnA;
 import com.room7.moneygement.repository.LedgerEntryRepository;
-import com.room7.moneygement.repository.QnARepository;
-import com.room7.moneygement.service.QnAService;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.room7.moneygement.service.FaqService;
+
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
-public class QnAServiceImpl implements QnAService {
+import lombok.RequiredArgsConstructor;
 
-	private final QnARepository qnaRepository;
+@Service
+@RequiredArgsConstructor
+public class FaqServiceImpl implements FaqService {
+
 	private final LedgerEntryRepository ledgerEntryRepository;
 
-	@Autowired
-	public QnAServiceImpl(QnARepository qnaRepository, LedgerEntryRepository ledgerEntryRepository) {
-		this.qnaRepository = qnaRepository;
-		this.ledgerEntryRepository = ledgerEntryRepository;
-	}
-
 	@Override
-	public QnADTO saveQnA(QnADTO qnaDTO) {
-		QnA qna = new QnA();
-		BeanUtils.copyProperties(qnaDTO, qna);
-		qna.setCreatedAt(LocalDateTime.now());
-
-		QnA savedQnA = qnaRepository.save(qna);
-		return convertToDTO(savedQnA);
-	}
-
-	@Override
-	public String generateAnswer(String question, List<LedgerEntry> ledgerEntries, Long userId) {
+	public String generateAnswer(String question, Long userId) {
 		// 질문 분석 및 맞춤형 답변 생성 로직을 구현합니다.
 		// 사용자의 수입/지출 내역 데이터를 활용하여 적절한 답변을 생성합니다.
 
@@ -98,18 +78,5 @@ public class QnAServiceImpl implements QnAService {
 		questions.add("가장 많이 지출한 카테고리는 무엇인가요?");
 		questions.add("외식비를 줄일 수 절약 팁이 있나요?");
 		return questions;
-	}
-
-	@Override
-	public QnADTO getQnAById(Long qnaId) {
-		QnA qna = qnaRepository.findById(qnaId)
-			.orElseThrow(() -> new IllegalArgumentException("QnA not found with id: " + qnaId));
-		return convertToDTO(qna);
-	}
-
-	private QnADTO convertToDTO(QnA qna) {
-		QnADTO qnaDTO = new QnADTO();
-		BeanUtils.copyProperties(qna, qnaDTO);
-		return qnaDTO;
 	}
 }
