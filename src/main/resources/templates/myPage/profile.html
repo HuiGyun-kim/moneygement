@@ -62,7 +62,7 @@
                 <p class="text">통계</p>
                 <div>
                     <div class="introduce-text">
-                        <a id="expense">지출 금액: </a>
+                        <a id="expense">이번 달 지출 금액: </a>
                     </div>
                 </div>
             </div>
@@ -124,9 +124,11 @@
             userId:[[${currentUser.userId}]]
         };
     </script>
+<script th:src="@{/js/profileExpense.js}"></script>
 <script th:src="@{/js/comments.js}"></script>
 <script th:src="@{/js/followbutton.js}"></script>
 <script th:src="@{/js/profile.js}"></script>
 <script th:src="@{/js/dropdown.js}"></script>
+
 </body>
 </html>
