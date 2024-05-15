@@ -10,8 +10,8 @@ on:
 env:
   S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
   AWS_REGION: ${{ secrets.AWS_REGION }}
-  CODEDEPLOY_NAME: money-github
-  CODEDEPLOY_GROUP: money-github-group
+  CODEDEPLOY_NAME: ${{ secrets.CODEDEPLOY_NAME }}
+  CODEDEPLOY_GROUP: ${{ secrets.CODEDEPLOY_GROUP }}
 
 jobs:
   build:
@@ -63,7 +63,7 @@ jobs:
         run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://${{ secrets.AWS_S3_BUCKET }}/$GITHUB_SHA.zip
 
       - name: Code Deploy
-        run: aws deploy create-deployment --application-name $CODEDEPLOY_NAME --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name $CODEDEPLOY_GROUP --s3-location bucket=${{ secrets.AWS_S3_BUCKET }},bundleType=zip,key=$GITHUB_SHA.zip
+        run: aws deploy create-deployment --application-name ${{ secrets.CODEDEPLOY_NAME }} --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name ${{ secrets.CODEDEPLOY_GROUP }} --s3-location bucket=${{ secrets.AWS_S3_BUCKET }},bundleType=zip,key=$GITHUB_SHA.zip
 
 
   dependency-submission:
