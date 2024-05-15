@@ -12,7 +12,7 @@
     <link rel="stylesheet" th:href="@{/css/main/ledger.css}">
     <link rel="icon" type="image/png" href="/img/main/favicon.png">
 </head>
-<body>
+<body onload="generateRandomQuote()">
 <div th:replace="~{layout/header.html::main-header}"></div>
 <div class="main-container">
     <div th:replace="~{layout/sidebar.html::main-sidebar}"></div>
@@ -84,7 +84,7 @@
             </div>
         </div>
         <div class="ledger-quote" id="ledgerQuote">
-            <p>"돈은 좋은 하인이지만 나쁜 주인이다." - P.T. 바넘</p>
+            <p id="quoteElement"></p>
         </div>
         <div class="ledger-details" id="ledgerDetails">
             <div class="details-container">

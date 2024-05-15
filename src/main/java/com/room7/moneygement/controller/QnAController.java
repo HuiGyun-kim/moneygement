@@ -51,6 +51,12 @@ public class QnAController {
 		return new ResponseEntity<>(savedQnA, HttpStatus.CREATED);
 	}
 
+	@GetMapping("/faq")
+	public ResponseEntity<List<String>> getFrequentlyAskedQuestions() {
+		List<String> questions = qnaService.getFrequentlyAskedQuestions();
+		return ResponseEntity.ok(questions);
+	}
+
 	@GetMapping("/{qnaId}")
 	public ResponseEntity<QnADTO> getAnswer(@PathVariable Long qnaId) {
 		QnADTO qnaDTO = qnaService.getQnAById(qnaId);
@@ -59,20 +65,5 @@ public class QnAController {
 		} else {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-	}
-
-	// 앨런 AI와의 통신을 담당하는 메서드
-	private String communicateWithAlan(String question) {
-		// 앨런 AI API와의 통신을 위한 RestTemplate 객체 생성
-		RestTemplate restTemplate = new RestTemplate();
-		String uri = UriComponentsBuilder
-				.fromHttpUrl(alanApiUrl)
-				.queryParam("content", question)
-				.queryParam("client_id", alanApiKey)
-				.toUriString();
-
-		// 앨런 AI API에 POST 요청을 보냅니다.
-		String alanApiResponse = restTemplate.getForObject(uri, String.class);
-		return alanApiResponse;
 	}
 }
