@@ -9,6 +9,7 @@ import com.room7.moneygement.service.ChallengeService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -26,7 +27,7 @@ public class ChallengeController {
 		challenge.setDescription("이달의 거지");
 		challenge.setReward("50");
 		challenge.setStartDate(LocalDate.now().withDayOfMonth(1).atStartOfDay());
-		challenge.setEndDate(LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).atStartOfDay());
+		challenge.setEndDate(LocalDate.now().withDayOfMonth(LocalDate.now().lengthOfMonth()).atTime(LocalTime.of(23, 59)));
 		challengeRepository.save(challenge);
 	}
 
