@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -46,7 +47,7 @@ public class QnAServiceImpl implements QnAService {
 			int currentMonth = LocalDate.now().getMonthValue();
 			int currentYear = LocalDate.now().getYear();
 			Long totalExpense = ledgerEntryRepository.findTotalExpenseByUserIdAndCategoryAndYearAndMonth(userId, "식비", currentYear, currentMonth);
-			return "이번 달 식비로 총 " + totalExpense + "원을 지출하셨습니다.";
+			return "이번 달 식비로 총 " + (totalExpense != null ? totalExpense : 0) + "원을 지출하셨습니다.";
 		}
 
 		// 이번 달 교통비 관련 질문
@@ -54,19 +55,19 @@ public class QnAServiceImpl implements QnAService {
 			int currentMonth = LocalDate.now().getMonthValue();
 			int currentYear = LocalDate.now().getYear();
 			Long totalExpense = ledgerEntryRepository.findTotalExpenseByUserIdAndCategoryAndYearAndMonth(userId, "교통비", currentYear, currentMonth);
-			return "이번 달 교통비로 총 " + totalExpense + "원을 지출하셨습니다.";
+			return "이번 달 교통비로 총 " + (totalExpense != null ? totalExpense : 0) + "원을 지출하셨습니다.";
 		}
 
 		// 월 평균 지출 관련 질문
 		if (question.contains("월 평균 지출")) {
 			Long averageMonthlyExpense = ledgerEntryRepository.findAverageMonthlyExpenseByUserId(userId);
-			return "최근 3개월간 월 평균 지출은 " + averageMonthlyExpense + "원입니다.";
+			return "최근 3개월간 월 평균 지출은 " + (averageMonthlyExpense != null ? averageMonthlyExpense : 0) + "원입니다.";
 		}
 
 		// 가장 많이 지출한 카테고리 관련 질문
 		if (question.contains("가장 많이 지출한 카테고리")) {
 			String mostExpensiveCategory = ledgerEntryRepository.findMostExpensiveCategoryByUserId(userId);
-			return "최근 3개월간 가장 많이 지출한 카테고리는 " + mostExpensiveCategory + "입니다.";
+			return "최근 3개월간 가장 많이 지출한 카테고리는 " + (mostExpensiveCategory != null ? mostExpensiveCategory : "없음") + "입니다.";
 		}
 
 		// 절약 팁 관련 질문
@@ -74,7 +75,7 @@ public class QnAServiceImpl implements QnAService {
 			String category = "외식비"; // 예시로 외식비 카테고리를 사용
 			Long averageExpense = ledgerEntryRepository.findAverageMonthlyCategoryExpenseByUserId(userId, category);
 			if (averageExpense != null) {
-				if (averageExpense > 100000) {
+				if (averageExpense > 150000) {
 					return "분석 결과, 외식 비용을 줄이고 집에서 요리하는 것이 좋겠습니다. 월 평균 외식비가 " + averageExpense + "원으로 다소 높은 편입니다.";
 				} else {
 					return "최근 3개월간 월 평균 외식비는 " + averageExpense + "원으로 적절한 수준입니다. 현재 식습관을 유지하시는 것이 좋겠습니다.";
@@ -84,18 +85,19 @@ public class QnAServiceImpl implements QnAService {
 			}
 		}
 
-		// 구독 서비스 해지 관련 질문
-		if (question.contains("구독 서비스 해지")) {
-			return "불필요한 구독 서비스를 정리하는 것이 지출을 줄이는 데 도움이 됩니다. 현재 이용 중인 구독 서비스를 점검하고, 필요성이 낮은 서비스는 과감히 해지하는 것이 좋습니다.";
-		}
-
-		// 저축 목표 설정 관련 질문
-		if (question.contains("저축 목표 설정")) {
-			return "저축 목표를 설정하는 것이 중요합니다. 매달 일정 금액을 저축하고, 불필요한 지출을 줄이는 습관을 들이세요. 목표 금액을 달성하기 위해 꾸준히 노력하다 보면 어느새 큰 돈이 모일 거예요.";
-		}
-
 		// 기타 질문에 대한 기본 답변
 		return "죄송합니다. 해당 질문에 대한 답변을 찾을 수 없습니다. 더 자세한 정보가 필요하다면 추가 질문을 남겨주세요.";
+	}
+
+	@Override
+	public List<String> getFrequentlyAskedQuestions() {
+		List<String> questions = new ArrayList<>();
+		questions.add("이번 달 식비는 얼마인가요?");
+		questions.add("이번 달 교통비는 얼마인가요?");
+		questions.add("월 평균 지출은 얼마인가요?");
+		questions.add("가장 많이 지출한 카테고리는 무엇인가요?");
+		questions.add("외식비를 줄일 수 절약 팁이 있나요?");
+		return questions;
 	}
 
 	@Override
