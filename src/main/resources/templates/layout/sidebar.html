@@ -30,12 +30,24 @@
             <a th:href="@{/poorChallenge}" class="list-group-item list-group-item-action">이달의 거지 <span>$</span></a>
         </div>
     </div>
+
     <div class="text-right mb-3">
-        <a href="/qnachat">
-            <img src="/img/main/qnaicon.png" alt="QnA 아이콘" width="80" height="80">
-        </a>
+        <img id="faqImage" th:src="@{/img/main/qnaicon.png}" alt="QnA 아이콘" width="80" height="80" style="cursor: pointer;">
     </div>
 </div>
+<!-- FAQ 모달 -->
+<div class="faq-modal" id="faqModal">
+    <div class="faq-modal-content">
+        <div class="faq-modal-header">
+            <h2>자주 묻는 질문 FAQ를 한번 찾아보세요</h2>
+            <div class="faq-modal-close" id="faqModalClose">&times;</div>
+        </div>
+        <ul id="questionList"></ul>
+        <div class="faq-modal-answer" id="answerBox"></div>
+    </div>
+    <div class="faq-modal-arrow"></div>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/qna.js}"></script>
 </body>
 
