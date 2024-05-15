@@ -135,6 +135,7 @@ time, mark, audio, video {
     background-color: #f9f9f9;
     min-width: 120px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    margin-top: 100px;
     z-index: 1;
 }
 
@@ -148,7 +149,6 @@ time, mark, audio, video {
 .dropdown-menu a:hover {
     background-color: #f1f1f1;
 }
-/*////////////////////////////////////////*/
 .comments-list {
     margin-top: 20px;
     border-radius: 5px;
