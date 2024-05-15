@@ -271,3 +271,9 @@ header {
     padding: 10px;
     border-radius: 5px;
 }
+.search{
+right: 5px;
+width: 20px;
+position: relative;
+top: -2px;
+}

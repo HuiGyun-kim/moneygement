@@ -13,31 +13,95 @@
 </head>
 <body>
 <div th:replace="~{layout/header.html::main-header}"></div>
-<div class="slider-container">
-    <div class="slide">
-        <img th:src="@{/img/main/001.png}" th:href="@{/ledgerEntry/reportBoard}" alt="">
-    </div>
-    <div class="slide">
-        <img th:src="@{/img/main/002.png}" alt="">
-    </div>
-    <div class="slide">
-        <img th:src="@{/img/main/003.png}" alt="">
-    </div>
-</div>
-<div class="main-container">
-    <div class="sidebar-container">
-        <div th:replace="~{layout/sidebar.html::main-sidebar}"></div>
-    </div>
-    <div class="containers">
-        <h3>나의 소비 기록을 관리하고 분석해주는 AI종합 컨설팅</h3>
-        <h4>MONYGEMENT</h4>
-        <img th:src="@{/img/main/moneyplant_img.jpg}" alt="moneyplant-img" class="moneyplant-img">
-    </div>
-
-</div>
 <main>
+    <section class="slider-container">
+        <div class="slide">
+            <img th:src="@{/img/main/001.png}" th:href="@{/ledgerEntry/reportBoard}" alt="">
+        </div>
+        <div class="slide">
+            <img th:src="@{/img/main/002.png}" alt="">
+        </div>
+        <div class="slide">
+            <img th:src="@{/img/main/003.png}" alt="">
+        </div>
+    </section>
+    <!--    광고 베너 완료-->
+    <div th:replace="~{layout/sidebar.html::main-sidebar}"></div>
 
+    <section class="article-container">
+        <article>
+            <img th:src="@{/img/main/img_2.png}" alt="">
+            <span class="article-title">가계부</span>
+            <span class="article-body" >" 새로운 가계부를 생성하여, 수입/지출 관리 "
+                가계부를 통해 나의 수입 지출을 한눈에 볼 수 있으며,
+                       그룹간의 가계부 공유 가능 ???? </span>
+        </article>
+        <article>
+            <span class="article-title" >소비레포트</span>
+            <span class="article-body">" 대시보드로 바라보는 나의 소비 습관들 "
+                    월별로 보이는 나의 소비들, 비교까지! </span>
+            <img th:src="@{/img/main/img_3.png}" alt="">
+
+        </article>
+        <article>
+            <img th:src="@{/img/main/img_4.png}" alt="">
+            <span class="article-title" >소비Q&A</span>
+            <span class="article-body">" AI에게 얼마 썼어???? "
+                  AI를 통해 소비 파악 가능! </span>
+        </article>
+        <article>
+            <span class="article-title" >AI 일기</span>
+            <span class="article-body"> " 귀찮아,, 일기쓰기,, AI 한테 부탁해볼까? "
+                         AI가 다양한 버전으로 일기 작성</span>
+            <img th:src="@{/img/main/img_5.png}" alt="">
+        </article>
+    </section>
+    <img class="design_img1" th:src="@{/img/main/img_6.png}" alt="">
+    <div class="design">
+        <img class="design_img2" th:src="@{/img/main/img_7.png}" alt="">
+    </div>
+    <div class="text1">
+        <h1>AI 종합 컨설팅</h1>
+        <span>나의 소비 기록을 관리하고 분석해주는 AI 종합 컨설팅 </span>
+    </div>
+
+    <span class="team">Our Team</span>
+
+    <div class="box-container">
+        <div class="box">
+            <img class="design_img2" th:src="@{/img/main/img_8.png}" alt="">
+            <p>Hui Gyun Kim</p>
+            <span>더미더미더미더미더미더미더미</span>
+        </div>
+        <div class="box">
+            <img class="design_img2" th:src="@{/img/main/img_9.png}" alt="">
+            <p>EUN A KWON</p>
+            <span>더미더미더미더미더미더미더미</span>
+        </div>
+        <div class="box">
+            <img class="design_img2" th:src="@{/img/main/MILK.jpeg}" alt="">
+            <p>So Hee Kim</p>
+            <span>더미더미더미더미더미더미더미</span>
+        </div>
+        <div class="box">
+            <img class="design_img2" th:src="@{/img/main/img_11.png}" alt="">
+            <p>Jin Woo Shin</p>
+            <span>더미더미더미더미더미더미더미</span>
+        </div>
+        <div class="box">
+            <img class="design_img2" th:src="@{/img/main/img_10.png}" alt="">
+            <P>Eun Seo CHOI</P>
+            <span>더미더미더미더미더미더미더미</span>
+        </div>
+    </div>
+        <div class="designs" >
+            <img class="design2" th:src="@{/img/main/img_12.png}" alt="">
+            <span class="text4" >더미더미더미더미</span>
+        </div>
+            <img class="design3" th:src="@{/img/main/img_17.png}" alt="">
+            <img class="design5" th:src="@{/img/main/img_15.png}" alt="">
+
+    <script th:src="@{/js/Banner.js}"></script>
 </main>
-<script th:src="@{/js/Banner.js}"></script>
 </body>
 </html>
