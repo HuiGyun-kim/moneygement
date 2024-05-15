@@ -1,8 +1,9 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const header = document.querySelector('meta[name="_csrf_header"]').content;
+    const token = document.querySelector('meta[name="_csrf"]').content;
+
     var deleteAccountBtn = document.getElementById('deleteAccountBtn');
     deleteAccountBtn.addEventListener('click', function(event) {
-        const header = document.querySelector('meta[name="_csrf_header"]').content;
-        const token = document.querySelector('meta[name="_csrf"]').content;
         var password = document.getElementById('password').value;
         console.log(password);
         console.log(header);

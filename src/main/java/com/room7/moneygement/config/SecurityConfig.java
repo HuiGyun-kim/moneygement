@@ -67,7 +67,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 								"/diary/**", "/level/**","/diary/saveDiary","/ledgers/edit/{ledgerId}","/admin/**",
 								"/users/send-id-verification-code", "/users/verify-id-code", "/users/verifyEmail",
 								"/sendEmail","/follow/unfollow/{userId}","/follow/followers/{userId}", "/attendance/**","/attendance/check",
-                                "/searchUser", "/userChallenges/**",
+                                "/searchUser", "/userChallenges/**","/api/delete-account",
 								"/users/sendEmail", "/emailVerified", "/find-id", "/users/find-id", "/find-password",
 								"/ledgers/**", "/css/**", "/js/**", "/img/**", "/profileDetail/upload","/profile-detail", "/updateProfileImage","{userId}/profile/introduction").permitAll()
 						.requestMatchers("/manager/**").hasAuthority("ADMIN")
@@ -89,7 +89,7 @@ public class SecurityConfig implements WebMvcConfigurer {
 				.csrf(csrf -> csrf
 						.ignoringRequestMatchers("/ledgerEntry/**", "/users/sendEmail", "/diary/**", "/userChallenges/**", "/qna/**",
                                      "/follow/**", "/profileDetail/upload", "/profile-detail", "/updateProfileImage","{userId}/profile/introduction",
-                                     "/ledgers/**", "/level/**","/api/auth/image", "/attendance/**", "/users/**")
+                                     "/ledgers/**", "/level/**","/api/auth/image", "/attendance/**", "/users/**","/api/**")
 				);
 		return http.build();
 	}
