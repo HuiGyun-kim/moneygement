@@ -6,6 +6,8 @@ document.addEventListener('DOMContentLoaded', function() {
     deleteAccountBtn.addEventListener('click', function(event) {
         var password = document.getElementById('password').value;
         console.log(password);
+        console.log(header);
+        console.log(token);
         if (!password) {
             alert('비밀번호를 입력해주세요.');
             return;
