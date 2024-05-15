@@ -8,5 +8,7 @@ import com.room7.moneygement.model.Challenge;
 @Repository
 public interface ChallengeRepository extends JpaRepository<Challenge, Long> {
 
+    Challenge findTopByOrderByChallengeIdDesc();
+
 }
 

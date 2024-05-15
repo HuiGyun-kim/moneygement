@@ -1,48 +1,74 @@
-// 사용자가 입력한 질문을 서버에 전송하고 답변을 받아오는 함수
-function communicateWithAlan(userInput) {
-    // 질문을 서버에 전송하고 답변을 받아옵니다.
-    fetch(`/qna/ask`, {
-        method: "Post",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            question: userInput,
-        })
-    })
+document.addEventListener('DOMContentLoaded', function () {
+    var faqImage = document.getElementById('faqImage');
+    var faqModal = document.getElementById('faqModal');
+    var faqModalClose = document.getElementById('faqModalClose');
+
+    faqImage.addEventListener('click', function () {
+        faqModal.style.display = 'block';
+        fetchFrequentlyAskedQuestions();
+    });
+
+    faqModalClose.addEventListener('click', function () {
+        faqModal.style.display = 'none';
+    });
+
+    // 모달 창 밖을 클릭하면 모달을 닫는 이벤트 리스너
+    window.addEventListener('click', function (event) {
+        if (!faqModal.contains(event.target) && event.target !== faqImage) {
+            faqModal.style.display = 'none';
+        }
+    });
+});
+
+function fetchFrequentlyAskedQuestions() {
+    fetch('/qna/faq')
         .then(response => response.json())
         .then(data => {
-            // 받은 답변을 채팅 창에 표시합니다.
-            displayMessage('Moneygement', data.answer);
+            displayQuestions(data);
         })
         .catch(error => console.error('Error:', error));
 }
 
+function displayQuestions(questions) {
+    var questionList = document.getElementById('questionList');
+    questionList.innerHTML = '';
 
+    questions.forEach(question => {
+        var listItem = document.createElement('li');
+        listItem.textContent = question;
+        listItem.addEventListener('click', function () {
+            fetchAnswer(question);
+        });
+        questionList.appendChild(listItem);
+    });
+}
 
-// 폼 제출 이벤트를 처리하는 함수
-document.getElementById('messageForm').addEventListener('submit', function(event) {
-    event.preventDefault(); // 폼의 기본 동작을 중지합니다.
-    var userInput = document.getElementById('userInput').value;
-    // 사용자가 입력한 메시지를 채팅 창에 표시합니다.
-    displayMessage('User', userInput);
-    // 앨런 AI와 대화하는 함수를 호출합니다.
-    communicateWithAlan(userInput);
-    // 입력 폼을 비웁니다.
-    document.getElementById('userInput').value = '';
-});
+function fetchAnswer(question) {
+    fetch('/qna/ask', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            question: question,
+        }),
+    })
+        .then(response => response.json())
+        .then(data => {
+            displayAnswer(question, data.answer);
+        })
+        .catch(error => console.error('Error:', error));
+}
 
-// 메시지를 채팅 창에 표시하는 함수
-function displayMessage(sender, message) {
-    var chatBox = document.getElementById('chatBox');
-    var newMessage = document.createElement('div');
-    if (sender === 'User') {
-        newMessage.innerHTML = `<div class="user-message"><img src="user-profile.jpg" alt="User Profile"><strong>${sender}:</strong> ${message}</div>`;
-    } else {
-        newMessage.innerHTML = `<div class="alan-message"><img src="/img/main/logo.png" alt="Alan Profile"><strong>${sender}:</strong> ${message}</div>`;
-    }
-    newMessage.innerHTML = `<strong>${sender}:</strong> ${message}`;
-    chatBox.appendChild(newMessage);
-    // 자동으로 스크롤을 아래로 이동합니다.
-    chatBox.scrollTop = chatBox.scrollHeight;
+function displayAnswer(question, answer) {
+    var answerBox = document.getElementById('answerBox');
+    answerBox.innerHTML = '';
+
+    var questionElement = document.createElement('div');
+    questionElement.innerHTML = `<strong>Q:</strong> ${question}`;
+    answerBox.appendChild(questionElement);
+
+    var answerElement = document.createElement('div');
+    answerElement.innerHTML = `<strong>A:</strong> ${answer}`;
+    answerBox.appendChild(answerElement);
 }

@@ -22,7 +22,10 @@
         <section class="button-container">
             <button class="cancel-button" type="button">취소</button>
             <input type="hidden" id="userId" th:value="${user.userId}"/>
-            <button id="submitButton" class="submit-button" type="button">등록</button>
+            <div>
+            <button id="submitButton2" class="submit-button2" type="button">소개등록</button>
+            <button id="submitButton" class="submit-button" type="button">사진등록</button>
+            </div>
         </section>
         <input type="file" id="imageInput" name="profileImg" class="profile-image-input" style="display: none;">
     </form>

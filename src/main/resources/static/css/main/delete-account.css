@@ -106,3 +106,33 @@ a {
     border: 1px solid #ced4da;
     border-radius: 0.25em;
 }
+
+/*수정 후 css*/
+.form-label-text-black{
+    text-align: left;
+}
+
+#check-delete-account{
+    margin-bottom: 10px;
+}
+
+.section-btn-spacing{
+    margin-top: 10px;
+}
+
+.btn-primary{
+    background-color: #1A4F32 ;
+    border-color: #1A4F32 ;
+}
+
+.btn-spacing{
+    margin-right: 10px;
+}
+
+.sidebar{
+    width: 250px;
+}
+
+.off-md-10{
+    margin-left:110px;
+}

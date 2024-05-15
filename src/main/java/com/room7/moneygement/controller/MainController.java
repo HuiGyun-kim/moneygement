@@ -89,6 +89,12 @@ public class MainController {
 		return "main/challengeList";
 	}
 
+	@GetMapping("challengeFinish")
+	public String challengeFinish(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
+		model.addAttribute("user", userDetails.getUserDTO());
+		return "main/challengeList_finish";
+	}
+
 	@GetMapping("admin")
 	public String admin(Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
 		model.addAttribute("user", userDetails.getUserDTO());

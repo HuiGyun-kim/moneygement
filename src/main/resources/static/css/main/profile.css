@@ -135,6 +135,7 @@ time, mark, audio, video {
     background-color: #f9f9f9;
     min-width: 120px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    margin-top: 100px;
     z-index: 1;
 }
 
@@ -148,7 +149,6 @@ time, mark, audio, video {
 .dropdown-menu a:hover {
     background-color: #f1f1f1;
 }
-/*////////////////////////////////////////*/
 .comments-list {
     margin-top: 20px;
     border-radius: 5px;
@@ -234,4 +234,21 @@ textarea{
     border-radius: 50%;
     object-fit: cover;
     object-position: center;
+}
+.main_img{
+    display: flex;
+    justify-content: space-between;
+    margin-right: 200px;
+}
+.containers{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 1000px;
+    width: 1000px;
+    gap: 10px;
+}
+.moneyplant-img{
+    width: 800px;
 }
