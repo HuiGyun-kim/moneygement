@@ -1,7 +1,9 @@
 package com.room7.moneygement.controller;
 
+import com.room7.moneygement.model.Challenge;
 import com.room7.moneygement.model.LedgerEntry;
 import com.room7.moneygement.model.UserChallenge;
+import com.room7.moneygement.repository.ChallengeRepository;
 import com.room7.moneygement.repository.LedgerEntryRepository;
 import com.room7.moneygement.repository.UserChallengeRepository;
 import com.room7.moneygement.service.CustomUserDetails;
@@ -26,15 +28,19 @@ public class UserChallengeController {
 	private final UserChallengeRepository userChallengeRepository;
 	private final UserChallengeServiceImpl userChallengeServiceImpl;
 	private final LedgerEntryRepository ledgerEntryRepository;
+	private final ChallengeRepository challengeRepository;
 
 	@PostMapping("/addUserChallenge")
 	public ResponseEntity<?> addUserChallenge(@RequestBody Map<String, Object> payload,
-											  @AuthenticationPrincipal CustomUserDetails userDetails) {
+											  @AuthenticationPrincipal CustomUserDetails userDetails){
 		Long targetAmount = Long.parseLong(payload.get("targetAmount").toString());
 		Long userId = userDetails.getUser().getUserId();
+
+		Challenge latestChallenge = challengeRepository.findTopByOrderByChallengeIdDesc();
+
 		UserChallenge userChallenge = new UserChallenge();
 		userChallenge.setUserId(userId);
-		userChallenge.setChallengeId(1L);
+		userChallenge.setChallengeId(latestChallenge.getChallengeId());
 		userChallenge.setTargetAmount(targetAmount);
 		userChallenge.setJoinDate(LocalDateTime.now());
 		userChallenge.setIsCompleted(false);
