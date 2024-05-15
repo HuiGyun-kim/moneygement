@@ -448,14 +448,14 @@ src
 
 ---
 
-| 로그인 | 회원가입 |
+| ![로그인](https://github.com/HuiGyun-kim/moneygement/assets/108185369/088c6b54-0441-4b3b-ac20-06c82a45019f)로그인 | 회원가입 |
 | --- | --- |
 | 아이디찾기 | 비밀번호찾기 |
 | 메인화면 | 프로필페이지 |
-| 수입/지출내역 | 소비리포트 |
-| 일기장 | 가계부 |
+| 수입/지출내역 | ![소비리포트](https://github.com/HuiGyun-kim/moneygement/assets/108185369/dac24513-8bde-4f5d-be46-38d367d64ed3)소비리포트 |
+| ![일기장](https://github.com/HuiGyun-kim/moneygement/assets/108185369/c6496c5f-e046-452d-8032-5dfaa39ed793)일기장 | ![가계부](https://github.com/HuiGyun-kim/moneygement/assets/108185369/c8d531b8-7b8c-45aa-b40a-fc5f8b7ceebe)가계부 |
 | 챌린지 이벤트 | 출석체크 |
-| 이달의거지 | 소비FAQ |
+| ![이달의거지](https://github.com/HuiGyun-kim/moneygement/assets/108185369/2bb0586a-5849-453b-8425-c9e395779156)이달의거지 | ![FAQ](https://github.com/HuiGyun-kim/moneygement/assets/108185369/c9ba6ddd-62ab-4b34-86c1-f6ddb9b0b99f)소비FAQ |
 | 회원탈퇴 | 운영자페이지 |
 
 ## 📍 주요기능
