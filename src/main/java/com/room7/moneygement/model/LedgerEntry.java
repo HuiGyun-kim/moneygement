@@ -37,9 +37,6 @@ public class LedgerEntry {
 	@JoinColumn(name = "category_id",referencedColumnName = "category_id")
 	private Category category;
 
-	@Column(name = "receipt_id")
-	private Long receiptId;
-
 	private Long amount;
 
 	private String description;
