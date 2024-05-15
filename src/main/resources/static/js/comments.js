@@ -1,23 +1,30 @@
 $(document).ready(function() {
     // 현재 사용자 정보 가져오기
-    const currentUserId = '[[${session.user.userId}]]';
+    const currentUserId = $('#userId').data('userId').toString();
+    const profileId = window.location.pathname.split('/').pop();
+
+    console.log(currentUserId)
+    console.log(profileId)
 
     // 댓글 목록 순회
     $('.comment-item').each(function() {
-        const commentUserId = '[[${comment.user.userId}]]';
-        const commentId = '[[${comment.commentId}]]';
 
-        // 작성자만 수정 링크 보이게 하기
-        if (currentUserId === commentUserId) {
-            $(this).find('.edit-button').show();
-        } else {
-            $(this).find('.edit-button').hide();
-        }
+        // // 작성자만 수정 링크 보이게 하기
+        // if (currentUserId === commentUserId) {
+        //     $(this).find('.edit-button').show();
+        // } else {
+        //     $(this).find('.edit-button').hide();
+        // }
+
+
+        $(this).find('.edit-button').hide();
+
 
         // 작성자와 페이지 주인만 삭제 버튼 보이게 하기
-        if (currentUserId === commentUserId || currentUserId === '[[${user.userId}]]') {
+        if (currentUserId === profileId) {
             $(this).find('.delete-button').show();
-        } else {
+        }
+        else {
             $(this).find('.delete-button').hide();
         }
     });
