@@ -117,7 +117,7 @@ a {
 }
 
 .section-btn-spacing{
-    margin-top: 20px;
+    margin-top: 10px;
 }
 
 .btn-primary{
@@ -127,4 +127,12 @@ a {
 
 .btn-spacing{
     margin-right: 10px;
+}
+
+.sidebar{
+    width: 250px;
+}
+
+.off-md-10{
+    margin-left:110px;
 }
