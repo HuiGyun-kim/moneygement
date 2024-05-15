@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>profile</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" th:href="@{/css/main/profile.css}">
     <link rel="stylesheet" th:href="@{/css/main/style.css}"/>
-    <a id="userId" style="display: none;" th:attr="data-user-id=${currentUser.userId}"></a>
 </head>
 <body>
     <div th:replace="~{layout/header.html::main-header}"></div>
@@ -23,8 +23,8 @@
                     <button class="follow-button" id="followButton" type="submit"  th:data-userId="${user.userId}">Follow</button>
                 </form>
             </div>
-            <img class="more" th:src="@{/img/main/more.png}" alt=""/>
-            <div class="dropdown-menu" id="myDropdown">
+            <img class="more2" th:src="@{/img/main/more.png}" alt=""/>
+            <div class="dropdown-menu" id="myDropdown2">
                 <a th:if="${currentUser.userId == user.userId}" href="/profile-detail">프로필변경</a>
             </div>
         </div>
@@ -108,7 +108,7 @@
                     <a th:href="@{/profile/{userId}(userId=${user.userId}, page=${totalPages - 1})}" th:class="${currentPage == totalPages - 1 ? 'disabled' : ''}">»</a>
                 </div>
         </div>
-
+        <a id="userId" style="display: none;" th:attr="data-user-id=${currentUser.userId}"></a>
     </div>
     <script th:inline="javascript">
         const currentUser = {

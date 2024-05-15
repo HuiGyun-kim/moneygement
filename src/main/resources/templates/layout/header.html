@@ -2,26 +2,29 @@
     <a th:href="@{/}">
         <img th:src="@{/img/main/Cilogo.png}" alt="Log" class="main-logo-img">
     </a>
-
+    <div class="search1">
+        <form class="searching" action="/searchUser" method="get">
+            <label>
+                <select class="choice" name="searchType">
+                    <option value="searchId">아이디</option>
+                </select>
+            </label>
+            <label class="searchKey"><input name="username" alt=""></label>
+            <button type="submit">검색</button>
+        </form>
+    </div>
     <!-- 사용자 정보와 상호작용 부분 -->
     <div class="user-interaction">
-        <div class="search1">
-            <form class="searching" action="/searchUser" method="get">
-                <label>
-                    <select class="choice" name="searchType">
-                        <option value="searchId">아이디</option>
-                    </select>
-                </label>
-                <label class="searchKey"><input name="username" alt=""></label>
-                <button type="submit">검색</button>
-            </form>
-        </div>
         <!-- 프로필 사진 -->
         <div sec:authorize="isAuthenticated()" class="user-info">
             <figure class="profile-picture" aria-label="프로필">
                 <!-- 프로필 이미지 이름이 있으면 해당 이미지를, 없으면 기본 이미지를 표시 -->
-                <img th:src="@{'/img/main/' + ${currentUser.profileImg}}" alt="프로필 사진">
+                <img class="more" th:src="${currentUser.profileImg}" alt="프로필 사진">
             </figure>
+            <div class="dropdown-menu" id="myDropdown">
+                <a th:href="@{/profile/{userId}(userId=${currentUser.userId})}">마이페이지</a>
+                <a th:href="@{/users/myPage-edit}"> 내 정보 관리</a>
+            </div>
             <a th:text="${currentUser.username} + ' '"></a>
             <form th:action="@{/logout}" method="post">
                 <button type="submit" class="logout-button">로그아웃</button>
@@ -34,4 +37,7 @@
             </form>
         </div>
     </div>
+
+    <script th:src="@{/js/dropdown.js}"></script>
+    <script th:src="@{/js/followbutton.js}"></script>
 </header>

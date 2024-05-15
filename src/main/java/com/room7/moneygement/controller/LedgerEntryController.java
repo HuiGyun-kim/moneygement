@@ -13,6 +13,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -54,9 +55,12 @@ public class LedgerEntryController {
 	private final CategoryRepository categoryRepository;
 
 	@GetMapping("/expenses")
-	public ResponseEntity<?> getExpense(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date, @RequestParam("userId") Long userId){
+	public ResponseEntity<?> getExpensesByUserAndDate(
+		@RequestParam("userId") Long userId,
+		@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
+	) {
 		try {
-			List<LedgerEntry> entries = ledgerEntryRepository.findByDateAndUserId(date, userId);
+			List<LedgerEntry> entries = ledgerEntryRepository.findByUserIdAndDateAndLedgerType(userId, date, true);
 			return ResponseEntity.ok(entries);
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error retrieving expenses: " + e.getMessage());
@@ -163,5 +167,14 @@ public class LedgerEntryController {
 		} else {
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
 		}
+	}
+	@GetMapping("/reportBoard")
+	public String reportBoard(@AuthenticationPrincipal CustomUserDetails currentUser, Model model) {
+		if (currentUser != null) {
+			Long userId = currentUser.getUser().getUserId();
+			Map<String, Object> report = ledgerEntryService.getSpendingReport(userId);
+			model.addAttribute("spendingReport", report);
+		}
+		return "layout/reportBoard";
 	}
 }

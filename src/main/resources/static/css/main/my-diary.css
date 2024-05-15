@@ -92,7 +92,7 @@ section h1, section span{
     margin-top: 20px;
     flex-wrap: wrap;
     gap: 20px;
-    text-align: center;
+    text-align: -webkit-center;
 }
 
 .themeSelect{
@@ -131,19 +131,20 @@ section h1, section span{
 }
 
 .write{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
     margin-top: 20px;
+    align-content: center;
 }
 
 .write, #saveDiary{
     background-color: #1A4F32;
     color: white;
     text-align: center;
+    width: 150px;
+    height: 50px;
 }
-
+#saveDiary{
+    margin-bottom: 10px;
+}
 #diaryBox{
     background-color: #EFEFEF;
     width: 70%;
@@ -211,4 +212,13 @@ article h3{
 
 #expends h4{
     margin-top: 0;
+}
+.loading-spinner {
+    width: 100%;
+    height: 380px;
+    margin-top: -40px;
+    background-image: url(/img/main/dalacat.gif);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
 }

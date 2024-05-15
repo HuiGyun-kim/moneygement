@@ -27,6 +27,12 @@ public interface UserService {
 	void updateUserProfileIntroduction(Long userId, String introduction);
 
 	String getUserProfileIntroduction(Long userId);
+
+	boolean existsByEmail(String email);
+
+	String generateResetPasswordLink(String email);
+
+	String findUsernameByEmail(String email);
 }
 
 

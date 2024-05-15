@@ -1,7 +1,10 @@
 package com.room7.moneygement.serviceImpl;
 
+import com.room7.moneygement.controller.UserController;
 import com.room7.moneygement.service.S3Upload;
 import com.room7.moneygement.repository.FollowRepository;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,16 +24,19 @@ public class UserServiceImpl implements UserService {
 	private final UserRepository userRepository;
 	private final FollowRepository followRepository;
 	private final S3Upload s3Uploader;
+	private UserController userController;
 
 	// PasswordEncoder 빈 주입받기
 	private final PasswordEncoder passwordEncoder;
+	private final JavaMailSender mailSender;
 
-	public UserServiceImpl(UserRepository userRepository, FollowRepository followRepository, S3Upload s3Uploader, PasswordEncoder passwordEncoder) {
+	public UserServiceImpl(UserRepository userRepository, FollowRepository followRepository, S3Upload s3Uploader, PasswordEncoder passwordEncoder, JavaMailSender mailSender) {
 		this.userRepository = userRepository;
 		this.followRepository = followRepository;
 		this.s3Uploader = s3Uploader;
 		this.passwordEncoder = passwordEncoder;
-	}
+        this.mailSender = mailSender;
+    }
 
 	@Override
 	public User findByUsername(String username) {
@@ -128,5 +134,46 @@ public class UserServiceImpl implements UserService {
 		return user.getIntroduction();
 	}
 
-}
+	@Override
+	public boolean existsByEmail(String email){
+		return userRepository.existsByEmail(email);
+	}
 
+	@Override
+	public String generateResetPasswordLink(String email){
+		Optional<User> userOptional = userRepository.findByEmail(email);
+		if (!userOptional.isPresent()) {
+			return null;
+		}
+
+		User user = userOptional.get();
+		String token = userController.generateVerificationCode();
+		user.setRememberToken(token);
+		userRepository.save(user);
+
+		return "https://localhost:8080/reset-password?token=" + token;
+	}
+
+	@Override
+	public String findUsernameByEmail(String email){
+		Optional<User> userOptional = userRepository.findByEmail(email);
+        return userOptional.map(User::getUsername).orElse(null);
+    }
+
+//	public void sendPasswordResetLink(String username) throws Exception{
+//		User user = userRepository.findByUsername(username)
+//				.orElseThrow(() -> new Exception("유저를 찾을 수 없습니다."));
+//
+//		String email = user.getEmail();
+//		String resetLink = "http://localhost:8080/reset-password?token=moneymoney"; // 이거 나중에 링크 이름 바꿔야함.
+//
+//		SimpleMailMessage message = new SimpleMailMessage();
+//		message.setTo(email);
+//		message.setSubject("비밀번호 재설정 메일");
+//		message.setText("아래 링크로 접속하여 비밀번호를 재설정 해주세요. " + resetLink);
+//
+//		mailSender.send(message);
+//	}
+
+
+}
