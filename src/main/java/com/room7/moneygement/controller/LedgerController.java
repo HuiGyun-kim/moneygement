@@ -65,15 +65,19 @@ public class LedgerController {
 	}
 
 	@PostMapping("/create")
-	public String createLedger(@ModelAttribute Ledger ledger) {
+	public ResponseEntity<?> createLedger(@RequestBody Map<String, String> requestBody) {
+		String title = requestBody.get("title");
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
 			CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-			User user = userService.findUserById(userDetails.getUserId()); // User 객체 검색
+			User user = userService.findUserById(userDetails.getUserId());
+			Ledger ledger = new Ledger();
+			ledger.setTitle(title);
 			ledger.setUserId(user);
+			ledgerService.saveLedger(ledger);
+			return ResponseEntity.ok("Ledger created successfully");
 		}
-		ledgerService.saveLedger(ledger);
-		return "redirect:/ledgers/ledger";
+		return ResponseEntity.badRequest().body("Failed to create ledger");
 	}
 
 	@GetMapping("/edit/{id}")
