@@ -175,7 +175,7 @@ hr{
     display: flex;
 }
 .history-profile-img{
-    max-width: 100px;
+    max-width: inherit;
     max-height: 130px;
     border-radius: 50%;
 }
