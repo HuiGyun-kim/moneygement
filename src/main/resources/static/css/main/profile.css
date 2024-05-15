@@ -235,3 +235,20 @@ textarea{
     object-fit: cover;
     object-position: center;
 }
+.main_img{
+    display: flex;
+    justify-content: space-between;
+    margin-right: 200px;
+}
+.containers{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: 1000px;
+    width: 1000px;
+    gap: 10px;
+}
+.moneyplant-img{
+    width: 800px;
+}
