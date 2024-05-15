@@ -31,8 +31,7 @@ public class EmailServiceImpl implements EmailService {
 
     public void sendVerificationEmail(User user) {
         String token = createEmailToken(user.getEmail());
-        String verifyUrl = "http://localhost:8080/users/verifyEmail?token=" + token;
-
+        String verifyUrl = "http://ec2-43-200-116-55.ap-northeast-2.compute.amazonaws.com:8080/users/verifyEmail?token=" + token;
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(user.getEmail());
         message.setSubject("회원가입 인증메일");
