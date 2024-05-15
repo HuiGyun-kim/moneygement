@@ -5,10 +5,16 @@ on:
     branches: [ "develop" ]
   pull_request:
     branches: [ "develop" ]
+  workflow_dispatch:
+
+env:
+  S3_BUCKET: ${{ secrets.S3_BUCKET }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
+  CODEDEPLOY_NAME: money-deploy
+  CODEDEPLOY_GROUP: money-deploy-group
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -30,11 +36,33 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 
+      - name: Build with Gradle
+        run: ./gradlew build -x test
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: Package
           path: build/libs
+
+      - name: Make zip file
+        run: zip -r ./$GITHUB_SHA.zip .
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://${{ secrets.S3_BUCKET }}/$GITHUB_SHA.zip
+
+      - name: Code Deploy
+        run: aws deploy create-deployment --application-name ${{ env.CODEDEPLOY_NAME }} --deployment-config-name CodeDeployDefault.AllAtOnce --deployment-group-name ${{ env.CODEDEPLOY_GROUP }} --s3-location bucket=${{ secrets.S3_BUCKET }},bundleType=zip,key=$GITHUB_SHA.zip
 
 
   dependency-submission:
