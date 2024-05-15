@@ -10,8 +10,8 @@ on:
 env:
   S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
   AWS_REGION: ${{ secrets.AWS_REGION }}
-  CODEDEPLOY_NAME: money-github
-  CODEDEPLOY_GROUP: money-github-group
+  CODEDEPLOY_NAME: 'money-github'
+  CODEDEPLOY_GROUP: 'money-github-group'
 
 jobs:
   build:
