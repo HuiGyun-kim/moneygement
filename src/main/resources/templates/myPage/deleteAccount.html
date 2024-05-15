@@ -35,7 +35,7 @@
         <div class="col-md-9 p-0"> <!-- 우측 컨텐츠 -->
             <div class="card h-100" th:style="'border-radius: 1rem;'">
                 <div class="card-body p-5 text-center">
-                    <h2 class="text-black">Moneygement</h2>
+                    <h2 class="text-black">내 정보 관리</h2>
                     <p class="text-bg-dark-50 mt-2">회원 탈퇴</p>
                     <div class="mb-2">
                         <form id="deleteAccountForm" action="/api/delete-account" method="post">
@@ -43,6 +43,10 @@
                                 <label class="form-label text-black"><strong>비밀번호 확인</strong></label>
                                 <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력하세요." required>
                             </div>
+                            <section>
+                                <input type="checkbox" id="check-delete-account">
+                                <label  for="check-delete-account">개인정보는 3개월동안 보관됩니다.<br>동의하시겠습니까?</label>
+                            </section>
                             <button type="button" id="deleteAccountBtn" class="btn btn-primary ui-state-focus">회원탈퇴</button>
                             <button type="button" class="btn btn-secondary" onclick="location.href='/login'" style="color: white">취소</button>
                         </form>
