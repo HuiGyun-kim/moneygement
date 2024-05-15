@@ -22,11 +22,13 @@ button {
 
 /*#4 달력 가운데정렬*/
 main {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background: #ffffff;
+    position: absolute;
+    top: 40%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
 }
 
 /*#5 달력 크기와 라운드, 배경*/
@@ -126,4 +128,23 @@ main {
 
 .days li.completed::before{
     background: #CCE1D5;
+}
+.attendanceButton{
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #1A4F32;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    position: relative;
+    left: 58%;
+    top: -50px;
+}
+.current-date{
+    margin: 0;
+}
+h2{
+    position: relative;
+    right: 50%;
+    font-weight: 600;
 }
