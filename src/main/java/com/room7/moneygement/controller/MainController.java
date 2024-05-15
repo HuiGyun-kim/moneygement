@@ -119,13 +119,13 @@ public class MainController {
 	// 마이페이지 - 회원정보 수정 / 탈퇴 뷰
 	@GetMapping("/change-password")
 	public String changePassword() {
-		return "/myPage/change-Password";
+		return "myPage/change-Password";
 	}
 
 	// 마이페이지 -  탈퇴 뷰
 	@GetMapping("/delete-account")
 	public String deleteAccount() {
-		return "/myPage/deleteAccount";
+		return "myPage/deleteAccount";
 	}
 
 	//헤더 검색 기능

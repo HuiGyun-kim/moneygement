@@ -48,14 +48,14 @@ public class FollowController {
     public String getFollowers(@PathVariable Long userId, Model model) {
         List<User> followers = followService.getFollowers(userId);
         model.addAttribute("followers", followers);
-        return "/myPage/Follower";
+        return "myPage/Follower";
     }
 
     @GetMapping("/following/{userId}")
     public String getFollowing(@PathVariable Long userId, Model model) {
         List<User> following = followService.getFollowing(userId);
         model.addAttribute("following", following);
-        return "/myPage/Following";
+        return "myPage/Following";
     }
     @DeleteMapping("/unfollow-me/{followerId}")
     public ResponseEntity<String> unfollowMe(@PathVariable Long followerId, Principal principal) {
