@@ -128,3 +128,7 @@ a {
 .btn-spacing{
     margin-right: 10px;
 }
+
+.sidebar{
+    width: 250px;
+}
