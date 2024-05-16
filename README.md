@@ -3,7 +3,11 @@
 ---
 
 **오르미 4기 파이널 프로젝트**
+<br>
 http://ec2-43-200-116-55.ap-northeast-2.compute.amazonaws.com:8080/
+
+-> 관리자 페이지 (회원가입하시자마자 들어오셔도 괜찮습니다) <br>
+http://ec2-43-200-116-55.ap-northeast-2.compute.amazonaws.com:8080/admin
 
 ## 👤 팀원소개
 
