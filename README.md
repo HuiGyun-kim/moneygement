@@ -1,13 +1,8 @@
-# 💸 머니지먼트 - 적절한 소비습관을 기르기 위한 AI종합 컨설팅앱
+# 💸 머니지먼트 - 소비습관을 기르기 위한 AI종합 컨설팅앱
 
 ---
 
 **오르미 4기 파이널 프로젝트**
-<br>
-http://ec2-43-200-116-55.ap-northeast-2.compute.amazonaws.com:8080/
-
--> 관리자 페이지 (회원가입하시자마자 들어오셔도 괜찮습니다) <br>
-http://ec2-43-200-116-55.ap-northeast-2.compute.amazonaws.com:8080/admin
 
 ## 👤 팀원소개
 
@@ -454,17 +449,19 @@ src
 | ![로그인](https://github.com/HuiGyun-kim/moneygement/assets/108185369/088c6b54-0441-4b3b-ac20-06c82a45019f)로그인     | ![회원가입](https://github.com/HuiGyun-kim/moneygement/assets/108185369/96de59b8-a692-4375-96d4-a069ca63c850)회원가입     |
 |-----------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|
 | ![아이디찾기](https://github.com/HuiGyun-kim/moneygement/assets/108185369/f0534089-732f-4405-bf9f-4e61bf0c8763)아이디찾기 | ![비밀번호찾기](https://github.com/HuiGyun-kim/moneygement/assets/108185369/c818d67f-b5a1-45f5-843e-e55d7f92fb3e)비밀번호찾기 |
-| 메인화면                                                                                                            | 프로필페이지                                                                                                            |
-| 수입/지출내역                                                                                                         | ![소비리포트](https://github.com/HuiGyun-kim/moneygement/assets/108185369/dac24513-8bde-4f5d-be46-38d367d64ed3)소비리포트   |
+| ![전체화면](https://github.com/HuiGyun-kim/moneygement/assets/108185369/a194a092-2e6d-4a5f-b2af-1d5a1addb9af)메인화면                                                                                                            | ![프로필페이지](https://github.com/HuiGyun-kim/moneygement/assets/108185369/7f4e8a17-c817-4377-9dea-013be83e8882)프로필페이지                                                                                                            |
+| ![수입지출내역](https://github.com/HuiGyun-kim/moneygement/assets/108185369/41c661ee-4710-4796-bf99-8d94794b37e2)수입/지출내역                                                                                                         | ![소비리포트](https://github.com/HuiGyun-kim/moneygement/assets/108185369/dac24513-8bde-4f5d-be46-38d367d64ed3)소비리포트   |
 | ![일기장](https://github.com/HuiGyun-kim/moneygement/assets/108185369/c6496c5f-e046-452d-8032-5dfaa39ed793)일기장     | ![가계부](https://github.com/HuiGyun-kim/moneygement/assets/108185369/c8d531b8-7b8c-45aa-b40a-fc5f8b7ceebe)가계부       |
-| 챌린지 이벤트                                                                                                         | 출석체크                                                                                                              |
-| ![이달의거지](https://github.com/HuiGyun-kim/moneygement/assets/108185369/2bb0586a-5849-453b-8425-c9e395779156)이달의거지 | ![FAQ](https://github.com/HuiGyun-kim/moneygement/assets/108185369/0810603c-f83e-46a8-ad39-68a8eb815156)소비FAQ     |
-| ![비밀번호변경](https://github.com/HuiGyun-kim/moneygement/assets/108185369/53e27023-1fe4-4044-89c3-827618f1fc02)비밀번호 변경                                                                                                         | 회원탈퇴                                                                                                              |
+| ![챌린지](https://github.com/HuiGyun-kim/moneygement/assets/108185369/47b8ae68-6456-497a-86e6-d90eaf8cfd03)챌린지 이벤트                                                                                                         | ![출석체크](https://github.com/HuiGyun-kim/moneygement/assets/108185369/2798a122-84d3-45e7-b866-6b6485f11799)출석체크                                                                                                              |
+| ![이달의거지](https://github.com/HuiGyun-kim/moneygement/assets/108185369/791f528e-9364-437e-8d21-385feca9635f)이달의거지 | ![FAQ](https://github.com/HuiGyun-kim/moneygement/assets/108185369/0810603c-f83e-46a8-ad39-68a8eb815156)소비FAQ     |
+| ![비밀번호변경](https://github.com/HuiGyun-kim/moneygement/assets/108185369/53e27023-1fe4-4044-89c3-827618f1fc02)비밀번호 변경                                                                                                         | ![회원탈퇴](https://github.com/HuiGyun-kim/moneygement/assets/108185369/c3ba0706-7300-473f-b80e-d244459f7b97)회원탈퇴                                                                                                              |
 | ![운영자페이지](https://github.com/HuiGyun-kim/moneygement/assets/108185369/cf2169bc-9af6-49c6-9f3d-d2733cda16e0)운영자 페이지                                                                                                         |                                                                                                                   |
 
 ## 📍 주요기능
 
----
+[![Video Label](http://img.youtube.com/vi/nX4jSnWPnp0/0.jpg)](https://youtu.be/nX4jSnWPnp0)
+<br>
+[머니지먼트 발표자료.pdf](https://github.com/HuiGyun-kim/moneygement/files/15369612/default.pdf)
 
 ### 메인 화면
 
