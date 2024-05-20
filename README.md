@@ -47,7 +47,8 @@
 
 ## 📍 주요기능
 
-[![Video Label](http://img.youtube.com/vi/nX4jSnWPnp0/0.jpg)](https://youtu.be/nX4jSnWPnp0)
+[![Video Label](http://img.youtube.com/vi/nX4jSnWPnp0/0.jpg)](https://youtu.be/nX4jSnWPnp0)<br>
+시연 영상 보러가기
 <br>
 [머니지먼트 발표자료.pdf](https://github.com/HuiGyun-kim/moneygement/files/15369612/default.pdf)
 
