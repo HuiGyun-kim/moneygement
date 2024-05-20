@@ -187,259 +187,28 @@ src
     │  └─com
     │      └─room7
     │          └─moneygement
-    │              │  MoneygementApplication.java
-    │              │
     │              ├─config
-    │              │      RestTemplateConfig.java
-    │              │      S3Config.java
-    │              │      SecurityConfig.java
-    │              │
     │              ├─controller
-    │              │      AdminController.java
-    │              │      AttendanceController.java
-    │              │      ChallengeController.java
-    │              │      CommentController.java
-    │              │      DiaryController.java
-    │              │      FaqController.java
-    │              │      FollowController.java
-    │              │      GlobalControllerAdvice.java
-    │              │      LedgerController.java
-    │              │      LedgerEntryController.java
-    │              │      LevelController.java
-    │              │      MainController.java
-    │              │      ProfileController.java
-    │              │      UserChallengeController.java
-    │              │      UserController.java
-    │              │      UserPageController.java
-    │              │
     │              ├─dto
-    │              │      AttendanceDTO.java
-    │              │      CategoryDTO.java
-    │              │      ChallengeDTO.java
-    │              │      CommentDTO.java
-    │              │      DiaryDTO.java
-    │              │      FollowDTO.java
-    │              │      LedgerDTO.java
-    │              │      LedgerEntryDTO.java
-    │              │      PasswordChangeDTO.java
-    │              │      ResetPasswordDTO.java
-    │              │      ResponseDto.java
-    │              │      UserDTO.java
-    │              │
     │              ├─model
-    │              │      Attendance.java
-    │              │      Category.java
-    │              │      Challenge.java
-    │              │      Comment.java
-    │              │      Diary.java
-    │              │      Follow.java
-    │              │      Ledger.java
-    │              │      LedgerEntry.java
-    │              │      User.java
-    │              │      UserChallenge.java
-    │              │      UserRole.java
-    │              │
     │              ├─repository
-    │              │      AttendanceRepository.java
-    │              │      CategoryRepository.java
-    │              │      ChallengeRepository.java
-    │              │      CommentRepository.java
-    │              │      DiaryRepository.java
-    │              │      FollowRepository.java
-    │              │      LedgerEntryRepository.java
-    │              │      LedgerRepository.java
-    │              │      UserChallengeRepository.java
-    │              │      UserRepository.java
-    │              │
     │              ├─service
-    │              │      AttendanceService.java
-    │              │      CategoryService.java
-    │              │      ChallengeService.java
-    │              │      CommentService.java
-    │              │      CustomUserDetails.java
-    │              │      DiaryService.java
-    │              │      EmailService.java
-    │              │      FaqService.java
-    │              │      FollowService.java
-    │              │      LedgerEntryService.java
-    │              │      LedgerService.java
-    │              │      S3Upload.java
-    │              │      UserChallengeService.java
-    │              │      UserService.java
-    │              │
     │              └─serviceImpl
-    │                      AttendanceServiceImpl.java
-    │                      CategoryServiceImpl.java
-    │                      ChallengeServiceImpl.java
-    │                      DiaryServiceImpl.java
-    │                      EmailServiceImpl.java
-    │                      FaqServiceImpl.java
-    │                      FollowServiceImpl.java
-    │                      LedgerEntryServiceImpl.java
-    │                      LedgerServiceImpl.java
-    │                      UserChallengeServiceImpl.java
-    │                      UserServiceImpl.java
-    │
     └─resources
         │  application.properties
-        │
         ├─static
         │  ├─css
         │  │  ├─font
-        │  │  │      roboto.medium-italic.ttf
-        │  │  │
         │  │  └─main
-        │  │          admin.css
-        │  │          change-password.css
-        │  │          checkChallenge.css
-        │  │          delete-account.css
-        │  │          EditComment.css
-        │  │          find-id.css
-        │  │          find-password.css
-        │  │          followers.css
-        │  │          fortune.css
-        │  │          history-modal.css
-        │  │          history.css
-        │  │          index.css
-        │  │          ledger.css
-        │  │          login.css
-        │  │          my-diary.css
-        │  │          poorChallenge.css
-        │  │          profile.css
-        │  │          profiledetail.css
-        │  │          reportboard.css
-        │  │          signup-email.css
-        │  │          signup.css
-        │  │          style.css
-        │  │
         │  ├─img
         │  │  ├─login
-        │  │  │      google.svg
-        │  │  │      kakao.svg
-        │  │  │      naver.svg
-        │  │  │
         │  │  ├─main
-        │  │  │      001.png
-        │  │  │      002.png
-        │  │  │      003.png
-        │  │  │      alert_icon.png
-        │  │  │      attendace_icon.png
-        │  │  │      Cilogo.png
-        │  │  │      clap.png
-        │  │  │      complete_button.png
-        │  │  │      dalacat.gif
-        │  │  │      default-profile.png
-        │  │  │      diary.png
-        │  │  │      dot.png
-        │  │  │      double_heart.png
-        │  │  │      email-icon.png
-        │  │  │      favicon.png
-        │  │  │      g-profile.svg
-        │  │  │      google.png
-        │  │  │      green_round.png
-        │  │  │      grey_rectangle.png
-        │  │  │      Group 16.png
-        │  │  │      img.png
-        │  │  │      img_1.png
-        │  │  │      join_btn.png
-        │  │  │      kakao.png
-        │  │  │      key-icon.png
-        │  │  │      lightgreen_round.png
-        │  │  │      logo.png
-        │  │  │      mail_icon.png
-        │  │  │      megaphone.png
-        │  │  │      message.png
-        │  │  │      moneyplant_img.jpg
-        │  │  │      more.png
-        │  │  │      name.png
-        │  │  │      naver.png
-        │  │  │      note-pen.png
-        │  │  │      primaryImage.png
-        │  │  │      profile.png
-        │  │  │      progress_button.png
-        │  │  │      qnaicon.png
-        │  │  │      user-icon.png
-        │  │  │
         │  │  └─weather
-        │  │          broken-clouds-day.png
-        │  │          broken-clouds-night.png
-        │  │          clear-night.png
-        │  │          cloudy-day.png
-        │  │          cloudy-night.png
-        │  │          mist-day.png
-        │  │          mist-night.png
-        │  │          partly-cloudy-day.png
-        │  │          partly-cloudy-night.png
-        │  │          rain-day.png
-        │  │          rain-night.png
-        │  │          shower-rain-day.png
-        │  │          shower-rain-night.png
-        │  │          snow-day.png
-        │  │          snow-night.png
-        │  │          sunny-day.png
-        │  │          thunderstorm-day.png
-        │  │          thunderstorm-night.png
-        │  │
         │  └─js
-        │          attendance.js
-        │          Banner.js
-        │          calendar.js
-        │          change-password.js
-        │          comments.js
-        │          delete-account.js
-        │          dropdown.js
-        │          find-id.js
-        │          find-password.js
-        │          followbutton.js
-        │          Follower.js
-        │          header.js
-        │          history-modal.js
-        │          ledger.js
-        │          login.js
-        │          my-diary.js
-        │          poorChallenge.js
-        │          profile.js
-        │          profiledetail.js
-        │          qna.js
-        │          reportboard.js
-        │          signup-email.js
-        │          today-fortune.js
-        │          unfollow.js
-        │          userInfo.js
-        │          weather-widget.js
-        │
         └─templates
             ├─layout
-            │      create.html
-            │      edit.html
-            │      header.html
-            │      history.html
-            │      ledger.html
-            │      reportBoard.html
-            │      sidebar.html
-            │
             ├─main
-            │      admin.html
-            │      challengeList.html
-            │      checkChallenge.html
-            │      emailVerified.html
-            │      find-id.html
-            │      find-password.html
-            │      index.html
-            │      login.html
-            │      my-diary.html
-            │      poorChallenge.html
-            │      signup-email.html
-            │      signup.html
-            │
             └─myPage
-                    change-Password.html
-                    comment-edit.html
-                    deleteAccount.html
-                    Follower.html
-                    Following.html
-                    profile.html
-                    profileDetail.html
 ```
 
 ## 🖥️UI
